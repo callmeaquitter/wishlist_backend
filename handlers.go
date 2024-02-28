@@ -62,3 +62,12 @@ func getOneGiftHandler(c *fiber.Ctx) error {
 	}
 	return c.SendString("Gift Found Succesfully")
 }
+
+func updateGiftHandler(c *fiber.Ctx) error {
+	var gift Gift
+	ok := updateGift(gift)
+	if !ok {
+		return c.SendString("Error in updateGift operation")
+	}
+	return c.SendString("Gift updated Succesfully")
+}
