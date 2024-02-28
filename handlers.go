@@ -45,11 +45,20 @@ func deleteGiftHandler(c *fiber.Ctx) error {
 	return c.SendString("Gift deleted successfully")
 }
 
-func GetGiftsHandler(c *fiber.Ctx) error {
+func getManyGiftsHandler(c *fiber.Ctx) error {
 	var gift Gift 
 	ok := findManyGift(gift)
 	if !ok {
 		return c.SendString("Error in findManyGifts operation")
 	}
 	return c.SendString("Gifts Found Succesfully")
+}
+
+func getOneGiftHandler(c *fiber.Ctx) error {
+	var gift Gift
+	ok := findOneGift(gift)
+	if !ok {
+		return c.SendString("Error in findOneGift operation")
+	}
+	return c.SendString("Gift Found Succesfully")
 }
