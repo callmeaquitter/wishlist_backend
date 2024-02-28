@@ -39,7 +39,7 @@ func findOneGift(gift Gift) bool {
 }
 
 func updateGift(gift Gift) bool {
-	result := Database.Model(&user).Update("name", "hello")
+	result := Database.Model(&gift).Update("name", "hello")
 	if result.Error != nil {
 		fmt.Println("Error in updateGift", result.Error)
 		return false
