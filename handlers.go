@@ -25,7 +25,7 @@ func createGiftHandler(c *fiber.Ctx) error {
 	}
 
 	gift.ID = "gift_" + xid.New().String()
-	gift.UserID = getUserID()
+	//gift.UserID = getUserID()
 
 	ok := createGift(gift)
 	if !ok {
