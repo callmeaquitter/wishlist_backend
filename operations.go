@@ -19,3 +19,12 @@ func deleteGift(id string) bool {
 	}
 	return true
 }
+
+func findManyGift(gift Gift) bool {
+	result := Database.Find(&gift)
+	if result.Error != nil {
+		fmt.Println("Error in findManyGift", result.Error)
+		return false
+	}
+	return true
+}
