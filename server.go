@@ -25,5 +25,5 @@ func serverSetup() {
 }
 
 func serverStart() {
-	app.Listen(":80")
+	app.Listen(":7777")
 }

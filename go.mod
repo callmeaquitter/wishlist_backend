@@ -4,6 +4,7 @@ go 1.20
 
 require (
 	github.com/gofiber/fiber/v2 v2.52.1
+	github.com/joho/godotenv v1.5.1
 	github.com/rs/xid v1.5.0
 	gorm.io/driver/postgres v1.5.6
 	gorm.io/gorm v1.25.7
