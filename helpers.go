@@ -1,8 +1,8 @@
 package main
 
-func getUserID() string {
-	return "user_1"
-}
+// func getUserID() string {
+// return "user_1"
+// }
 
 //Step by step guide
 //1. Create a model (if doesn't exist)

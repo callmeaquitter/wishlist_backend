@@ -22,6 +22,12 @@ func serverSetup() {
 	//Route: DELETE /gifts/:id
 	//DELETE /gifts/gift_cneq8k9u9g5j3m6ft0v0
 	app.Delete("/gifts/:id", deleteGiftHandler)
+
+	app.Get("/gifts/", getManyGiftsHandler)
+
+	app.Get("/gifts/:id", getOneGiftHandler)
+
+	app.Patch("gifts/:id", updateGiftHandler)
 }
 
 func serverStart() {
