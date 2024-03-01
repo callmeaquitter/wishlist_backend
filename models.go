@@ -2,7 +2,7 @@ package main
 
 type Gift struct {
 	//LIFEHACK: use string id like 'gift_ajdsjanjklsnls'
-	ID          string `json:"id"`
+	ID string `json:"id"`
 	// UserID      string `json:"user_id"`
 	Name        string `json:"name"`
 	Price       int    `json:"price"` //TODO: use decimal.Decimal instead of int
@@ -14,3 +14,12 @@ type Gift struct {
 }
 
 //LIFEHACK: use inline todos
+
+type AuthCredentials struct {
+	Login    string `json:"login"`
+	Password string `json:"password"`
+}
+
+type AuthResponse struct {
+	Session string `json:"session"`
+}
