@@ -18,16 +18,29 @@ func serverSetup() {
 	// Delete - DELETE - Delete (Delete)
 
 	//Route: POST /gifts
-	app.Post("/gifts", createGiftHandler)
+	gifts := app.Group("/gifts")
+	gifts.Post("", createGiftHandler)
 	//Route: DELETE /gifts/:id
 	//DELETE /gifts/gift_cneq8k9u9g5j3m6ft0v0
-	app.Delete("/gifts/:id", deleteGiftHandler)
+	gifts.Delete("/:id", deleteGiftHandler)
 
-	app.Get("/gifts/", getManyGiftsHandler)
+	gifts.Get("", getManyGiftsHandler)
 
-	app.Get("/gifts/:id", getOneGiftHandler)
+	gifts.Get("/:id", getOneGiftHandler)
 
-	app.Patch("gifts/:id", updateGiftHandler)
+	gifts.Patch("/:id", updateGiftHandler)
+
+	//
+	//request -> middleware -> handler -> response
+	supersecret := app.Group("/supersecret", authMiddleware)
+	supersecret.Get("", superSecretHandler)
+	supersecret.Get("/1", superSecretHandler)
+	supersecret.Get("/2", superSecretHandler)
+	supersecret.Get("/3", superSecretHandler)
+
+	//
+	// app.Post("/register", registerHandler)
+	app.Post("/login", loginHandler)
 }
 
 func serverStart() {

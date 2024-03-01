@@ -37,7 +37,7 @@ func createGiftHandler(c *fiber.Ctx) error {
 
 func deleteGiftHandler(c *fiber.Ctx) error {
 	id := c.Params("id")
-	
+
 	ok := deleteGift(id)
 	if !ok {
 		return c.SendString("Error in deleteGift operation")
@@ -46,7 +46,7 @@ func deleteGiftHandler(c *fiber.Ctx) error {
 }
 
 func getManyGiftsHandler(c *fiber.Ctx) error {
-	var gift Gift 
+	var gift Gift
 	ok := findManyGift(gift)
 	if !ok {
 		return c.SendString("Error in findManyGifts operation")
@@ -70,4 +70,27 @@ func updateGiftHandler(c *fiber.Ctx) error {
 		return c.SendString("Error in updateGift operation")
 	}
 	return c.SendString("Gift updated Succesfully")
+}
+
+func superSecretHandler(c *fiber.Ctx) error {
+	user := c.Locals("user").(string)
+	return c.SendString("This is a super secret route. Hi " + user + "!")
+}
+
+func registerHandler(c *fiber.Ctx) error {
+	return c.SendString("Register")
+}
+
+func loginHandler(c *fiber.Ctx) error {
+	var authCredentials AuthCredentials
+	if err := c.BodyParser(&authCredentials); err != nil {
+		return c.SendString(err.Error())
+	}
+
+	session, ok := getUser(authCredentials.Login, authCredentials.Password)
+	if !ok {
+		return c.SendString("Invalid credentials")
+	}
+
+	return c.JSON(AuthResponse{Session: session})
 }
