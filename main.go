@@ -6,6 +6,8 @@ import (
 	"os"
 
 	"github.com/joho/godotenv"
+	_ "docs/docs.go"
+	 
 )
 
 /*

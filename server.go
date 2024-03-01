@@ -1,12 +1,16 @@
 package main
 
-import "github.com/gofiber/fiber/v2"
+import (
+	swagger "github.com/arsmn/fiber-swagger/v2"
+	"github.com/gofiber/fiber/v2"
+)
 
 var app *fiber.App
 
 func serverSetup() {
 	// Default config
 	app = fiber.New()
+	app.Get("/api/*", swagger.HandlerDefault)
 
 	//https://docs.stripe.com/api/charges
 	//LIFEHACK: Good artist copy, great artist steal
@@ -19,6 +23,7 @@ func serverSetup() {
 
 	//Route: POST /gifts
 	gifts := app.Group("/gifts")
+
 	gifts.Post("", createGiftHandler)
 	//Route: DELETE /gifts/:id
 	//DELETE /gifts/gift_cneq8k9u9g5j3m6ft0v0
@@ -40,7 +45,7 @@ func serverSetup() {
 
 	//
 	// app.Post("/register", registerHandler)
-	app.Post("/login", loginHandler)
+
 }
 
 func serverStart() {
