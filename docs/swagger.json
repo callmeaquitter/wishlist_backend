@@ -16,5 +16,93 @@
     },
     "host": "localhost:7777",
     "basePath": "/",
-    "paths": {}
+    "paths": {
+        "/": {
+            "post": {
+                "description": "get the status of server.",
+                "consumes": [
+                    "*/*"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Gifts"
+                ],
+                "summary": "Creates a new gift.",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/main.ResponseHTTP"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/main.Gift"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/main.ResponseHTTP"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "main.Gift": {
+            "type": "object",
+            "properties": {
+                "comments": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "description": "LIFEHACK: use string id like 'gift_ajdsjanjklsnls'",
+                    "type": "string"
+                },
+                "is_favorite": {
+                    "type": "boolean"
+                },
+                "link": {
+                    "type": "string"
+                },
+                "name": {
+                    "description": "UserID      string `json:\"user_id\"`",
+                    "type": "string"
+                },
+                "photo": {
+                    "type": "string"
+                },
+                "price": {
+                    "description": "TODO: use decimal.Decimal instead of int",
+                    "type": "integer"
+                }
+            }
+        },
+        "main.ResponseHTTP": {
+            "type": "object",
+            "properties": {
+                "data": {},
+                "message": {
+                    "type": "string"
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        }
+    }
 }

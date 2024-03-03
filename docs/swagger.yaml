@@ -1,4 +1,35 @@
 basePath: /
+definitions:
+  main.Gift:
+    properties:
+      comments:
+        type: string
+      description:
+        type: string
+      id:
+        description: 'LIFEHACK: use string id like ''gift_ajdsjanjklsnls'''
+        type: string
+      is_favorite:
+        type: boolean
+      link:
+        type: string
+      name:
+        description: UserID      string `json:"user_id"`
+        type: string
+      photo:
+        type: string
+      price:
+        description: 'TODO: use decimal.Decimal instead of int'
+        type: integer
+    type: object
+  main.ResponseHTTP:
+    properties:
+      data: {}
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
 host: localhost:7777
 info:
   contact:
@@ -11,5 +42,29 @@ info:
   termsOfService: http://swagger.io/terms/
   title: Wishlist
   version: "1.0"
-paths: {}
+paths:
+  /:
+    post:
+      consumes:
+      - '*/*'
+      description: get the status of server.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/main.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/main.Gift'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/main.ResponseHTTP'
+      summary: Creates a new gift.
+      tags:
+      - Gifts
 swagger: "2.0"
