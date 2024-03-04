@@ -22,6 +22,31 @@ definitions:
         description: 'TODO: use decimal.Decimal instead of int'
         type: integer
     type: object
+  db.Seller:
+    properties:
+      email:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      photo:
+        type: string
+    type: object
+  db.Service:
+    properties:
+      id:
+        type: string
+      location:
+        type: string
+      name:
+        type: string
+      photos:
+        type: string
+      price:
+        description: 'TODO: use decimal.Decimal instead of int'
+        type: integer
+    type: object
   server.ResponseHTTP:
     properties:
       data: {}
@@ -44,6 +69,52 @@ info:
   version: "1.0"
 paths:
   /:
+    delete:
+      consumes:
+      - '*/*'
+      description: get the status of server.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.Service'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Deletes a specified service.
+      tags:
+      - Services
+    get:
+      consumes:
+      - '*/*'
+      description: get the status of server.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.Service'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Fetches a specific service.
+      tags:
+      - Services
     post:
       consumes:
       - '*/*'
@@ -58,13 +129,36 @@ paths:
             - $ref: '#/definitions/server.ResponseHTTP'
             - properties:
                 data:
-                  $ref: '#/definitions/db.Gift'
+                  $ref: '#/definitions/db.Service'
               type: object
         "400":
           description: Bad Request
           schema:
             $ref: '#/definitions/server.ResponseHTTP'
-      summary: Creates a new gift.
+      summary: Creates a new service.
       tags:
-      - Gifts
+      - Services
+    put:
+      consumes:
+      - '*/*'
+      description: get the status of server.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.Service'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Updates an existing service.
+      tags:
+      - Services
 swagger: "2.0"

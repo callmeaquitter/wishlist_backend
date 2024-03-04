@@ -36,6 +36,20 @@ func Setup() {
 
 	gifts.Patch("/:id", updateGiftHandler)
 
+	sellers := app.Group("/sellers")
+	sellers.Post("", createSellerHandler)
+	sellers.Get("", getManySellersHandler)
+	sellers.Get("/:id", getOneSellerHandler)
+	sellers.Patch("/:id", updateSellerHandler)
+	sellers.Delete("/:id", deleteSellerHandler)
+
+	services := app.Group("/services")
+	services.Post("", createServiceHandler)
+	services.Get("", getManyServicesHandler)
+	services.Get("/:id", getOneServiceHandler)
+	services.Patch("/:id", updateServiceHandler)
+	services.Delete("/:id", deleteServiceHandler)
+
 	//
 	//request -> middleware -> handler -> response
 	supersecret := app.Group("/supersecret", authMiddleware)
