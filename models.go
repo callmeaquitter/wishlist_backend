@@ -1,5 +1,6 @@
 package main
 
+
 type Gift struct {
 	//LIFEHACK: use string id like 'gift_ajdsjanjklsnls'
 	ID string `json:"id"`

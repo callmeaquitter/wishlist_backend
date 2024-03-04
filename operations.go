@@ -1,6 +1,10 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+
+	_ "wishlist/docs"
+)
 
 func createGift(gift Gift) bool {
 	result := Database.Create(&gift)

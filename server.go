@@ -1,6 +1,11 @@
 package main
 
-import "github.com/gofiber/fiber/v2"
+import (
+	
+
+	swagger "github.com/arsmn/fiber-swagger/v2"
+	"github.com/gofiber/fiber/v2"
+)
 
 var app *fiber.App
 
@@ -8,6 +13,7 @@ func serverSetup() {
 	// Default config
 	app = fiber.New()
 
+	app.Get("/docs/*", swagger.HandlerDefault)
 	//https://docs.stripe.com/api/charges
 	//LIFEHACK: Good artist copy, great artist steal
 
@@ -40,7 +46,7 @@ func serverSetup() {
 
 	//
 	// app.Post("/register", registerHandler)
-	app.Post("/login", loginHandler)
+
 }
 
 func serverStart() {
