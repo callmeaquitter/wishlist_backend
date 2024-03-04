@@ -5,6 +5,9 @@ import (
 	"log"
 	"os"
 
+	"wishlist/db"
+	"wishlist/server"
+
 	"github.com/joho/godotenv"
 )
 
@@ -25,11 +28,11 @@ func getDsn() string {
 
 func main() {
 	//setups (must be sync)
-	databaseSetup(getDsn())
-	serverSetup()
+	db.Setup(getDsn())
+	server.Setup()
 
 	//start (must be async)
-	go serverStart()
+	go server.Start()
 
 	//wait
 	select {}
