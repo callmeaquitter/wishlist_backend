@@ -42,13 +42,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/main.ResponseHTTP"
+                                    "$ref": "#/definitions/server.ResponseHTTP"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/main.Gift"
+                                            "$ref": "#/definitions/db.Gift"
                                         }
                                     }
                                 }
@@ -58,7 +58,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/main.ResponseHTTP"
+                            "$ref": "#/definitions/server.ResponseHTTP"
                         }
                     }
                 }
@@ -66,7 +66,7 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "main.Gift": {
+        "db.Gift": {
             "type": "object",
             "properties": {
                 "comments": {
@@ -98,7 +98,7 @@ const docTemplate = `{
                 }
             }
         },
-        "main.ResponseHTTP": {
+        "server.ResponseHTTP": {
             "type": "object",
             "properties": {
                 "data": {},

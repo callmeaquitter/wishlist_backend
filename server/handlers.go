@@ -1,13 +1,28 @@
-
 package server
 
 import (
 	"wishlist/db"
+	_ "wishlist/docs"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/rs/xid"
 )
 
+type ResponseHTTP struct {
+	Success bool        `json:"success"`
+	Data    interface{} `json:"data"`
+	Message string      `json:"message"`
+}
+
+// createGift godoc
+// @Summary Creates a new gift.
+// @Description get the status of server.
+// @Tags Gifts
+// @Accept */*
+// @Produce json
+// @Success 200 {object} ResponseHTTP{data=db.Gift}
+// @Failure 400 {object} ResponseHTTP{}
+// @Router / [post]
 func createGiftHandler(c *fiber.Ctx) error {
 	var gift db.Gift
 	if err := c.BodyParser(&gift); err != nil {

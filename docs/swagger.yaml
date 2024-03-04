@@ -1,6 +1,6 @@
 basePath: /
 definitions:
-  main.Gift:
+  db.Gift:
     properties:
       comments:
         type: string
@@ -22,7 +22,7 @@ definitions:
         description: 'TODO: use decimal.Decimal instead of int'
         type: integer
     type: object
-  main.ResponseHTTP:
+  server.ResponseHTTP:
     properties:
       data: {}
       message:
@@ -55,15 +55,15 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/main.ResponseHTTP'
+            - $ref: '#/definitions/server.ResponseHTTP'
             - properties:
                 data:
-                  $ref: '#/definitions/main.Gift'
+                  $ref: '#/definitions/db.Gift'
               type: object
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/main.ResponseHTTP'
+            $ref: '#/definitions/server.ResponseHTTP'
       summary: Creates a new gift.
       tags:
       - Gifts
