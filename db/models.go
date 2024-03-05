@@ -17,20 +17,20 @@ type Gift struct {
 }
 
 type Seller struct {
-	Seller_ID	string	`json:"id"`
+	SellerID	string	`json:"id"`
 	Name		string	`json:"name"`
 	Email		string	`json:"email"`
 	Photo		string	`json:"photo"`
 }
 
 type Sellers_services struct {
-	ID		string	`json:"id"`
-	Seller_id	string	`gorm:"foreignKey:Seller_ID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
-	Service_id	string	`gorm:"foreignKey:Service_ID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
+	ID		string	`json:"id" gorm:"primaryKey"`
+	SellerID	string	`json:"seller_id" gorm:"foreignKey:Seller_ID;constraint:OnUpdate:RESTRICT,OnDelete:CASCADE;"`
+	ServiceID	string	`json:"service_id" gorm:"foreignKey:Service_ID;constraint:OnUpdate:RESTRICT,OnDelete:CASCADE;"`
 }
 
 type Service struct {
-	Service_ID	string	`json:"id"`
+	ServiceID	string	`json:"id"`
 	Name		string	`json:"name"`
 	Price		int	`json:"price"` //TODO: use decimal.Decimal instead of int
 	Location	string	`json:"location"`

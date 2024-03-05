@@ -88,7 +88,7 @@ func UpdateSeller(seller Seller) bool {
 }
 
 func DeleteSeller(id string) bool {
-	result := Database.Delete(Seller{Seller_ID: id})
+	result := Database.Delete(Seller{SellerID: id})
 	if result.Error != nil {
 		fmt.Println("Error in deleteSeller", result.Error)
 		return false
@@ -133,7 +133,7 @@ func UpdateService(service Service) bool {
 }
 
 func DeleteService(id string) bool {
-	result := Database.Delete(Service{Service_ID: id})
+	result := Database.Delete(Service{ServiceID: id})
 	if result.Error != nil {
 		fmt.Println("Error in deleteService", result.Error)
 		return false

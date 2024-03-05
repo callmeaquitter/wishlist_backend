@@ -30,4 +30,16 @@ func Setup(dsn string) {
 		fmt.Println("Couldn't Automigrate Database.", err)
 	}
 	Database = db
+
+	err = db.AutoMigrate(&Seller{})
+	if err != nil {
+		fmt.Println("Couldn't Automigrate Database.", err)
+	}
+	Database = db
+
+	err = db.AutoMigrate(&Service{})
+	if err != nil {
+		fmt.Println("Couldn't Automigrate Database.", err)
+	}
+	Database = db
 }

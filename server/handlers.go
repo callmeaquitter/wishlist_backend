@@ -115,7 +115,7 @@ func createSellerHandler(c *fiber.Ctx) error {
 		return c.SendString("Photo is required")
 	}
 
-	seller.Seller_ID = "seller_" + xid.New().String()
+	seller.SellerID = "seller_" + xid.New().String()
 
 	ok := db.CreateSeller(seller)
 	if !ok {
@@ -226,7 +226,7 @@ func createServiceHandler(c *fiber.Ctx) error {
 		return c.SendString("Photos are required")
 	}
 
-	service.Service_ID = "service_" + xid.New().String()
+	service.ServiceID = "service_" + xid.New().String()
 
 	ok := db.CreateService(service)
 	if !ok {
