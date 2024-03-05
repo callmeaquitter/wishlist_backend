@@ -4,7 +4,7 @@ import "gorm.io/gorm"
 
 type Gift struct {
 	//LIFEHACK: use string id like 'gift_ajdsjanjklsnls'
-	ID string `json:"id"`
+	ID string 		   `json:"id"`
 	// UserID      string `json:"user_id"`
 	Name        string `json:"name"`
 	Price       int    `json:"price"` //TODO: use decimal.Decimal instead of int
@@ -16,16 +16,16 @@ type Gift struct {
 }
 
 type User struct {
-	ID           int    `json:"id"`
-	Name         string `json:"name"`
-	Price        int    `json:"price"`
-	Description  string `json:"description"`
-	IsFavorite   string `json:"is_favorite"`
-	Link         string `json:"link"`
-	Birthday     string `json:"birthday"`
-	Coins        int    `json:"coins"`
+	ID           int    		`json:"id"`
+	Name         string 		`json:"name"`
+	Price        int    		`json:"price"`
+	Description  string 		`json:"description"`
+	IsFavorite   string 		`json:"is_favorite"`
+	Link         string 		`json:"link"`
+	Birthday     string 		`json:"birthday"`
+	Coins        int    		`json:"coins"`
 	gorm.Model
-	Role 		 Role   `gorm:"foreigKey:role_id"`
+	Role 		 Role   		`gorm:"foreigKey:role_id"`
 	UserWishlist []UserWishlist `gorm:"foreignKey:id"`
 }
 
@@ -42,6 +42,5 @@ type Role struct {
 	RoleID int    `json:"role_id"`
 	Name   string `json:"name"`
 	gorm.Model
-	UserID 	int `json:"user_id"`
 	
 }
