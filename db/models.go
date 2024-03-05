@@ -23,12 +23,12 @@ type Quest struct {
 type Subquest struct {
 	ID			int		`json:"id"`
 	TaskID		int		`json:"task_id"`
-	Reward		int		`json:"id"`
-	IsDone		int		`json:"id"`
+	Reward		int		`json:"reward"`
+	IsDone		int		`json:"is_done"`
 }
 
 type Tasks struct {
 	ID				int			`json:"id"`
-	Name			string		`json:"id"`
+	Name			string		`json:"name"`
 	Description		string 		`json:"description"`
 }
