@@ -30,4 +30,10 @@ func Setup(dsn string) {
 		fmt.Println("Couldn't Automigrate Database.", err)
 	}
 	Database = db
+
+	err = db.AutoMigrate(&BookedGiftlnWishlist{})
+	if err != nil {
+		fmt.Println("Couldn't Automigrate BGW Database.", err)
+	}
+
 }
