@@ -16,6 +16,6 @@ type Gift struct {
 type BookedGiftlnWishlist struct {
 	ID     int `json:"id" gorm:"primaryKey"`
 	UserID int `json:"user_id"`
-	GiftID int `json:"gift_id`
+	GiftID int `json:"gift_id"`
 	Gift     Gift   `gorm:"foreignKey:GiftID;references:ID"`
 }
