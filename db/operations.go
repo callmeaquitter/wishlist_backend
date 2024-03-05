@@ -43,9 +43,18 @@ func FindOneGift(gift Gift) bool {
 }
 
 func UpdateGift(gift Gift) bool {
-	result := Database.Model(&gift).Update("name", "hello")
+	result := Database.Create(&gift).Update("name", "hello")
 	if result.Error != nil {
 		fmt.Println("Error in updateGift", result.Error)
+		return false
+	}
+	return true
+}
+
+func CreateQuest(quest Quest) bool {
+	result := Database.Model(&quest)
+	if result.Error != nil {
+		fmt.Println("Error in createQuest", result.Error)
 		return false
 	}
 	return true

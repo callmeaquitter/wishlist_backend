@@ -1,6 +1,5 @@
 package db
 
-
 type Gift struct {
 	//LIFEHACK: use string id like 'gift_ajdsjanjklsnls'
 	ID string `json:"id"`
@@ -12,4 +11,24 @@ type Gift struct {
 	IsFavorite  bool   `json:"is_favorite"`
 	Link        string `json:"link"`
 	Comments    string `json:"comments"`
+}
+
+type Quest struct {
+	ID         int 		`json:"id"`
+	SubquestID int    	`json:"subquest_id"`
+	UserID     string   `json:"user_id"`
+	IsDone     bool   	`json:"is_done"`
+}
+
+type Subquest struct {
+	ID			int		`json:"id"`
+	TaskID		int		`json:"task_id"`
+	Reward		int		`json:"id"`
+	IsDone		int		`json:"id"`
+}
+
+type Tasks struct {
+	ID				int			`json:"id"`
+	Name			string		`json:"id"`
+	Description		string 		`json:"description"`
 }
