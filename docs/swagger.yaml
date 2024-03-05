@@ -64,7 +64,33 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/server.ResponseHTTP'
-      summary: Creates a new gift.
+      summary: gifts
       tags:
       - Gifts
+  /docs/gifts:
+    get:
+      consumes:
+      - application/json
+      description: Get all books
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/db.Gift'
+                  type: array
+              type: object
+        "503":
+          description: Service Unavailable
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Get all books
+      tags:
+      - giftss
 swagger: "2.0"

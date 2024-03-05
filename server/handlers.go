@@ -53,6 +53,15 @@ func createGiftHandler(c *fiber.Ctx) error {
 	return c.JSON(gift)
 }
 
+// createGift godoc
+// @Summary gifts
+// @Description get the status of server.
+// @Tags Gifts
+// @Accept */*
+// @Produce json
+// @Success 200 {object} ResponseHTTP{data=db.Gift}
+// @Failure 400 {object} ResponseHTTP{}
+// @Router / [post]
 func deleteGiftHandler(c *fiber.Ctx) error {
 	id := c.Params("id")
 
@@ -63,6 +72,15 @@ func deleteGiftHandler(c *fiber.Ctx) error {
 	return c.SendString("Gift deleted successfully")
 }
 
+// GetAllGifts is a function to get all books data from database
+// @Summary Get all books
+// @Description Get all books
+// @Tags giftss
+// @Accept json
+// @Produce json
+// @Success 200 {object} ResponseHTTP{data=[]db.Gift}
+// @Failure 503 {object} ResponseHTTP{}
+// @Router /docs/gifts [get]
 func getManyGiftsHandler(c *fiber.Ctx) error {
 	var gift db.Gift
 	ok := db.FindManyGift(gift)

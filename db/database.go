@@ -29,5 +29,15 @@ func Setup(dsn string) {
 	if err != nil {
 		fmt.Println("Couldn't Automigrate Database.", err)
 	}
+
+	err = db.AutoMigrate(&User{})
+	if err != nil {
+		fmt.Println("Couldn't Automigrate Database.", err)
+	}
+
+	err = db.AutoMigrate(&Role{})
+	if err != nil {
+		fmt.Println("Couldn't Automigrate Database.", err)
+	}
 	Database = db
 }

@@ -35,7 +35,7 @@ const docTemplate = `{
                 "tags": [
                     "Gifts"
                 ],
-                "summary": "Creates a new gift.",
+                "summary": "gifts",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -57,6 +57,50 @@ const docTemplate = `{
                     },
                     "400": {
                         "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseHTTP"
+                        }
+                    }
+                }
+            }
+        },
+        "/docs/gifts": {
+            "get": {
+                "description": "Get all books",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "giftss"
+                ],
+                "summary": "Get all books",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/server.ResponseHTTP"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/db.Gift"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "503": {
+                        "description": "Service Unavailable",
                         "schema": {
                             "$ref": "#/definitions/server.ResponseHTTP"
                         }
