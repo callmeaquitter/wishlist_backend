@@ -43,6 +43,12 @@ func Setup() {
 	sellers.Patch("/:id", updateSellerHandler)
 	sellers.Delete("/:id", deleteSellerHandler)
 
+	sellersServices := app.Group("/sellersServices")
+	sellersServices.Post("", createSellersServicesHandler)
+	sellersServices.Get("", getManySellersServicesHandler)
+	sellersServices.Get("/:id", getOneSellersServicesHandler)
+	sellersServices.Delete("/:id", deleteSellersServicesHandler)
+
 	services := app.Group("/services")
 	services.Post("", createServiceHandler)
 	services.Get("", getManyServicesHandler)

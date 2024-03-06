@@ -88,7 +88,7 @@ func UpdateSeller(seller Seller) bool {
 }
 
 func DeleteSeller(id string) bool {
-	result := Database.Delete(Seller{SellerID: id})
+	result := Database.Delete(Seller{ID: id})
 	if result.Error != nil {
 		fmt.Println("Error in deleteSeller", result.Error)
 		return false
@@ -99,7 +99,7 @@ func DeleteSeller(id string) bool {
 func CreateService(service Service) bool {
 	result := Database.Create(&service)
 	if result.Error != nil {
-		fmt.Println("Error in createService", result.Error)
+		fmt.Println("Error in createService")
 		return false
 	}
 	return true
@@ -125,6 +125,7 @@ func FindOneService(service Service) bool {
 
 func UpdateService(service Service) bool {
 	result := Database.Model(&service).Update("name", "hello")
+	// result := Database.Model(&service).Updates(map[string]interface{}{})	// TODO: Откуда взять данные на обнову?
 	if result.Error != nil {
 		fmt.Println("Error in updateService", result.Error)
 		return false
@@ -133,9 +134,46 @@ func UpdateService(service Service) bool {
 }
 
 func DeleteService(id string) bool {
-	result := Database.Delete(Service{ServiceID: id})
+	result := Database.Delete(Service{ID: id})
 	if result.Error != nil {
 		fmt.Println("Error in deleteService", result.Error)
+		return false
+	}
+	return true
+}
+
+func CreateSellersServices(sellersServices Sellers_services) bool {
+	result := Database.Create(&sellersServices)
+	if result.Error != nil {
+		fmt.Println("Error in CreateSellersServices")
+		return false
+	}
+	return true
+}
+
+func FindManySellersServices(sellerId string) ([]Sellers_services, bool) {
+	var sellersServices []Sellers_services
+	result := Database.Find(&sellersServices, "seller_id = ?", sellerId)
+	if result.Error != nil {
+		fmt.Println("Error in findManySellersServices", result.Error)
+		return sellersServices, false
+	}
+	return sellersServices, true
+}
+
+func FindOneSellersServices(sellersServices Sellers_services) (Sellers_services, bool) {
+	result := Database.Take(&sellersServices)
+	if result.Error != nil {
+		fmt.Println("Error in findOneSellersServices", result.Error)
+		return sellersServices, false
+	}
+	return sellersServices, true
+}
+
+func DeleteSellersServices(serviceId string) bool {	// Связь удаляется по услуге, т.к. оная удаляется чаще
+	result := Database.Delete(Sellers_services{ServiceID: serviceId})
+	if result.Error != nil {
+		fmt.Println("Error in deleteSellersServices", result.Error)
 		return false
 	}
 	return true
