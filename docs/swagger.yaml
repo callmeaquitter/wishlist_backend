@@ -9,9 +9,8 @@ definitions:
       id:
         description: 'LIFEHACK: use string id like ''gift_ajdsjanjklsnls'''
         type: string
-      is_favorite:
-        type: boolean
       link:
+        description: IsFavorite  bool   `json:"is_favorite"`
         type: string
       name:
         description: UserID      string `json:"user_id"`
@@ -44,6 +43,56 @@ info:
   version: "1.0"
 paths:
   /:
+    post:
+      consumes:
+      - '*/*'
+      description: get the status of server.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.Gift'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: gifts
+      tags:
+      - Gifts
+  /docs/gifts:
+    get:
+      consumes:
+      - application/json
+      description: Get all books
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/db.Gift'
+                  type: array
+              type: object
+        "503":
+          description: Service Unavailable
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Get all books
+      tags:
+      - giftss
+  /gifts:
     post:
       consumes:
       - '*/*'

@@ -22,7 +22,7 @@ type ResponseHTTP struct {
 // @Produce json
 // @Success 200 {object} ResponseHTTP{data=db.Gift}
 // @Failure 400 {object} ResponseHTTP{}
-// @Router / [post]
+// @Router /gifts [post]
 func createGiftHandler(c *fiber.Ctx) error {
 	var gift db.Gift
 	if err := c.BodyParser(&gift); err != nil {
@@ -52,7 +52,15 @@ func createGiftHandler(c *fiber.Ctx) error {
 
 	return c.JSON(gift)
 }
-
+// createGift godoc
+// @Summary gifts
+// @Description get the status of server.
+// @Tags Gifts
+// @Accept */*
+// @Produce json
+// @Success 200 {object} ResponseHTTP{data=db.Gift}
+// @Failure 400 {object} ResponseHTTP{}
+// @Router / [post]
 func deleteGiftHandler(c *fiber.Ctx) error {
 	id := c.Params("id")
 
@@ -62,7 +70,15 @@ func deleteGiftHandler(c *fiber.Ctx) error {
 	}
 	return c.SendString("Gift deleted successfully")
 }
-
+// GetAllGifts is a function to get all books data from database
+// @Summary Get all books
+// @Description Get all books
+// @Tags giftss
+// @Accept json
+// @Produce json
+// @Success 200 {object} ResponseHTTP{data=[]db.Gift}
+// @Failure 503 {object} ResponseHTTP{}
+// @Router /docs/gifts [get]
 func getManyGiftsHandler(c *fiber.Ctx) error {
 	var gift db.Gift
 	ok := db.FindManyGift(gift)
@@ -88,6 +104,56 @@ func updateGiftHandler(c *fiber.Ctx) error {
 		return c.SendString("Error in updateGift operation")
 	}
 	return c.SendString("Gift updated Succesfully")
+}
+// createGift godoc
+// @Summary Creates a new gift.
+// @Description get the status of server.
+// @Tags Gifts
+// @Accept */*
+// @Produce json
+// @Success 200 {object} ResponseHTTP{data=db.Gift}
+// @Failure 400 {object} ResponseHTTP{}
+// @Router / [post]
+func createBookedGiftInWishlist(c *fiber.Ctx) error {
+	var bookedGiftInWishlist db.BookedGiftInWishlist
+	if err := c.BodyParser(&bookedGiftInWishlist); err != nil {
+		return c.SendString(err.Error())
+	}
+	ok := db.CreateBookedGift(bookedGiftInWishlist)
+	if !ok {
+		return c.SendString("Error in CreateBookedGift operation")
+	}
+	return c.SendString("BookedGift is created")
+}
+// createGift godoc
+// @Summary gifts
+// @Description get the status of server.
+// @Tags Gifts
+// @Accept */*
+// @Produce json
+// @Success 200 {object} ResponseHTTP{data=db.Gift}
+// @Failure 400 {object} ResponseHTTP{}
+// @Router / [post]
+func deleteBookedGiftInWishlist(c *fiber.Ctx) error {
+	return nil
+
+}
+// GetAllGifts is a function to get all books data from database
+// @Summary Get all books
+// @Description Get all books
+// @Tags giftss
+// @Accept json
+// @Produce json
+// @Success 200 {object} ResponseHTTP{data=[]db.Gift}
+// @Failure 503 {object} ResponseHTTP{}
+// @Router /docs/gifts [get]
+func findUserBookedGifts(c *fiber.Ctx) error {
+	userId := c.Params("user_id")
+	gifts, ok := db.FindManyUsersGift(userId)
+	if !ok {
+		return c.SendString("Error in findUserBookedGifts operation")
+	}
+	return c.JSON(gifts)
 }
 
 func superSecretHandler(c *fiber.Ctx) error {

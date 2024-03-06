@@ -50,3 +50,32 @@ func UpdateGift(gift Gift) bool {
 	}
 	return true
 }
+
+func CreateBookedGift(BookedGiftInWishlist BookedGiftInWishlist) bool {
+	result := Database.Create(&BookedGiftInWishlist)
+	if result.Error != nil {
+		fmt.Println("Error in createBookedGiftInWishlist", result.Error)
+		return false
+	}
+	return true
+}
+
+func DeleteBookedGift(UserID, GiftID string) bool {
+	result := Database.Delete(BookedGiftInWishlist{UserID: UserID, GiftID: GiftID})
+	if result.Error != nil {
+		fmt.Println("Error in deleteBookedGift", result.Error)
+		return false
+	}
+	return true
+
+}
+
+func FindManyUsersGift(UserID string) ([]BookedGiftInWishlist, bool) {
+	var bookedGiftInWishlist []BookedGiftInWishlist 
+	result := Database.Find(&bookedGiftInWishlist, "user_id = ?", UserID)
+	if result.Error != nil {
+		fmt.Println("Error in deleteBookedGift", result.Error)
+		return bookedGiftInWishlist, false
+	}
+	return bookedGiftInWishlist, true
+}

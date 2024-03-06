@@ -2,7 +2,7 @@ package db
 
 type Gift struct {
 	//LIFEHACK: use string id like 'gift_ajdsjanjklsnls'
-	ID string `json:"id" gorm:"primaryKey"`
+	ID string `json:"id"`
 	// UserID      string `json:"user_id"`
 	Name        string `json:"name"`
 	Price       int    `json:"price"` //TODO: use decimal.Decimal instead of int
@@ -13,9 +13,9 @@ type Gift struct {
 	Comments string `json:"comments"`
 }
 
-type BookedGiftlnWishlist struct {
-	ID     int `json:"id" gorm:"primaryKey"`
-	UserID int `json:"user_id"`
-	GiftID int `json:"gift_id"`
-	Gift     Gift   `gorm:"foreignKey:GiftID;references:ID"`
+type BookedGiftInWishlist struct {
+	// ID     string `json:"id"`
+	UserID string `json:"user_id" gorm:"primaryKey"`
+	GiftID string `json:"gift_id" gorm:"primaryKey"`
+	// Gift     Gift   `gorm:"foreignKey:GiftID;references:ID"`
 }
