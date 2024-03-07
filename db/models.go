@@ -24,7 +24,7 @@ type Seller struct {
 	Photo		string	`json:"photo"`
 }
 
-type Sellers_services struct {
+type SellerToService struct {
 	SellerID	string	`json:"seller_id" gorm:"primaryKey"`
 	ServiceID	string	`json:"service_id" gorm:"primaryKey"`
 }

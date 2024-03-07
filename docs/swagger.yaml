@@ -33,7 +33,7 @@ definitions:
       photo:
         type: string
     type: object
-  db.Sellers_services:
+  db.SellerToService:
     properties:
       seller_id:
         type: string
@@ -78,7 +78,7 @@ paths:
   /:
     post:
       consumes:
-      - '*/*'
+      - application/json
       produces:
       - application/json
       responses:
@@ -98,10 +98,149 @@ paths:
       summary: Creates a new gift.
       tags:
       - Gifts
-  /sellers:
+  /sellerToService:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.SellerToService'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Fetches all Services that belong to the speicfied Seller.
+      tags:
+      - SellerToService
     post:
       consumes:
-      - '*/*'
+      - application/json
+      parameters:
+      - description: Create Selllers-Services
+        in: body
+        name: SellerToService
+        required: true
+        schema:
+          $ref: '#/definitions/db.SellerToService'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.SellerToService'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Creates a new connection of Seller-Service.
+      tags:
+      - SellerToService
+  /sellerToService/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: Delete Selllers-Services
+        in: body
+        name: SellerToService
+        required: true
+        schema:
+          $ref: '#/definitions/db.SellerToService'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.SellerToService'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Deletes a specified Seller-Service connection.
+      tags:
+      - SellerToService
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Sellers-Services ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.SellerToService'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Fetches a specific Seller-Service connection.
+      tags:
+      - SellerToService
+  /sellers:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.Seller'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Fetches all sellers.
+      tags:
+      - Sellers
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Create Seller
+        in: body
+        name: Seller
+        required: true
+        schema:
+          $ref: '#/definitions/db.Seller'
       produces:
       - application/json
       responses:
@@ -124,7 +263,13 @@ paths:
   /sellers/{id}:
     delete:
       consumes:
-      - '*/*'
+      - application/json
+      parameters:
+      - description: Delete Seller
+        in: path
+        name: id
+        required: true
+        type: integer
       produces:
       - application/json
       responses:
@@ -146,7 +291,13 @@ paths:
       - Sellers
     get:
       consumes:
-      - '*/*'
+      - application/json
+      parameters:
+      - description: Seller ID
+        in: path
+        name: id
+        required: true
+        type: integer
       produces:
       - application/json
       responses:
@@ -168,7 +319,14 @@ paths:
       - Sellers
     put:
       consumes:
-      - '*/*'
+      - application/json
+      parameters:
+      - description: Update Seller
+        in: body
+        name: Service
+        required: true
+        schema:
+          $ref: '#/definitions/db.Service'
       produces:
       - application/json
       responses:
@@ -188,55 +346,10 @@ paths:
       summary: Updates an existing seller.
       tags:
       - Sellers
-  /sellersServices:
-    post:
-      consumes:
-      - '*/*'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            allOf:
-            - $ref: '#/definitions/server.ResponseHTTP'
-            - properties:
-                data:
-                  $ref: '#/definitions/db.Sellers_services'
-              type: object
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/server.ResponseHTTP'
-      summary: Creates a new connection of Seller-Service.
-      tags:
-      - SellersServices
-  /sellersServices/{id}:
-    delete:
-      consumes:
-      - '*/*'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            allOf:
-            - $ref: '#/definitions/server.ResponseHTTP'
-            - properties:
-                data:
-                  $ref: '#/definitions/db.Sellers_services'
-              type: object
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/server.ResponseHTTP'
-      summary: Deletes a specified Seller-Service connection.
-      tags:
-      - SellersServices
+  /services:
     get:
       consumes:
-      - '*/*'
+      - application/json
       produces:
       - application/json
       responses:
@@ -247,19 +360,25 @@ paths:
             - $ref: '#/definitions/server.ResponseHTTP'
             - properties:
                 data:
-                  $ref: '#/definitions/db.Sellers_services'
+                  $ref: '#/definitions/db.Service'
               type: object
         "400":
           description: Bad Request
           schema:
             $ref: '#/definitions/server.ResponseHTTP'
-      summary: Fetches a specific Seller-Service connection.
+      summary: Fetches all services.
       tags:
-      - SellersServices
-  /services:
+      - Services
     post:
       consumes:
-      - '*/*'
+      - application/json
+      parameters:
+      - description: Create Service
+        in: body
+        name: Service
+        required: true
+        schema:
+          $ref: '#/definitions/db.Service'
       produces:
       - application/json
       responses:
@@ -282,7 +401,13 @@ paths:
   /services/{id}:
     delete:
       consumes:
-      - '*/*'
+      - application/json
+      parameters:
+      - description: Delete Service
+        in: path
+        name: id
+        required: true
+        type: integer
       produces:
       - application/json
       responses:
@@ -304,7 +429,13 @@ paths:
       - Services
     get:
       consumes:
-      - '*/*'
+      - application/json
+      parameters:
+      - description: Service ID
+        in: path
+        name: id
+        required: true
+        type: integer
       produces:
       - application/json
       responses:
@@ -326,7 +457,14 @@ paths:
       - Services
     put:
       consumes:
-      - '*/*'
+      - application/json
+      parameters:
+      - description: Update Service
+        in: body
+        name: Service
+        required: true
+        schema:
+          $ref: '#/definitions/db.Service'
       produces:
       - application/json
       responses:
