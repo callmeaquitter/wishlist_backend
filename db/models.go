@@ -13,3 +13,20 @@ type Gift struct {
 	Link        string `json:"link"`
 	Comments    string `json:"comments"`
 }
+
+type Selection struct {
+	ID          int    `json:"id"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
+	UserID       int   `json:"user_id"`
+}
+
+type GiftToSelection struct {
+	SelectionID  int   `json:"selection_id" gorm:"primaryKey"`
+	GiftID       int   `json:"gift_id" gorm:"primaryKey"`
+}
+
+type SelectionCategory struct {
+	ID   int	       `json:"id"`
+	Name string        `json:"name"`
+}
