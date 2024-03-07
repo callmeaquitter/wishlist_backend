@@ -18,11 +18,12 @@ type ResponseHTTP struct {
 // @Summary Creates a new gift.
 // @Description get the status of server.
 // @Tags Gifts
-// @Accept */*
+// @Accept  json
 // @Produce json
+// @Param Gift body db.Gift true "Create Gift"
 // @Success 200 {object} ResponseHTTP{data=db.Gift}
 // @Failure 400 {object} ResponseHTTP{}
-// @Router / [post]
+// @Router /docs/gifts [post]
 func createGiftHandler(c *fiber.Ctx) error {
 	var gift db.Gift
 	if err := c.BodyParser(&gift); err != nil {
@@ -53,15 +54,6 @@ func createGiftHandler(c *fiber.Ctx) error {
 	return c.JSON(gift)
 }
 
-// createGift godoc
-// @Summary gifts
-// @Description get the status of server.
-// @Tags Gifts
-// @Accept */*
-// @Produce json
-// @Success 200 {object} ResponseHTTP{data=db.Gift}
-// @Failure 400 {object} ResponseHTTP{}
-// @Router / [post]
 func deleteGiftHandler(c *fiber.Ctx) error {
 	id := c.Params("id")
 

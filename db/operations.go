@@ -50,3 +50,30 @@ func UpdateGift(gift Gift) bool {
 	}
 	return true
 }
+
+func CreateWishlist(wishlist UserWishlist) bool {
+	result := Database.Create(&wishlist)
+	if result.Error != nil {
+		fmt.Println("Error in CreateWishlist", result.Error)
+		return false
+	}
+	return true 
+}
+
+func FindManyWishlists(wishlists UserWishlist) bool{
+	result := Database.Find(&wishlists)
+	if result != nil{
+		fmt.Println("Error in FindManyWishlists", result.Error)
+		return false  
+	}
+	return true 
+}
+
+func FindWishlistByName(wishlist UserWishlist) bool {
+	result := Database.Take(&wishlist)
+	if result != nil{
+		fmt.Println("Error in FindWishlistByName", result.Error)
+		return false
+	}
+	return true 
+}
