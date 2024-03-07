@@ -39,9 +39,19 @@ func Setup() {
 	bookedGift := app.Group("/booked_gifts")
 	bookedGift.Post("", createBookedGiftInWishlist)
 
+	// bookedGift.Delete("/:user_id", deleteGiftHandler)
+
 
 	//http://localhost:7777/booked_gifts/:user_id
 	bookedGift.Get("/:user_id", findUserBookedGifts)
+
+
+	giftCategory := app.Group("/gift_category")
+	giftCategory.Post("", createGiftCategory)
+
+	giftCategory.Delete("/:id", deleteGiftCategory)
+
+	
 	//
 	//request -> middleware -> handler -> response
 	supersecret := app.Group("/supersecret", authMiddleware)

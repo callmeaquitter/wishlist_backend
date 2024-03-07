@@ -156,6 +156,35 @@ func findUserBookedGifts(c *fiber.Ctx) error {
 	return c.JSON(gifts)
 }
 
+
+func createGiftCategory(c *fiber.Ctx) error {
+	var giftCategory db.GiftCategory
+	if err := c.BodyParser(&giftCategory); err != nil {
+		return c.SendString(err.Error())
+	}
+	if giftCategory.Name == "" {
+		return c.SendString("CategoryName is required")
+	}
+	giftCategory.ID = "category_" + xid.New().String()
+
+	ok := db.CreateGiftCategory(giftCategory)
+	if !ok {
+		return c.SendString("Error in createGiftCategory operation")
+	}
+	return c.JSON(giftCategory)
+}
+
+func deleteGiftCategory(c *fiber.Ctx) error {
+	id := c.Params("id")
+
+	ok := db.DeleteGiftCategory(id)
+	if !ok {
+		return c.SendString("Error in deleteGiftCategory operation")
+	}
+	return c.SendString("GiftCategory deleted successfully")
+}
+
+
 func superSecretHandler(c *fiber.Ctx) error {
 	user := c.Locals("user").(string)
 	return c.SendString("This is a super secret route. Hi " + user + "!")

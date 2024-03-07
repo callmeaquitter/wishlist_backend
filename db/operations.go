@@ -79,3 +79,21 @@ func FindManyUsersGift(UserID string) ([]BookedGiftInWishlist, bool) {
 	}
 	return bookedGiftInWishlist, true
 }
+
+func CreateGiftCategory(GiftCategory GiftCategory) bool {
+	result := Database.Create(&GiftCategory)
+	if result.Error != nil {
+		fmt.Println("Error in CreateGiftCategory", result.Error)
+		return false
+	}
+	return true
+}
+
+func DeleteGiftCategory(id string) bool {
+	result := Database.Delete(GiftCategory{ID: id})
+	if result.Error != nil {
+		fmt.Println("Error in deleteGiftCategory", result.Error)
+		return false
+	}
+	return true
+}
