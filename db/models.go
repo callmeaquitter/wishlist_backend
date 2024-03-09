@@ -27,7 +27,11 @@ type User struct {
 type UserWishlist struct {
 	Name   string `json:"name"`
 	UserID int    `json:"user_id" gorm:"primaryKey"`
-	Gifts []Gift  `json:"gifts" gorm:"foreignKey:id"`
+}
+
+type Wishes struct {
+	GiftID	string `json:"gift_id" gorm:"primaryKey"`
+	WishlistID string `json:"wishlist_id" gorm:"primaryKey"`
 }
 
 type Role struct {

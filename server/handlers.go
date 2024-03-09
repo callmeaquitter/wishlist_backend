@@ -54,6 +54,16 @@ func createGiftHandler(c *fiber.Ctx) error {
 	return c.JSON(gift)
 }
 
+// deleteGift godoc
+// @Summary Creates a new gift.
+// @Description get the status of server.
+// @Tags Gifts
+// @Accept  json
+// @Produce json
+// @Param Gift body db.Gift true "Create Gift"
+// @Success 200 {object} ResponseHTTP{data=db.Gift}
+// @Failure 400 {object} ResponseHTTP{}
+// @Router /docs/gifts/{id} [delete]
 func deleteGiftHandler(c *fiber.Ctx) error {
 	id := c.Params("id")
 
@@ -67,7 +77,7 @@ func deleteGiftHandler(c *fiber.Ctx) error {
 // GetAllGifts is a function to get all books data from database
 // @Summary Get all books
 // @Description Get all books
-// @Tags giftss
+// @Tags Gifts
 // @Accept json
 // @Produce json
 // @Success 200 {object} ResponseHTTP{data=[]db.Gift}
@@ -91,6 +101,17 @@ func getOneGiftHandler(c *fiber.Ctx) error {
 	return c.SendString("Gift Found Succesfully")
 }
 
+// Update Gift godoc
+// @Summary Creates a new gift.
+// @Description get the status of server.
+// @Tags 	Gifts
+// @Accept  json
+// @Produce json
+// @Param Gift body db.Gift true "Create Gift"
+// @Success 200 {object} ResponseHTTP{data=db.Gift}
+// @Failure 400 {object} ResponseHTTP{}
+// @Failure 500 {object} ResponseHTTP{}
+// @Router /docs/gifts/{id} [patch]
 func updateGiftHandler(c *fiber.Ctx) error {
 	var gift db.Gift
 	ok := db.UpdateGift(gift)
@@ -121,4 +142,43 @@ func loginHandler(c *fiber.Ctx) error {
 	}
 
 	return c.JSON(AuthResponse{Session: session})
+}
+
+func CreateWish(c *fiber.Ctx) error {
+	var wish db.Wishes
+	ok := db.CreateWish(wish)
+	if !ok {
+		return c.SendString("Error in Create operation")
+	}
+	return c.SendString("Create Wish succesfully")
+}
+
+func GetManyWishes(c *fiber.Ctx) error {
+	var wish db.Wishes
+	ok := db.GetManyWishes(wish)
+	if !ok {
+		return c.SendString("Error in GetManyWishes operation")
+	}
+	return c.SendString("Get wishes succesfully")
+
+}
+
+func GetOneWish(c *fiber.Ctx) error {
+	var wish db.Wishes
+	ok := db.GetOneWish(wish)
+	if !ok {
+		return c.SendString("Error in GetOneWish operation")
+	}
+	return c.SendString("Get one Wish succesfully")
+
+}
+
+func DeleteWish(c *fiber.Ctx) error {
+	giftID := c.Params("gift_id")
+	wishlistID := c.Params("wishlist_id")
+	ok := db.DeleteWish(giftID, wishlistID)
+	if !ok {
+		return c.SendString("Error in Create operation")
+	}
+	return c.SendString("Create Wish succesfully")
 }

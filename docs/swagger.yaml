@@ -68,7 +68,7 @@ paths:
             $ref: '#/definitions/server.ResponseHTTP'
       summary: Get all books
       tags:
-      - giftss
+      - Gifts
     post:
       consumes:
       - application/json
@@ -94,6 +94,71 @@ paths:
               type: object
         "400":
           description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Creates a new gift.
+      tags:
+      - Gifts
+  /docs/gifts/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: get the status of server.
+      parameters:
+      - description: Create Gift
+        in: body
+        name: Gift
+        required: true
+        schema:
+          $ref: '#/definitions/db.Gift'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.Gift'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Creates a new gift.
+      tags:
+      - Gifts
+    patch:
+      consumes:
+      - application/json
+      description: get the status of server.
+      parameters:
+      - description: Create Gift
+        in: body
+        name: Gift
+        required: true
+        schema:
+          $ref: '#/definitions/db.Gift'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.Gift'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+        "500":
+          description: Internal Server Error
           schema:
             $ref: '#/definitions/server.ResponseHTTP'
       summary: Creates a new gift.

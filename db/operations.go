@@ -77,3 +77,39 @@ func FindWishlistByName(wishlist UserWishlist) bool {
 	}
 	return true 
 }
+
+func CreateWish(wishes Wishes) bool {
+	result := Database.Create(&wishes)
+	if result != nil{
+		fmt.Println("Error in CreateWish", result.Error)
+	}
+	return true 
+}
+
+func GetManyWishes(wishes Wishes) bool {
+	result := Database.Find(&wishes)
+	if result != nil{
+		fmt.Println("Error in GetManyWishes")
+		return false
+	}
+	return true
+}
+
+func GetOneWish(wish Wishes) bool { 
+	result := Database.Take(&wish)
+	if result != nil{
+		fmt.Println("Error in GetOneWish")
+		return false
+	}
+	return true
+}
+
+func DeleteWish(giftID, wishlistID string) bool {
+	result := Database.Delete(Wishes{GiftID: giftID, WishlistID: wishlistID})
+	if result != nil {
+		fmt.Println("Error in DeleteWish")
+		return false
+	}
+	return true
+}
+ 
