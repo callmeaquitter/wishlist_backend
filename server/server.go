@@ -1,10 +1,10 @@
 package server
 
 import (
-	
 
 	swagger "github.com/arsmn/fiber-swagger/v2"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 )
 
 var app *fiber.App
@@ -12,6 +12,12 @@ var app *fiber.App
 func Setup() {
 	// Default config
 	app = fiber.New()
+
+	app.Use(cors.New())
+	app.Use(cors.New(cors.Config{
+	    AllowOrigins: "*",
+	    AllowHeaders: "Origin, Content-Type, Accept",
+	}))
 
 	app.Get("/docs/*", swagger.HandlerDefault)
 	//https://docs.stripe.com/api/charges
@@ -43,7 +49,7 @@ func Setup() {
 	sellers.Patch("/:id", updateSellerHandler)
 	sellers.Delete("/:id", deleteSellerHandler)
 
-	sellersServices := app.Group("/sellersServices")
+	sellersServices := app.Group("/sellerToService")
 	sellersServices.Post("", createSellerToServiceHandler)
 	sellersServices.Get("", getManySellerToServiceHandler)
 	sellersServices.Get("/:id", getOneSellerToServiceHandler)

@@ -14,6 +14,7 @@ type ResponseHTTP struct {
 	Message string      `json:"message"`
 }
 
+// TODO: Change raw data input into formData
 // createGift godoc
 // @Summary Creates a new gift.
 // @Tags Gifts
@@ -129,7 +130,7 @@ func createSellerHandler(c *fiber.Ctx) error {
 // @Tags Sellers
 // @Accept json
 // @Produce json
-// @Param id path int true "Delete Seller"
+// @Param id path string true "Delete Seller"
 // @Success 200 {object} ResponseHTTP{data=db.Seller}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /sellers/{id} [delete]
@@ -152,12 +153,11 @@ func deleteSellerHandler(c *fiber.Ctx) error {
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /sellers [get]
 func getManySellersHandler(c *fiber.Ctx) error {
-	var seller db.Seller
-	ok := db.FindManySeller(seller)
+	result, ok := db.FindManySeller()
 	if !ok {
 		return c.SendString("Error in findManySellers operation")
 	}
-	return c.SendString("Sellers Found Succesfully")
+	return c.JSON(result)
 }
 
 // getOneSeller godoc
@@ -165,17 +165,17 @@ func getManySellersHandler(c *fiber.Ctx) error {
 // @Tags Sellers
 // @Accept json
 // @Produce json
-// @Param id path int true "Seller ID"
+// @Param id path string true "Seller ID"
 // @Success 200 {object} ResponseHTTP{data=db.Seller}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /sellers/{id} [get]
 func getOneSellerHandler(c *fiber.Ctx) error {
-	var seller db.Seller
-	ok := db.FindOneSeller(seller)
+	sellerId := c.Params("id")
+	result, ok := db.FindOneSeller(sellerId)
 	if !ok {
 		return c.SendString("Error in findOneSeller operation")
 	}
-	return c.SendString("Seller Found Succesfully")
+	return c.JSON(result)
 }
 
 // updateSeller godoc
@@ -183,12 +183,15 @@ func getOneSellerHandler(c *fiber.Ctx) error {
 // @Tags Sellers
 // @Accept json
 // @Produce json
-// @Param Service body db.Service true "Update Seller"
+// @Param Seller body db.Seller true "Update Seller"
 // @Success 200 {object} ResponseHTTP{data=db.Seller}
 // @Failure 400 {object} ResponseHTTP{}
-// @Router /sellers/{id} [put]
+// @Router /sellers/{id} [patch]
 func updateSellerHandler(c *fiber.Ctx) error {
 	var seller db.Seller
+	if err := c.BodyParser(&seller); err != nil {
+		return c.SendString(err.Error())
+	}
 	ok := db.UpdateSeller(seller)
 	if !ok {
 		return c.SendString("Error in updateSeller operation")
@@ -247,12 +250,11 @@ func createServiceHandler(c *fiber.Ctx) error {
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /services [get]
 func getManyServicesHandler(c *fiber.Ctx) error {
-	var service db.Service
-	ok := db.FindManyService(service)
+	result, ok := db.FindManyService()
 	if !ok {
 		return c.SendString("Error in findManyServices operation")
 	}
-	return c.SendString("Services Found Succesfully")
+	return c.JSON(result)
 }
 
 // getOneService godoc
@@ -260,17 +262,17 @@ func getManyServicesHandler(c *fiber.Ctx) error {
 // @Tags Services
 // @Accept json
 // @Produce json
-// @Param id path int true "Service ID"
+// @Param id path string true "Service ID"
 // @Success 200 {object} ResponseHTTP{data=db.Service}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /services/{id} [get]
 func getOneServiceHandler(c *fiber.Ctx) error {
-	var service db.Service
-	ok := db.FindOneService(service)
+	serviceId := c.Params("id")
+	result, ok := db.FindOneService(serviceId)
 	if !ok {
 		return c.SendString("Error in findOneService operation")
 	}
-	return c.SendString("Service Found Succesfully")
+	return c.JSON(result)
 }
 
 // updateService godoc
@@ -281,8 +283,8 @@ func getOneServiceHandler(c *fiber.Ctx) error {
 // @Param Service body db.Service true "Update Service"
 // @Success 200 {object} ResponseHTTP{data=db.Service}
 // @Failure 400 {object} ResponseHTTP{}
-// @Router /services/{id} [put]
-func updateServiceHandler(c *fiber.Ctx) error {		//TODO: Где вообще прописать тело запроса в сваггере?
+// @Router /services/{id} [patch]
+func updateServiceHandler(c *fiber.Ctx) error {
 	var service db.Service
 	if err := c.BodyParser(&service); err != nil {
 		return c.SendString(err.Error())
@@ -300,7 +302,7 @@ func updateServiceHandler(c *fiber.Ctx) error {		//TODO: Где вообще п�
 // @Tags Services
 // @Accept json
 // @Produce json
-// @Param id path int true "Delete Service"
+// @Param id path string true "Delete Service"
 // @Success 200 {object} ResponseHTTP{data=db.Service}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /services/{id} [delete]
@@ -345,7 +347,7 @@ func createSellerToServiceHandler(c *fiber.Ctx) error {
 }
 
 // getManySellerToService godoc
-// @Summary Fetches all Services that belong to the speicfied Seller.
+// @Summary Fetches all Seller-Service connections.
 // @Tags SellerToService
 // @Accept json
 // @Produce json
@@ -353,8 +355,7 @@ func createSellerToServiceHandler(c *fiber.Ctx) error {
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /sellerToService [get]
 func getManySellerToServiceHandler(c *fiber.Ctx) error {
-	sellerId := c.Params("seller_id")
-	result, ok := db.FindManySellerToService(sellerId)
+	result, ok := db.FindManySellerToService()
 	if !ok {
 		return c.SendString("Error in findManySellerToService operation")
 	}
@@ -362,17 +363,17 @@ func getManySellerToServiceHandler(c *fiber.Ctx) error {
 }
 
 // getOneSellerToService godoc
-// @Summary Fetches a specific Seller-Service connection.
+// @Summary Fetches all Services that belong to the speicfied Seller.
 // @Tags SellerToService
 // @Accept json
 // @Produce json
-// @Param id path int true "Sellers-Services ID"
+// @Param id path string true "Seller ID"
 // @Success 200 {object} ResponseHTTP{data=db.SellerToService}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /sellerToService/{id} [get]
 func getOneSellerToServiceHandler(c *fiber.Ctx) error {
-	var sellersService db.SellerToService
-	result, ok := db.FindOneSellerToService(sellersService)
+	sellerId := c.Params("seller_id")
+	result, ok := db.FindOneSellerToService(sellerId)
 	if !ok {
 		return c.SendString("Error in findOneSellersService operation")
 	}
@@ -384,7 +385,7 @@ func getOneSellerToServiceHandler(c *fiber.Ctx) error {
 // @Tags SellerToService
 // @Accept json
 // @Produce json
-// @Param SellerToService body db.SellerToService true "Delete Selllers-Services"
+// @Param service_id path string true "Delete Sellers-Services"
 // @Success 200 {object} ResponseHTTP{data=db.SellerToService}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /sellerToService/{id} [delete]

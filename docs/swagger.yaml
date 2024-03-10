@@ -118,7 +118,7 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/server.ResponseHTTP'
-      summary: Fetches all Services that belong to the speicfied Seller.
+      summary: Fetches all Seller-Service connections.
       tags:
       - SellerToService
     post:
@@ -155,12 +155,11 @@ paths:
       consumes:
       - application/json
       parameters:
-      - description: Delete Selllers-Services
-        in: body
-        name: SellerToService
+      - description: Delete Sellers-Services
+        in: path
+        name: service_id
         required: true
-        schema:
-          $ref: '#/definitions/db.SellerToService'
+        type: string
       produces:
       - application/json
       responses:
@@ -184,11 +183,11 @@ paths:
       consumes:
       - application/json
       parameters:
-      - description: Sellers-Services ID
+      - description: Seller ID
         in: path
         name: id
         required: true
-        type: integer
+        type: string
       produces:
       - application/json
       responses:
@@ -205,7 +204,7 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/server.ResponseHTTP'
-      summary: Fetches a specific Seller-Service connection.
+      summary: Fetches all Services that belong to the speicfied Seller.
       tags:
       - SellerToService
   /sellers:
@@ -269,7 +268,7 @@ paths:
         in: path
         name: id
         required: true
-        type: integer
+        type: string
       produces:
       - application/json
       responses:
@@ -297,7 +296,7 @@ paths:
         in: path
         name: id
         required: true
-        type: integer
+        type: string
       produces:
       - application/json
       responses:
@@ -317,16 +316,16 @@ paths:
       summary: Fetches a specific seller.
       tags:
       - Sellers
-    put:
+    patch:
       consumes:
       - application/json
       parameters:
       - description: Update Seller
         in: body
-        name: Service
+        name: Seller
         required: true
         schema:
-          $ref: '#/definitions/db.Service'
+          $ref: '#/definitions/db.Seller'
       produces:
       - application/json
       responses:
@@ -407,7 +406,7 @@ paths:
         in: path
         name: id
         required: true
-        type: integer
+        type: string
       produces:
       - application/json
       responses:
@@ -435,7 +434,7 @@ paths:
         in: path
         name: id
         required: true
-        type: integer
+        type: string
       produces:
       - application/json
       responses:
@@ -455,7 +454,7 @@ paths:
       summary: Fetches a specific service.
       tags:
       - Services
-    put:
+    patch:
       consumes:
       - application/json
       parameters:

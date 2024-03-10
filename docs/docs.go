@@ -74,7 +74,7 @@ const docTemplate = `{
                 "tags": [
                     "SellerToService"
                 ],
-                "summary": "Fetches all Services that belong to the speicfied Seller.",
+                "summary": "Fetches all Seller-Service connections.",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -163,11 +163,11 @@ const docTemplate = `{
                 "tags": [
                     "SellerToService"
                 ],
-                "summary": "Fetches a specific Seller-Service connection.",
+                "summary": "Fetches all Services that belong to the speicfied Seller.",
                 "parameters": [
                     {
-                        "type": "integer",
-                        "description": "Sellers-Services ID",
+                        "type": "string",
+                        "description": "Seller ID",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -213,13 +213,11 @@ const docTemplate = `{
                 "summary": "Deletes a specified Seller-Service connection.",
                 "parameters": [
                     {
-                        "description": "Delete Selllers-Services",
-                        "name": "SellerToService",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/db.SellerToService"
-                        }
+                        "type": "string",
+                        "description": "Delete Sellers-Services",
+                        "name": "service_id",
+                        "in": "path",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -353,60 +351,11 @@ const docTemplate = `{
                 "summary": "Fetches a specific seller.",
                 "parameters": [
                     {
-                        "type": "integer",
+                        "type": "string",
                         "description": "Seller ID",
                         "name": "id",
                         "in": "path",
                         "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/server.ResponseHTTP"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/db.Seller"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    }
-                }
-            },
-            "put": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Sellers"
-                ],
-                "summary": "Updates an existing seller.",
-                "parameters": [
-                    {
-                        "description": "Update Seller",
-                        "name": "Service",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/db.Service"
-                        }
                     }
                 ],
                 "responses": {
@@ -449,11 +398,60 @@ const docTemplate = `{
                 "summary": "Deletes a specified seller.",
                 "parameters": [
                     {
-                        "type": "integer",
+                        "type": "string",
                         "description": "Delete Seller",
                         "name": "id",
                         "in": "path",
                         "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/server.ResponseHTTP"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/db.Seller"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseHTTP"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Sellers"
+                ],
+                "summary": "Updates an existing seller.",
+                "parameters": [
+                    {
+                        "description": "Update Seller",
+                        "name": "Seller",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/db.Seller"
+                        }
                     }
                 ],
                 "responses": {
@@ -587,60 +585,11 @@ const docTemplate = `{
                 "summary": "Fetches a specific service.",
                 "parameters": [
                     {
-                        "type": "integer",
+                        "type": "string",
                         "description": "Service ID",
                         "name": "id",
                         "in": "path",
                         "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/server.ResponseHTTP"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/db.Service"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    }
-                }
-            },
-            "put": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Services"
-                ],
-                "summary": "Updates an existing service.",
-                "parameters": [
-                    {
-                        "description": "Update Service",
-                        "name": "Service",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/db.Service"
-                        }
                     }
                 ],
                 "responses": {
@@ -683,11 +632,60 @@ const docTemplate = `{
                 "summary": "Deletes a specified service.",
                 "parameters": [
                     {
-                        "type": "integer",
+                        "type": "string",
                         "description": "Delete Service",
                         "name": "id",
                         "in": "path",
                         "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/server.ResponseHTTP"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/db.Service"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseHTTP"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Services"
+                ],
+                "summary": "Updates an existing service.",
+                "parameters": [
+                    {
+                        "description": "Update Service",
+                        "name": "Service",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/db.Service"
+                        }
                     }
                 ],
                 "responses": {

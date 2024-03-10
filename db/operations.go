@@ -60,35 +60,60 @@ func CreateSeller(seller Seller) bool {
 	return true
 }
 
-func FindManySeller(seller Seller) bool {
+func FindManySeller() ([]Seller, bool) {
+	var seller []Seller
 	result := Database.Find(&seller)
 	if result.Error != nil {
 		fmt.Println("Error in findManySeller", result.Error)
-		return false
+		return seller, false
 	}
-	return true
+	return seller, true
 }
 
-func FindOneSeller(seller Seller) bool {
-	result := Database.Take(&seller)
+func FindOneSeller(sellerId string) (Seller, bool) {
+	var seller Seller
+	result := Database.Take(&seller, "id = ?", sellerId)
 	if result.Error != nil {
 		fmt.Println("Error in findOneSeller", result.Error)
-		return false
+		return seller, false
 	}
-	return true
+	return seller, true
 }
 
 func UpdateSeller(seller Seller) bool {
-	result := Database.Model(&seller).Update("name", "hello")
-	if result.Error != nil {
-		fmt.Println("Error in updateSeller", result.Error)
+	validation := Database.Take(&seller, "id = ?", seller.ID)
+	if validation.Error != nil {
+		fmt.Println("Error in updateSeller", validation.Error)
 		return false
 	}
+
+	if seller.Name != "string" {
+		result := Database.Model(&seller).Update("name", seller.Name)
+		if result.Error != nil {
+			fmt.Println("Error in updateSeller", result.Error)
+			return false
+		}
+	}
+	if seller.Email != "string" {
+		result := Database.Model(&seller).Update("email", seller.Email)
+		if result.Error != nil {
+			fmt.Println("Error in updateSeller", result.Error)
+			return false
+		}
+	}
+	if seller.Photo != "string" {
+		result := Database.Model(&seller).Update("photo", seller.Photo)
+		if result.Error != nil {
+			fmt.Println("Error in updateSeller", result.Error)
+			return false
+		}
+	}
+	
 	return true
 }
 
 func DeleteSeller(id string) bool {
-	result := Database.Delete(Seller{ID: id})
+	result := Database.Delete(&Seller{}, "id = ?", id)
 	if result.Error != nil {
 		fmt.Println("Error in deleteSeller", result.Error)
 		return false
@@ -105,31 +130,62 @@ func CreateService(service Service) bool {
 	return true
 }
 
-func FindManyService(service Service) bool {
+func FindManyService() ([]Service, bool) {
+	var service []Service
 	result := Database.Find(&service)
 	if result.Error != nil {
 		fmt.Println("Error in findManyService", result.Error)
-		return false
+		return service, false
 	}
-	return true
+	return service, true
 }
 
-func FindOneService(service Service) bool {
-	result := Database.Take(&service)
+func FindOneService(serviceId string) (Service, bool) {
+	var service Service
+	result := Database.Take(&service, "id = ?", serviceId)
 	if result.Error != nil {
 		fmt.Println("Error in findOneService", result.Error)
-		return false
+		return service, false
 	}
-	return true
+	return service, true
 }
 
 func UpdateService(service Service) bool {
-	result := Database.Model(&service).Update("name", "hello")
-	// result := Database.Model(&service).Update(map[string]interface{}{"Name": "name", "Price": "price", "Location": "location", "Photos": "photos"})		 // TODO: Откуда взять инфу на апдейт? Как вообще апдейтить?
-	if result.Error != nil {
-		fmt.Println("Error in updateService", result.Error)
+	validation := Database.Take(&service, "id = ?", service.ID)
+	if validation.Error != nil {
+		fmt.Println("Error in updateservice", validation.Error)
 		return false
 	}
+
+	if service.Name != "string" {
+		result := Database.Model(&service).Update("name", service.Name)
+		if result.Error != nil {
+			fmt.Println("Error in updateservice", result.Error)
+			return false
+		}
+	}
+	if service.Price != 0 {
+		result := Database.Model(&service).Update("price", service.Price)
+		if result.Error != nil {
+			fmt.Println("Error in updateservice", result.Error)
+			return false
+		}
+	}
+	if service.Location != "string" {
+		result := Database.Model(&service).Update("location", service.Location)
+		if result.Error != nil {
+			fmt.Println("Error in updateservice", result.Error)
+			return false
+		}
+	}
+	if service.Photos != "string" {
+		result := Database.Model(&service).Update("photos", service.Photos)
+		if result.Error != nil {
+			fmt.Println("Error in updateservice", result.Error)
+			return false
+		}
+	}
+	
 	return true
 }
 
@@ -151,18 +207,9 @@ func CreateSellerToService(sellerToService SellerToService) bool {
 	return true
 }
 
-func FindManySellerToService(sellerId string) ([]SellerToService, bool) {
+func FindManySellerToService() ([]SellerToService, bool) {
 	var sellerToService []SellerToService
-	result := Database.Find(&sellerToService, "seller_id = ?", sellerId)
-	if result.Error != nil {
-		fmt.Println("Error in findManySellerToService", result.Error)
-		return sellerToService, false
-	}
-	return sellerToService, true
-}
-
-func FindOneSellerToService(sellerToService SellerToService) (SellerToService, bool) {
-	result := Database.Take(&sellerToService)
+	result := Database.Find(&sellerToService)
 	if result.Error != nil {
 		fmt.Println("Error in findOneSellerToService", result.Error)
 		return sellerToService, false
@@ -170,8 +217,18 @@ func FindOneSellerToService(sellerToService SellerToService) (SellerToService, b
 	return sellerToService, true
 }
 
+func FindOneSellerToService(sellerId string) ([]SellerToService, bool) {
+	var sellerToService []SellerToService
+	result := Database.Take(&sellerToService, "seller_id = ?", sellerId)
+	if result.Error != nil {
+		fmt.Println("Error in findManySellerToService", result.Error)
+		return sellerToService, false
+	}
+	return sellerToService, true
+}
+
 func DeleteSellerToService(serviceId string) bool {	// Связь удаляется по услуге, т.к. оная удаляется чаще
-	result := Database.Delete(SellerToService{ServiceID: serviceId})
+	result := Database.Delete(SellerToService{}, "service_id = ?", serviceId)
 	if result.Error != nil {
 		fmt.Println("Error in deleteSellerToService", result.Error)
 		return false
