@@ -18,7 +18,7 @@ type Gift struct {
 }
 
 type Seller struct {
-	ID		string	`json:"id"`
+	ID		string	`json:"id" swaggerignore:"true"`
 	Name		string	`json:"name"`
 	Email		string	`json:"email"`
 	Photo		string	`json:"photo"`
@@ -30,7 +30,7 @@ type SellerToService struct {
 }
 
 type Service struct {
-	ID		string	`json:"id"`
+	ID		string	`json:"id" swaggerignore:"true"`
 	Name		string	`json:"name"`
 	Price		int	`json:"price"` //TODO: use decimal.Decimal instead of int
 	Location	string	`json:"location"`
