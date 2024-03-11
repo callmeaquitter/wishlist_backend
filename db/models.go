@@ -25,8 +25,8 @@ type Seller struct {
 }
 
 type SellerToService struct {
-	SellerID	string	`json:"seller_id" gorm:"primaryKey" validate:"required"`
-	ServiceID	string	`json:"service_id" gorm:"primaryKey" validate:"required"`
+	SellerID	string	`json:"seller_id" gorm:"primaryKey" validate:"required,seller_"`
+	ServiceID	string	`json:"service_id" gorm:"primaryKey" validate:"required,service_"`
 }
 
 type Service struct {

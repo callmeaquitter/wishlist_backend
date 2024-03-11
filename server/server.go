@@ -1,11 +1,13 @@
 package server
 
 import (
+	"regexp"
+	"strings"
 
 	swagger "github.com/arsmn/fiber-swagger/v2"
+	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
-	"github.com/go-playground/validator/v10"
 )
 
 var validate = validator.New()
@@ -15,6 +17,29 @@ var app *fiber.App
 func Setup() {
 	// Default config
 	app = fiber.New()
+
+	// Custom validation — sees if IDs the user provides abide by the template
+	validate.RegisterValidation("seller_", func(fl validator.FieldLevel) bool {
+	    text := fl.Field().String()
+	    if !strings.Contains(strings.ToLower(text), "seller_") {
+		return false
+	    }
+	    if !regexp.MustCompile(`^[a-zA-Z0-9]*$`).MatchString(text[strings.Index(text, "_")+1:]) {
+		return false
+	    }
+	    return true
+	})
+
+	validate.RegisterValidation("service_", func(fl validator.FieldLevel) bool {
+	    text := fl.Field().String()
+	    if !strings.Contains(strings.ToLower(text), "service_") {
+		return false
+	    }
+	    if !regexp.MustCompile(`^[a-zA-Z0-9]*$`).MatchString(text[strings.Index(text, "_")+1:]) {
+		return false
+	    }
+	    return true
+	})
 
 	app.Use(cors.New())
 	app.Use(cors.New(cors.Config{
