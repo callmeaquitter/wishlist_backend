@@ -105,15 +105,10 @@ func createSellerHandler(c *fiber.Ctx) error {
 		return c.SendString(err.Error())
 	}
 
-	if seller.Name == "" {
-		return c.SendString("Name is required")
-	}
-	if seller.Email == "" {
-		return c.SendString("Email is required")
-	}
-	if seller.Photo == "" {
-		return c.SendString("Photo is required")
-	}
+	err := validate.Struct(seller)
+	if err != nil {
+            return c.Status(fiber.StatusUnprocessableEntity).SendString(err.Error())
+        }
 
 	seller.ID = "seller_" + xid.New().String()
 
@@ -192,6 +187,12 @@ func updateSellerHandler(c *fiber.Ctx) error {
 	if err := c.BodyParser(&seller); err != nil {
 		return c.SendString(err.Error())
 	}
+
+	err := validate.Struct(seller)
+	if err != nil {
+            return c.Status(fiber.StatusUnprocessableEntity).SendString(err.Error())
+        }
+
 	ok := db.UpdateSeller(seller)
 	if !ok {
 		return c.SendString("Error in updateSeller operation")
@@ -214,18 +215,10 @@ func createServiceHandler(c *fiber.Ctx) error {
 		return c.SendString(err.Error())
 	}
 
-	if service.Name == "" {
-		return c.SendString("Name is required")
-	}
-	if service.Price == 0 {
-		return c.SendString("Price is required")
-	}
-	if service.Location == "" {
-		return c.SendString("Location is required")
-	}
-	if service.Photos == "" {
-		return c.SendString("Photos are required")
-	}
+	err := validate.Struct(service)
+        if err != nil {
+            return c.Status(fiber.StatusUnprocessableEntity).SendString(err.Error())
+        }
 
 	service.ID = "service_" + xid.New().String()
 
@@ -290,6 +283,11 @@ func updateServiceHandler(c *fiber.Ctx) error {
 		return c.SendString(err.Error())
 	}
 
+	err := validate.Struct(service)
+        if err != nil {
+            return c.Status(fiber.StatusUnprocessableEntity).SendString(err.Error())
+        }
+
 	ok := db.UpdateService(service)
 	if !ok {
 		return c.SendString("Error in updateService operation")
@@ -331,12 +329,10 @@ func createSellerToServiceHandler(c *fiber.Ctx) error {
 		return c.SendString(err.Error())
 	}
 
-	if sellerToService.SellerID == "" {
-		return c.SendString("SellerID is required")
-	}
-	if sellerToService.ServiceID == "" {
-		return c.SendString("ServiceID is required")
-	}
+	err := validate.Struct(sellerToService)
+        if err != nil {
+            return c.Status(fiber.StatusUnprocessableEntity).SendString(err.Error())
+        }
 
 	ok := db.CreateSellerToService(sellerToService)
 	if !ok {

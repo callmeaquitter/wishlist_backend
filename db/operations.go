@@ -81,7 +81,7 @@ func FindOneSeller(sellerId string) (Seller, bool) {
 }
 
 func UpdateSeller(seller Seller) bool {
-	validation := Database.Take(&seller, "id = ?", seller.ID)
+	validation := Database.Find(&seller, "id = ?", seller.ID)
 	if validation.Error != nil {
 		fmt.Println("Error in updateSeller", validation.Error)
 		return false
@@ -151,7 +151,7 @@ func FindOneService(serviceId string) (Service, bool) {
 }
 
 func UpdateService(service Service) bool {
-	validation := Database.Take(&service, "id = ?", service.ID)
+	validation := Database.Find(&service, "id = ?", service.ID)
 	if validation.Error != nil {
 		fmt.Println("Error in updateservice", validation.Error)
 		return false

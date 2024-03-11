@@ -5,7 +5,10 @@ import (
 	swagger "github.com/arsmn/fiber-swagger/v2"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
+	"github.com/go-playground/validator/v10"
 )
+
+var validate = validator.New()
 
 var app *fiber.App
 

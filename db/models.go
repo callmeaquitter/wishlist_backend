@@ -19,21 +19,21 @@ type Gift struct {
 
 type Seller struct {
 	ID		string	`json:"id" swaggerignore:"true"`
-	Name		string	`json:"name"`
-	Email		string	`json:"email"`
+	Name		string	`json:"name" validate:"required,min=5,max=50"`
+	Email		string	`json:"email" validate:"required,min=5,email"`
 	Photo		string	`json:"photo"`
 }
 
 type SellerToService struct {
-	SellerID	string	`json:"seller_id" gorm:"primaryKey"`
-	ServiceID	string	`json:"service_id" gorm:"primaryKey"`
+	SellerID	string	`json:"seller_id" gorm:"primaryKey" validate:"required"`
+	ServiceID	string	`json:"service_id" gorm:"primaryKey" validate:"required"`
 }
 
 type Service struct {
 	ID		string	`json:"id" swaggerignore:"true"`
-	Name		string	`json:"name"`
-	Price		int	`json:"price"` //TODO: use decimal.Decimal instead of int
-	Location	string	`json:"location"`
+	Name		string	`json:"name" validate:"required,min=5,max=50"`
+	Price		int	`json:"price" validate:"required,gt=0,number"` //TODO: use decimal.Decimal instead of int
+	Location	string	`json:"location" validate:"required,min=5"`
 	Photos		string	`json:"photos"`
 }
 

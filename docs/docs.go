@@ -756,9 +756,6 @@ const docTemplate = `{
                 "email": {
                     "type": "string"
                 },
-                "id": {
-                    "type": "string"
-                },
                 "name": {
                     "type": "string"
                 },
@@ -781,9 +778,6 @@ const docTemplate = `{
         "db.Service": {
             "type": "object",
             "properties": {
-                "id": {
-                    "type": "string"
-                },
                 "location": {
                     "type": "string"
                 },

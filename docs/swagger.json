@@ -750,9 +750,6 @@
                 "email": {
                     "type": "string"
                 },
-                "id": {
-                    "type": "string"
-                },
                 "name": {
                     "type": "string"
                 },
@@ -775,9 +772,6 @@
         "db.Service": {
             "type": "object",
             "properties": {
-                "id": {
-                    "type": "string"
-                },
                 "location": {
                     "type": "string"
                 },

@@ -26,8 +26,6 @@ definitions:
     properties:
       email:
         type: string
-      id:
-        type: string
       name:
         type: string
       photo:
@@ -42,8 +40,6 @@ definitions:
     type: object
   db.Service:
     properties:
-      id:
-        type: string
       location:
         type: string
       name:
