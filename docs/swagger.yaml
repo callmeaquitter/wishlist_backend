@@ -25,11 +25,17 @@ definitions:
   db.Seller:
     properties:
       email:
+        minLength: 5
         type: string
       name:
+        maxLength: 50
+        minLength: 5
         type: string
       photo:
         type: string
+    required:
+    - email
+    - name
     type: object
   db.SellerToService:
     properties:
@@ -37,18 +43,28 @@ definitions:
         type: string
       service_id:
         type: string
+    required:
+    - seller_id
+    - service_id
     type: object
   db.Service:
     properties:
       location:
+        minLength: 5
         type: string
       name:
+        maxLength: 50
+        minLength: 5
         type: string
       photos:
         type: string
       price:
         description: 'TODO: use decimal.Decimal instead of int'
         type: integer
+    required:
+    - location
+    - name
+    - price
     type: object
   server.ResponseHTTP:
     properties:
@@ -151,9 +167,9 @@ paths:
       consumes:
       - application/json
       parameters:
-      - description: Delete Sellers-Services
+      - description: Service ID
         in: path
-        name: service_id
+        name: id
         required: true
         type: string
       produces:

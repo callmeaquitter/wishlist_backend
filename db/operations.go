@@ -219,7 +219,7 @@ func FindManySellerToService() ([]SellerToService, bool) {
 
 func FindOneSellerToService(sellerId string) ([]SellerToService, bool) {
 	var sellerToService []SellerToService
-	result := Database.Take(&sellerToService, "seller_id = ?", sellerId)
+	result := Database.Find(&sellerToService, "seller_id = ?", sellerId)
 	if result.Error != nil {
 		fmt.Println("Error in findManySellerToService", result.Error)
 		return sellerToService, false

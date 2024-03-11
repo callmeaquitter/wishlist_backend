@@ -214,8 +214,8 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Delete Sellers-Services",
-                        "name": "service_id",
+                        "description": "Service ID",
+                        "name": "id",
                         "in": "path",
                         "required": true
                     }
@@ -752,12 +752,19 @@ const docTemplate = `{
         },
         "db.Seller": {
             "type": "object",
+            "required": [
+                "email",
+                "name"
+            ],
             "properties": {
                 "email": {
-                    "type": "string"
+                    "type": "string",
+                    "minLength": 5
                 },
                 "name": {
-                    "type": "string"
+                    "type": "string",
+                    "maxLength": 50,
+                    "minLength": 5
                 },
                 "photo": {
                     "type": "string"
@@ -766,6 +773,10 @@ const docTemplate = `{
         },
         "db.SellerToService": {
             "type": "object",
+            "required": [
+                "seller_id",
+                "service_id"
+            ],
             "properties": {
                 "seller_id": {
                     "type": "string"
@@ -777,12 +788,20 @@ const docTemplate = `{
         },
         "db.Service": {
             "type": "object",
+            "required": [
+                "location",
+                "name",
+                "price"
+            ],
             "properties": {
                 "location": {
-                    "type": "string"
+                    "type": "string",
+                    "minLength": 5
                 },
                 "name": {
-                    "type": "string"
+                    "type": "string",
+                    "maxLength": 50,
+                    "minLength": 5
                 },
                 "photos": {
                     "type": "string"

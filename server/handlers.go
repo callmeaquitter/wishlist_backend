@@ -368,7 +368,7 @@ func getManySellerToServiceHandler(c *fiber.Ctx) error {
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /sellerToService/{id} [get]
 func getOneSellerToServiceHandler(c *fiber.Ctx) error {
-	sellerId := c.Params("seller_id")
+	sellerId := c.Params("id")
 	result, ok := db.FindOneSellerToService(sellerId)
 	if !ok {
 		return c.SendString("Error in findOneSellersService operation")
@@ -381,12 +381,12 @@ func getOneSellerToServiceHandler(c *fiber.Ctx) error {
 // @Tags SellerToService
 // @Accept json
 // @Produce json
-// @Param service_id path string true "Delete Sellers-Services"
+// @Param id path string true "Service ID"
 // @Success 200 {object} ResponseHTTP{data=db.SellerToService}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /sellerToService/{id} [delete]
 func deleteSellerToServiceHandler(c *fiber.Ctx) error {
-	serviceId := c.Params("service_id")
+	serviceId := c.Params("id")
 
 	ok := db.DeleteSellerToService(serviceId)
 	if !ok {
