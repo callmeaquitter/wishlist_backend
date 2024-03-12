@@ -4,6 +4,8 @@ import (
 	"fmt"
 
 	_ "wishlist/docs"
+
+	// "github.com/shopspring/decimal"
 )
 
 func CreateGift(gift Gift) bool {
@@ -81,7 +83,7 @@ func FindOneSeller(sellerId string) (Seller, bool) {
 }
 
 func UpdateSeller(seller Seller) bool {
-	validation := Database.Find(&seller, "id = ?", seller.ID)
+	validation := Database.Find(&seller, "id = ?", seller.SellerID)
 	if validation.Error != nil {
 		fmt.Println("Error in updateSeller", validation.Error)
 		return false
@@ -151,7 +153,7 @@ func FindOneService(serviceId string) (Service, bool) {
 }
 
 func UpdateService(service Service) bool {
-	validation := Database.Find(&service, "id = ?", service.ID)
+	validation := Database.Find(&service, "id = ?", service.ServiceID)
 	if validation.Error != nil {
 		fmt.Println("Error in updateservice", validation.Error)
 		return false
@@ -190,7 +192,7 @@ func UpdateService(service Service) bool {
 }
 
 func DeleteService(id string) bool {
-	result := Database.Delete(Service{ID: id})
+	result := Database.Delete(Service{ServiceID: id})
 	if result.Error != nil {
 		fmt.Println("Error in deleteService", result.Error)
 		return false

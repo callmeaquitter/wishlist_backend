@@ -807,8 +807,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "price": {
-                    "description": "TODO: use decimal.Decimal instead of int",
-                    "type": "integer"
+                    "type": "number"
                 }
             }
         },

@@ -110,7 +110,7 @@ func createSellerHandler(c *fiber.Ctx) error {
             return c.Status(fiber.StatusUnprocessableEntity).SendString(err.Error())
         }
 
-	seller.ID = "seller_" + xid.New().String()
+	seller.SellerID = "seller_" + xid.New().String()
 
 	ok := db.CreateSeller(seller)
 	if !ok {
@@ -217,10 +217,11 @@ func createServiceHandler(c *fiber.Ctx) error {
 
 	err := validate.Struct(service)
         if err != nil {
-            return c.Status(fiber.StatusUnprocessableEntity).SendString(err.Error())
+		return c.Status(fiber.StatusUnprocessableEntity).
+			SendString(err.Error())
         }
 
-	service.ID = "service_" + xid.New().String()
+	service.ServiceID = "service_" + xid.New().String()
 
 	ok := db.CreateService(service)
 	if !ok {

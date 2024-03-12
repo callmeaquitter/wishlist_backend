@@ -1,6 +1,5 @@
 package db
 
-// import "gorm.io/gorm"
 // import "github.com/go-delve/delve/service"
 
 
@@ -18,7 +17,7 @@ type Gift struct {
 }
 
 type Seller struct {
-	ID		string	`json:"id" swaggerignore:"true"`
+	SellerID	string	`json:"id" swaggerignore:"true"`
 	Name		string	`json:"name" validate:"required,min=5,max=50"`
 	Email		string	`json:"email" validate:"required,min=5,email"`
 	Photo		string	`json:"photo"`
@@ -30,9 +29,9 @@ type SellerToService struct {
 }
 
 type Service struct {
-	ID		string	`json:"id" swaggerignore:"true"`
+	ServiceID	string	`json:"id" swaggerignore:"true"`
 	Name		string	`json:"name" validate:"required,min=5,max=50"`
-	Price		int	`json:"price" validate:"required,gt=0,number"` //TODO: use decimal.Decimal instead of int
+	Price		int	`json:"price" validate:"required,gt=0,number"`
 	Location	string	`json:"location" validate:"required,min=5"`
 	Photos		string	`json:"photos"`
 }
