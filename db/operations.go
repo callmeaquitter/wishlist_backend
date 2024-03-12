@@ -6,6 +6,14 @@ import (
 	_ "wishlist/docs"
 )
 
+type IError struct {
+	Field string
+	Tag   string
+	Value string
+}
+
+// var Validator = validator.New()
+
 func CreateGift(gift Gift) bool {
 	result := Database.Create(&gift)
 	if result.Error != nil {
@@ -57,47 +65,48 @@ func CreateWishlist(wishlist UserWishlist) bool {
 		fmt.Println("Error in CreateWishlist", result.Error)
 		return false
 	}
-	return true 
+	return true
 }
 
-func FindManyWishlists(wishlists UserWishlist) bool{
+func FindManyWishlists(wishlists UserWishlist) bool {
 	result := Database.Find(&wishlists)
-	if result != nil{
+	if result != nil {
 		fmt.Println("Error in FindManyWishlists", result.Error)
-		return false  
+		return false
 	}
-	return true 
+	return true
 }
 
 func FindWishlistByName(wishlist UserWishlist) bool {
 	result := Database.Take(&wishlist)
-	if result != nil{
+	if result != nil {
 		fmt.Println("Error in FindWishlistByName", result.Error)
 		return false
 	}
-	return true 
+	return true
 }
 
-func CreateWish(wishes Wishes) bool {
+func CreateWish(wishes Wishes, wishlistID string) bool {
+	user
 	result := Database.Create(&wishes)
-	if result != nil{
+	if result != nil {
 		fmt.Println("Error in CreateWish", result.Error)
 	}
-	return true 
+	return true
 }
 
 func GetManyWishes(wishes Wishes) bool {
 	result := Database.Find(&wishes)
-	if result != nil{
+	if result != nil {
 		fmt.Println("Error in GetManyWishes")
 		return false
 	}
 	return true
 }
 
-func GetOneWish(wish Wishes) bool { 
+func GetOneWish(wish Wishes) bool {
 	result := Database.Take(&wish)
-	if result != nil{
+	if result != nil {
 		fmt.Println("Error in GetOneWish")
 		return false
 	}
@@ -112,4 +121,3 @@ func DeleteWish(giftID, wishlistID string) bool {
 	}
 	return true
 }
- 

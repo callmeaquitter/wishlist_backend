@@ -26,7 +26,7 @@ type User struct {
 
 type UserWishlist struct {
 	Name   string `json:"name"`
-	UserID int    `json:"user_id" gorm:"primaryKey"`
+	UserID string    `json:"user_id" gorm:"primaryKey"`
 }
 
 type Wishes struct {
@@ -35,11 +35,11 @@ type Wishes struct {
 }
 
 type Role struct {
-	ID   int    `json:"id"`
+	ID   string    `json:"id"`
 	Name string `json:"name"`
 }
 
 type UserRole struct {
-	UserID int `gorm:"primaryKey"`
-	RoleID int `gorm:"primaryKey"`
+	UserID string `gorm:"primaryKey"`
+	RoleID string `gorm:"primaryKey"`
 }

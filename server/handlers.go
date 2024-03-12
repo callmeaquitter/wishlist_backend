@@ -23,7 +23,7 @@ type ResponseHTTP struct {
 // @Param Gift body db.Gift true "Create Gift"
 // @Success 200 {object} ResponseHTTP{data=db.Gift}
 // @Failure 400 {object} ResponseHTTP{}
-// @Router /docs/gifts [post]
+// @Router /gifts [post]
 func createGiftHandler(c *fiber.Ctx) error {
 	var gift db.Gift
 	if err := c.BodyParser(&gift); err != nil {
@@ -63,7 +63,7 @@ func createGiftHandler(c *fiber.Ctx) error {
 // @Param Gift body db.Gift true "Create Gift"
 // @Success 200 {object} ResponseHTTP{data=db.Gift}
 // @Failure 400 {object} ResponseHTTP{}
-// @Router /docs/gifts/{id} [delete]
+// @Router /gifts/{id} [delete]
 func deleteGiftHandler(c *fiber.Ctx) error {
 	id := c.Params("id")
 
@@ -82,7 +82,7 @@ func deleteGiftHandler(c *fiber.Ctx) error {
 // @Produce json
 // @Success 200 {object} ResponseHTTP{data=[]db.Gift}
 // @Failure 503 {object} ResponseHTTP{}
-// @Router /docs/gifts [get]
+// @Router /gifts [get]
 func getManyGiftsHandler(c *fiber.Ctx) error {
 	var gift db.Gift
 	ok := db.FindManyGift(gift)
@@ -111,7 +111,7 @@ func getOneGiftHandler(c *fiber.Ctx) error {
 // @Success 200 {object} ResponseHTTP{data=db.Gift}
 // @Failure 400 {object} ResponseHTTP{}
 // @Failure 500 {object} ResponseHTTP{}
-// @Router /docs/gifts/{id} [patch]
+// @Router /gifts/{id} [patch]
 func updateGiftHandler(c *fiber.Ctx) error {
 	var gift db.Gift
 	ok := db.UpdateGift(gift)

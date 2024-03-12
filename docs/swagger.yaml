@@ -43,7 +43,7 @@ info:
   title: Wishlist
   version: "1.0"
 paths:
-  /docs/gifts:
+  /gifts:
     get:
       consumes:
       - application/json
@@ -99,7 +99,7 @@ paths:
       summary: Creates a new gift.
       tags:
       - Gifts
-  /docs/gifts/{id}:
+  /gifts/{id}:
     delete:
       consumes:
       - application/json

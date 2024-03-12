@@ -23,7 +23,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/docs/gifts": {
+        "/gifts": {
             "get": {
                 "description": "Get all books",
                 "consumes": [
@@ -117,7 +117,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/docs/gifts/{id}": {
+        "/gifts/{id}": {
             "delete": {
                 "description": "get the status of server.",
                 "consumes": [
