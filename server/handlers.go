@@ -144,7 +144,7 @@ func loginHandler(c *fiber.Ctx) error {
 	return c.JSON(AuthResponse{Session: session})
 }
 
-func AddWish(c *fiber.Ctx) error {
+func AddWishHandler(c *fiber.Ctx) error {
 	var wish db.Wishes
 	gift_id := c.Params("gift_id")
 	wishlist_id := c.Params("wishlist_id")
@@ -171,7 +171,7 @@ func AddWish(c *fiber.Ctx) error {
 
 // }
 
-func DeleteWish(c *fiber.Ctx) error {
+func DeleteWishHandler(c *fiber.Ctx) error {
 	wishlistID := c.Params("wishlist_id")
 	giftID := c.Params("gift_id")
 	ok := db.DeleteWish(wishlistID, giftID)
@@ -181,20 +181,25 @@ func DeleteWish(c *fiber.Ctx) error {
 	return c.SendString("Create Wish succesfully")
 }
 
-func CreateWishlist(c *fiber.Ctx) error {
+func CreateWishlistHandler(c *fiber.Ctx) error {
 	var wishlist db.UserWishlist
 	if err := c.BodyParser(&wishlist); err != nil {
 		return c.SendString(err.Error())
 	}
+
+	wishlist.ID = "wishlist_" + xid.New().String()
+	wishlist.UserID = "user_cnot2oc69lbksn28kko0"
+
 	ok := db.CreateWishlist(wishlist)
 	if !ok {
 		return c.SendString("Error in Create wishlist operation")
 	}
 
 	return c.SendString("Create Wishlist succesfully")
+
 }
 
-func FindManyWishlists(c *fiber.Ctx) error {
+func FindManyWishlistsHandler(c *fiber.Ctx) error {
 	var wishlist db.UserWishlist
 	ok := db.FindManyWishlists(wishlist)
 	if !ok {
@@ -203,7 +208,7 @@ func FindManyWishlists(c *fiber.Ctx) error {
 	return c.SendString("Get all wishlists succesfully")
 }
 
-func FindAllWishesInWishlist(c *fiber.Ctx) error {
+func FindAllWishesInWishlistHandler(c *fiber.Ctx) error {
 	wishlistID := c.Params("wishlist_id")
 	ok := db.GetManyWishesInWishlist(wishlistID)
 	if !ok {
@@ -223,13 +228,39 @@ func UpdateWishlist(c *fiber.Ctx) error {
 	return c.SendString("Update wishlist succesfully")
 }
 
-func DeleteWishist(c *fiber.Ctx) error {
-	wishlistID := c.Params("wishlist_id")
+// deleteGift godoc
+// @Summary Creates a new gift.
+// @Description get the status of server.
+// @Tags Wishlist
+// @Accept  json
+// @Produce json
+// @Param Wishlist body db.UserWishlist true "Delete Wishlist"
+// @Success 200 {object} ResponseHTTP{data=db.UserWishlist}
+// @Failure 400 {object} ResponseHTTP{}
+// @Router /wishlists/wishlist_cnothhc69lbkfh15tmmg/gift_cnos0qk69lbkli6i79ug/user_cnot2oc69lbksn28kko0 [delete]
+func DeleteWishlistHandler(c *fiber.Ctx) error {
+	wishlistID := c.Params("id")
 	giftID := c.Params("gift_id")
-	userID := "user_1"
+	userID := c.Params("user_id")
 	ok := db.DeleteWishlist(wishlistID, giftID, userID)
 	if !ok {
 		return c.SendString("Error in DeleteGift Operation")
 	}
 	return c.SendString("Delete wishlist succesfully")
+}
+
+func CreateUserHandler(c *fiber.Ctx) error {
+	var user db.User
+	if err := c.BodyParser(&user); err != nil {
+		return c.SendString(err.Error())
+	}
+
+	user.ID = "user_" + xid.New().String()
+
+	ok := db.CreateUser(user)
+	if !ok {
+		return c.SendString("Error in CreateUser operation")
+	}
+
+	return c.SendString("Succsesfully create user!")
 }

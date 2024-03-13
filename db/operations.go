@@ -102,9 +102,9 @@ func UpdateWishlist(wishlistID, wishlistName string) bool {
 	return true
 }
 
-func AddWish(wishlistID, wishID string) bool {
-	var wish Wishes
-	result := Database.Select(wishlistID, wishID).Create(&wish)
+func AddWish(wishlistID, giftID string) bool {
+	wish := Wishes{GiftID: giftID, WishlistID: wishlistID}
+	result := Database.Create(wish)
 	if result.Error != nil {
 		fmt.Println("Error in CreateWish", result.Error)
 		return false
@@ -142,25 +142,67 @@ func DeleteWish(wishlistID, GiftID string) bool {
 	return true
 }
 
-func DeleteWishlist(wishlistID, GiftID, userID string) bool {
+func DeleteWishlist(wishlistID, giftID, userID string) bool {
 	var wishlist UserWishlist
 	var wishes Wishes
 
-	if err := Database.Where(&wishlist, wishlistID, userID).First(&wishlist); err != nil {
+	if err := Database.Where(&UserWishlist{ID: wishlistID, UserID: userID}).First(&wishlist); err != nil {
 		fmt.Println("Error in finding wishlist for deleting", err)
 		return false
 	}
 
-	if err := Database.Where(&wishes, wishlistID, GiftID).Delete(&wishes); err != nil {
+	if err := Database.Where(&Wishes{WishlistID: wishlistID, GiftID: giftID}).Find(&wishes); err != nil {
 		fmt.Println("Error in deleting wishes", err)
 		return false
 	}
 
-	result := Database.Where(&wishlist, wishlistID, userID).Delete(&wishlist)
+	if err := Database.Delete(&wishes); err.Error != nil {
+		fmt.Println("Error in deleting wish", err.Error)
+		return false
+	}
+
+	result := Database.Delete(&wishlist)
 	if result.Error != nil {
 		fmt.Println("Error in DeleteWishlist", result.Error)
+		return false
 	}
-	
+
 	return true
 
+	// // Находим wishlist
+	// if err := Database.Where(&UserWishlist{ID: wishlistID, UserID: userID}).First(&wishlist); err.Error != nil {
+	// 	fmt.Println("Error in finding wishlist for deleting", err.Error)
+	// 	return false
+	// }
+
+	// // Находим соответствующую запись wishes
+	// if err := Database.Where(&Wishes{WishlistID: wishlistID, GiftID: giftID}).First(&wishes); err.Error != nil {
+	// 	fmt.Println("Error in finding wish for deletion", err.Error)
+	// 	return false
+	// }
+
+	// // Удаляем запись wishes
+	// if err := Database.Delete(&wishes); err.Error != nil {
+	// 	fmt.Println("Error in deleting wish", err.Error)
+	// 	return false
+	// }
+
+	// // Удаляем wishlist
+	// if err := Database.Delete(&wishlist); err.Error != nil {
+	// 	fmt.Println("Error in deleting wishlist", err.Error)
+	// 	return false
+	// }
+
+	// // Возвращаем успешное завершение операции
+	// return true
+
+}
+
+func CreateUser(user User) bool {
+	result := Database.Create(&user)
+	if result.Error != nil {
+		fmt.Println("Error in CreateUser", result.Error)
+		return false
+	}
+	return true
 }

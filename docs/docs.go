@@ -224,15 +224,64 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/wishlists/wishlist_cnothhc69lbkfh15tmmg/gift_cnos0qk69lbkli6i79ug/user_cnot2oc69lbksn28kko0": {
+            "delete": {
+                "description": "get the status of server.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Wishlist"
+                ],
+                "summary": "Creates a new gift.",
+                "parameters": [
+                    {
+                        "description": "Delete Wishlist",
+                        "name": "Wishlist",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/db.UserWishlist"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/server.ResponseHTTP"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/db.UserWishlist"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseHTTP"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
         "db.Gift": {
             "type": "object",
             "properties": {
-                "comments": {
-                    "type": "string"
-                },
                 "description": {
                     "type": "string"
                 },
@@ -240,14 +289,10 @@ const docTemplate = `{
                     "description": "LIFEHACK: use string id like 'gift_ajdsjanjklsnls'",
                     "type": "string"
                 },
-                "is_favorite": {
-                    "type": "boolean"
-                },
                 "link": {
                     "type": "string"
                 },
                 "name": {
-                    "description": "UserID      string ` + "`" + `json:\"user_id\"` + "`" + `",
                     "type": "string"
                 },
                 "photo": {
@@ -256,6 +301,20 @@ const docTemplate = `{
                 "price": {
                     "description": "TODO: use decimal.Decimal instead of int",
                     "type": "integer"
+                }
+            }
+        },
+        "db.UserWishlist": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "string"
                 }
             }
         },

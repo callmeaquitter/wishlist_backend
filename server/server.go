@@ -51,7 +51,18 @@ func Setup() {
 	// app.Post("/register", registerHandler)
 
 	wishlists := app.Group("/wishlists")
-	wishlists.Get("")
+	wishlists.Get("", FindManyWishlistsHandler)
+	wishlists.Post("", CreateWishlistHandler)
+	wishlists.Patch("/:id", updateGiftHandler)
+	wishlists.Delete("/:id/:gift_id/:user_id", DeleteWishlistHandler)
+
+	wishes := app.Group("/wishes")
+	wishes.Get("/:wishlist_id", FindManyWishlistsHandler)
+	wishes.Post("/:gift_id/:wishlist_id", AddWishHandler)
+	wishes.Delete("/:wishlist_id/:wish_id", DeleteWishHandler)
+
+	user := app.Group("/users")
+	user.Post("", CreateUserHandler)
 
 }
 
