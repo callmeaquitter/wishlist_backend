@@ -18,8 +18,9 @@ type ResponseHTTP struct {
 // @Summary Creates a new gift.
 // @Description get the status of server.
 // @Tags Gifts
-// @Accept */*
+// @Accept  json
 // @Produce json
+// @Param Gift body db.Gift true "Create Gift"
 // @Success 200 {object} ResponseHTTP{data=db.Gift}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /gifts [post]
@@ -52,15 +53,17 @@ func createGiftHandler(c *fiber.Ctx) error {
 
 	return c.JSON(gift)
 }
-// createGift godoc
-// @Summary gifts
-// @Description get the status of server.
+
+// deleteGift godoc
+// @Summary Delete a gift by ID.
+// @Description Deletes a gift from the database using the provided ID.
 // @Tags Gifts
-// @Accept */*
+// @Accept  json
 // @Produce json
-// @Success 200 {object} ResponseHTTP{data=db.Gift}
-// @Failure 400 {object} ResponseHTTP{}
-// @Router / [post]
+// @Param id path string true "Gift ID to delete"
+// @Success 200 {string} string "Gift deleted successfully"
+// @Failure 400 {string} string "Error in deleteGift operation"
+// @Router /gifts/{id} [delete]
 func deleteGiftHandler(c *fiber.Ctx) error {
 	id := c.Params("id")
 
@@ -70,15 +73,16 @@ func deleteGiftHandler(c *fiber.Ctx) error {
 	}
 	return c.SendString("Gift deleted successfully")
 }
+
 // GetAllGifts is a function to get all books data from database
 // @Summary Get all books
 // @Description Get all books
-// @Tags giftss
+// @Tags Gifts
 // @Accept json
 // @Produce json
 // @Success 200 {object} ResponseHTTP{data=[]db.Gift}
 // @Failure 503 {object} ResponseHTTP{}
-// @Router /docs/gifts [get]
+// @Router /gifts [get]
 func getManyGiftsHandler(c *fiber.Ctx) error {
 	var gift db.Gift
 	ok := db.FindManyGift(gift)
@@ -88,6 +92,16 @@ func getManyGiftsHandler(c *fiber.Ctx) error {
 	return c.SendString("Gifts Found Succesfully")
 }
 
+// GetOneGifts is a function to get all books data from database
+// @Summary Get one books
+// @Description Get one books
+// @Tags Gifts
+// @Accept json
+// @Produce json
+// @Param id path string true "Gift ID"
+// @Success 200 {object} ResponseHTTP{data=[]db.Gift}
+// @Failure 503 {object} ResponseHTTP{}
+// @Router /gifts/{id} [get]
 func getOneGiftHandler(c *fiber.Ctx) error {
 	var gift db.Gift
 	ok := db.FindOneGift(gift)
@@ -97,6 +111,17 @@ func getOneGiftHandler(c *fiber.Ctx) error {
 	return c.SendString("Gift Found Succesfully")
 }
 
+// Update Gift godoc
+// @Summary Creates a new gift.
+// @Description get the status of server.
+// @Tags 	Gifts
+// @Accept  json
+// @Produce json
+// @Param Gift body db.Gift true "Create Gift"
+// @Success 200 {object} ResponseHTTP{data=db.Gift}
+// @Failure 400 {object} ResponseHTTP{}
+// @Failure 500 {object} ResponseHTTP{}
+// @Router /gifts/{id} [patch]
 func updateGiftHandler(c *fiber.Ctx) error {
 	var gift db.Gift
 	ok := db.UpdateGift(gift)
@@ -105,15 +130,17 @@ func updateGiftHandler(c *fiber.Ctx) error {
 	}
 	return c.SendString("Gift updated Succesfully")
 }
-// createGift godoc
-// @Summary Creates a new gift.
-// @Description get the status of server.
-// @Tags Gifts
-// @Accept */*
+
+// createBookedGiftInWishlist godoc
+// @Summary Creates a booked gift in the wishlist.
+// @Description Creates a booked gift in the wishlist based on the provided data.
+// @Tags BookedGifts
+// @Accept json
 // @Produce json
-// @Success 200 {object} ResponseHTTP{data=db.Gift}
+// @Param BookedGiftInWishlist body db.BookedGiftInWishlist true "Booked Gift in Wishlist object to be created"
+// @Success 200 {object} ResponseHTTP{data=db.BookedGiftInWishlist}
 // @Failure 400 {object} ResponseHTTP{}
-// @Router / [post]
+// @Router /booked_gifts/create [post]
 func createBookedGiftInWishlist(c *fiber.Ctx) error {
 	var bookedGiftInWishlist db.BookedGiftInWishlist
 	if err := c.BodyParser(&bookedGiftInWishlist); err != nil {
@@ -125,38 +152,57 @@ func createBookedGiftInWishlist(c *fiber.Ctx) error {
 	}
 	return c.SendString("BookedGift is created")
 }
-// createGift godoc
-// @Summary gifts
-// @Description get the status of server.
-// @Tags Gifts
-// @Accept */*
-// @Produce json
-// @Success 200 {object} ResponseHTTP{data=db.Gift}
-// @Failure 400 {object} ResponseHTTP{}
-// @Router / [post]
-func deleteBookedGiftInWishlist(c *fiber.Ctx) error {
-	return nil
 
-}
-// GetAllGifts is a function to get all books data from database
-// @Summary Get all books
-// @Description Get all books
-// @Tags giftss
+// deleteBookedGiftInWishlist godoc
+// @Summary Deletes a booked gift from the wishlist.
+// @Description Deletes a booked gift from the wishlist based on the provided gift ID and user ID.
+// @Tags BookedGifts
 // @Accept json
 // @Produce json
-// @Success 200 {object} ResponseHTTP{data=[]db.Gift}
+// @Param gift_id path string true "ID of the booked gift to be deleted"
+// @Success 200 {object} ResponseHTTP{data=db.BookedGiftInWishlist}
+// @Failure 400 {object} ResponseHTTP{}
+// @Router /booked_gifts/{gift_id} [delete]
+func deleteBookedGiftInWishlist(c *fiber.Ctx) error {
+	giftID := c.Params("gift_id")
+	userID := c.Locals("user_id").(string)
+	ok := db.DeleteBookedGift(userID, giftID)
+	if !ok {
+		return c.SendString("Error in deleteBookedGift operation")
+	}
+	return c.SendString("bookedGift deleted successfully")
+}
+
+// findUserBookedGifts godoc
+// @Summary Finds booked gifts for a specific user.
+// @Description Finds all booked gifts in the wishlist for a specific user based on the provided user ID.
+// @Tags BookedGifts
+// @Accept json
+// @Produce json
+// @Param user_id path string true "ID of the user"
+// @Success 200 {object} ResponseHTTP{data=[]db.BookedGiftInWishlist}
 // @Failure 503 {object} ResponseHTTP{}
-// @Router /docs/gifts [get]
+// @Router /booked_gifts/{user_id} [get]
 func findUserBookedGifts(c *fiber.Ctx) error {
-	userId := c.Params("user_id")
-	gifts, ok := db.FindManyUsersGift(userId)
+	userID := c.Params("user_id")
+	gifts, ok := db.FindManyUsersGift(userID)
 	if !ok {
 		return c.SendString("Error in findUserBookedGifts operation")
 	}
 	return c.JSON(gifts)
 }
 
-
+// createGiftCategory godoc
+// @Summary Creates a new gift category.
+// @Description Creates a new gift category based on the provided data.
+// @Tags GiftCategory
+// @Accept json
+// @Produce json
+// @Param GiftCategory body db.GiftCategory true "Gift Category object to be created"
+// @Success 200 {object} ResponseHTTP{data=[]db.GiftCategory}
+// @Failure 400 {string} string "CategoryName is required"
+// @Failure 400 {string} string "Failed to create gift category"
+// @Router /gift_category/create [post]
 func createGiftCategory(c *fiber.Ctx) error {
 	var giftCategory db.GiftCategory
 	if err := c.BodyParser(&giftCategory); err != nil {
@@ -174,6 +220,16 @@ func createGiftCategory(c *fiber.Ctx) error {
 	return c.JSON(giftCategory)
 }
 
+// deleteGiftCategory godoc
+// @Summary Deletes a gift category.
+// @Description Deletes a gift category based on the provided category ID.
+// @Tags GiftCategory
+// @Accept json
+// @Produce json
+// @Param id path string true "ID of the gift category to be deleted"
+// @Success 200 {object} ResponseHTTP{data=db.GiftCategory}
+// @Failure 400 {object} ResponseHTTP{}
+// @Router /gift_category/{id} [delete]
 func deleteGiftCategory(c *fiber.Ctx) error {
 	id := c.Params("id")
 
@@ -184,6 +240,89 @@ func deleteGiftCategory(c *fiber.Ctx) error {
 	return c.SendString("GiftCategory deleted successfully")
 }
 
+// createGiftReviwHandler godoc
+// @Summary Create a new review for gift.
+// @Description Create a new review for gift.
+// @Tags GiftReview
+// @Accept  json
+// @Produce json
+// @Param Gift body db.GiftReview true "Create GiftReview"
+// @Success 200 {object} ResponseHTTP{data=db.GiftReview}
+// @Failure 400 {object} ResponseHTTP{}
+// @Router /gift_review [post]
+func createGiftReviwHandler(c *fiber.Ctx) error {
+	var giftReview db.GiftReview
+	if err := c.BodyParser(&giftReview); err != nil {
+		return c.SendString(err.Error())
+	}
+	giftReview.ID = "review_" + xid.New().String()
+
+	if giftReview.Mark == 0.0 {
+		return c.SendString("Mark is required")
+	}
+
+	ok := db.CreateGiftReview(giftReview)
+	if !ok {
+		return c.SendString("Error in CreateGiftReview operation")
+	}
+	return c.SendString("GiftReview is created")
+}
+
+// deleteGiftReview godoc
+// @Summary Delete a giftReview by ID.
+// @Description Deletes a giftReview from the database using the provided ID.
+// @Tags GiftReview
+// @Accept  json
+// @Produce json
+// @Param id path string true "GiftReview ID to delete"
+// @Success 200 {string} string "GiftReview deleted successfully"
+// @Failure 400 {string} string "Error in deleteGiftReview operation"
+// @Router /gift_review/{id} [delete]
+func deleteGiftReviewHandler(c *fiber.Ctx) error {
+	id := c.Params("id")
+
+	ok := db.DeleteGiftReview(id)
+	if !ok {
+		return c.SendString("Error in deleteGiftReview operation")
+	}
+	return c.SendString("GiftReview deleted successfully")
+}
+
+// getGiftReviewByID godoc
+// @Summary Get gift review by id 
+// @Description Get gift review by id 
+// @Tags GiftReview
+// @Accept json
+// @Produce json
+// @Success 200 {object} ResponseHTTP{data=[]db.GiftReview}
+// @Failure 503 {object} ResponseHTTP{}
+// @Router /gift_review/{id} [get]
+func getGiftReviewByIDHandler(c *fiber.Ctx) error{
+	reviewID := c.Params("id")
+	giftReview, ok := db.GetGiftReviewByID(reviewID)
+	if !ok {
+		return c.SendString("Error in getGiftReviewByID operation")
+	}
+	return c.JSON(giftReview)
+}
+
+// getGiftReviewsByGiftID godoc
+// @Summary Get all gift reviews by giftId 
+// @Description  Get all gift reviews by giftId
+// @Tags GiftReview
+// @Accept json
+// @Produce json
+// @Success 200 {object} ResponseHTTP{data=[]db.GiftReview}
+// @Failure 503 {object} ResponseHTTP{}
+// @Router /gift_review/{gift_id} [get]
+func getGiftReviewsByGiftIDHandler(c *fiber.Ctx) error{
+	giftID := c.Params("gift_id")
+	giftReviews, ok := db.GetGiftReviewsByGiftID(giftID)
+	if !ok {
+		return c.SendString("Error in getGiftReviewsByGiftID operation")
+	}
+	return c.JSON(giftReviews)
+}
 
 func superSecretHandler(c *fiber.Ctx) error {
 	user := c.Locals("user").(string)

@@ -17,19 +17,30 @@
     "host": "localhost:7777",
     "basePath": "/",
     "paths": {
-        "/": {
+        "/booked_gifts/create": {
             "post": {
-                "description": "get the status of server.",
+                "description": "Creates a booked gift in the wishlist based on the provided data.",
                 "consumes": [
-                    "*/*"
+                    "application/json"
                 ],
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "Gifts"
+                    "BookedGifts"
                 ],
-                "summary": "gifts",
+                "summary": "Creates a booked gift in the wishlist.",
+                "parameters": [
+                    {
+                        "description": "Booked Gift in Wishlist object to be created",
+                        "name": "BookedGiftInWishlist",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/db.BookedGiftInWishlist"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -42,7 +53,7 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/db.Gift"
+                                            "$ref": "#/definitions/db.BookedGiftInWishlist"
                                         }
                                     }
                                 }
@@ -58,7 +69,391 @@
                 }
             }
         },
-        "/docs/gifts": {
+        "/booked_gifts/{gift_id}": {
+            "delete": {
+                "description": "Deletes a booked gift from the wishlist based on the provided gift ID and user ID.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "BookedGifts"
+                ],
+                "summary": "Deletes a booked gift from the wishlist.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID of the booked gift to be deleted",
+                        "name": "gift_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/server.ResponseHTTP"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/db.BookedGiftInWishlist"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseHTTP"
+                        }
+                    }
+                }
+            }
+        },
+        "/booked_gifts/{user_id}": {
+            "get": {
+                "description": "Finds all booked gifts in the wishlist for a specific user based on the provided user ID.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "BookedGifts"
+                ],
+                "summary": "Finds booked gifts for a specific user.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID of the user",
+                        "name": "user_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/server.ResponseHTTP"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/db.BookedGiftInWishlist"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "503": {
+                        "description": "Service Unavailable",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseHTTP"
+                        }
+                    }
+                }
+            }
+        },
+        "/gift_category/create": {
+            "post": {
+                "description": "Creates a new gift category based on the provided data.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "GiftCategory"
+                ],
+                "summary": "Creates a new gift category.",
+                "parameters": [
+                    {
+                        "description": "Gift Category object to be created",
+                        "name": "GiftCategory",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/db.GiftCategory"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/server.ResponseHTTP"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/db.GiftCategory"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Failed to create gift category",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/gift_category/{id}": {
+            "delete": {
+                "description": "Deletes a gift category based on the provided category ID.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "GiftCategory"
+                ],
+                "summary": "Deletes a gift category.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID of the gift category to be deleted",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/server.ResponseHTTP"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/db.GiftCategory"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseHTTP"
+                        }
+                    }
+                }
+            }
+        },
+        "/gift_review": {
+            "post": {
+                "description": "Create a new review for gift.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "GiftReview"
+                ],
+                "summary": "Create a new review for gift.",
+                "parameters": [
+                    {
+                        "description": "Create GiftReview",
+                        "name": "Gift",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/db.GiftReview"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/server.ResponseHTTP"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/db.GiftReview"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseHTTP"
+                        }
+                    }
+                }
+            }
+        },
+        "/gift_review/{gift_id}": {
+            "get": {
+                "description": "Get all gift reviews by giftId",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "GiftReview"
+                ],
+                "summary": "Get all gift reviews by giftId",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/server.ResponseHTTP"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/db.GiftReview"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "503": {
+                        "description": "Service Unavailable",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseHTTP"
+                        }
+                    }
+                }
+            }
+        },
+        "/gift_review/{id}": {
+            "get": {
+                "description": "Get gift review by id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "GiftReview"
+                ],
+                "summary": "Get gift review by id",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/server.ResponseHTTP"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/db.GiftReview"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "503": {
+                        "description": "Service Unavailable",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseHTTP"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Deletes a giftReview from the database using the provided ID.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "GiftReview"
+                ],
+                "summary": "Delete a giftReview by ID.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "GiftReview ID to delete",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "GiftReview deleted successfully",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Error in deleteGiftReview operation",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/gifts": {
             "get": {
                 "description": "Get all books",
                 "consumes": [
@@ -68,7 +463,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "giftss"
+                    "Gifts"
                 ],
                 "summary": "Get all books",
                 "responses": {
@@ -100,13 +495,11 @@
                         }
                     }
                 }
-            }
-        },
-        "/gifts": {
+            },
             "post": {
                 "description": "get the status of server.",
                 "consumes": [
-                    "*/*"
+                    "application/json"
                 ],
                 "produces": [
                     "application/json"
@@ -115,6 +508,17 @@
                     "Gifts"
                 ],
                 "summary": "Creates a new gift.",
+                "parameters": [
+                    {
+                        "description": "Create Gift",
+                        "name": "Gift",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/db.Gift"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -142,12 +546,171 @@
                     }
                 }
             }
+        },
+        "/gifts/{id}": {
+            "get": {
+                "description": "Get one books",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Gifts"
+                ],
+                "summary": "Get one books",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Gift ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/server.ResponseHTTP"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/db.Gift"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "503": {
+                        "description": "Service Unavailable",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseHTTP"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Deletes a gift from the database using the provided ID.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Gifts"
+                ],
+                "summary": "Delete a gift by ID.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Gift ID to delete",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Gift deleted successfully",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Error in deleteGift operation",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "description": "get the status of server.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Gifts"
+                ],
+                "summary": "Creates a new gift.",
+                "parameters": [
+                    {
+                        "description": "Create Gift",
+                        "name": "Gift",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/db.Gift"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/server.ResponseHTTP"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/db.Gift"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseHTTP"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseHTTP"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
+        "db.BookedGiftInWishlist": {
+            "type": "object",
+            "properties": {
+                "gift_id": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "string"
+                }
+            }
+        },
         "db.Gift": {
             "type": "object",
             "properties": {
+                "category": {
+                    "type": "string"
+                },
                 "comments": {
                     "type": "string"
                 },
@@ -159,7 +722,6 @@
                     "type": "string"
                 },
                 "link": {
-                    "description": "IsFavorite  bool   `json:\"is_favorite\"`",
                     "type": "string"
                 },
                 "name": {
@@ -172,6 +734,37 @@
                 "price": {
                     "description": "TODO: use decimal.Decimal instead of int",
                     "type": "integer"
+                }
+            }
+        },
+        "db.GiftCategory": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "db.GiftReview": {
+            "type": "object",
+            "properties": {
+                "comment": {
+                    "type": "string"
+                },
+                "date": {
+                    "type": "string"
+                },
+                "gift_id": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "mark": {
+                    "type": "number"
                 }
             }
         },

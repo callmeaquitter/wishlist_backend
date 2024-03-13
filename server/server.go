@@ -1,8 +1,6 @@
 package server
 
 import (
-	
-
 	swagger "github.com/arsmn/fiber-swagger/v2"
 	"github.com/gofiber/fiber/v2"
 )
@@ -36,22 +34,30 @@ func Setup() {
 
 	gifts.Patch("/:id", updateGiftHandler)
 
-	bookedGift := app.Group("/booked_gifts")
+	// ??
+	bookedGift := app.Group("/booked_gifts", authMiddleware)
 	bookedGift.Post("", createBookedGiftInWishlist)
 
-	// bookedGift.Delete("/:user_id", deleteGiftHandler)
-
+	//!!!!
+	bookedGift.Delete("/:gift_id", deleteBookedGiftInWishlist)
 
 	//http://localhost:7777/booked_gifts/:user_id
 	bookedGift.Get("/:user_id", findUserBookedGifts)
-
 
 	giftCategory := app.Group("/gift_category")
 	giftCategory.Post("", createGiftCategory)
 
 	giftCategory.Delete("/:id", deleteGiftCategory)
 
-	
+	giftReview := app.Group("/gift_review")
+	giftReview.Post("", createGiftReviwHandler)
+
+	giftReview.Delete("/:id", deleteGiftReviewHandler)
+
+	giftReview.Get("/review/:id", getGiftReviewByIDHandler)
+
+	giftReview.Get("/gift/:gift_id", getGiftReviewsByGiftIDHandler)
+
 	//
 	//request -> middleware -> handler -> response
 	supersecret := app.Group("/supersecret", authMiddleware)
