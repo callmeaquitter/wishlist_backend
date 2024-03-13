@@ -14,21 +14,27 @@ type Gift struct {
 }
 
 type Quest struct {
-	ID         int 		`json:"id"`
-	SubquestID int    	`json:"subquest_id"`
-	UserID     string   `json:"user_id"`
-	IsDone     bool   	`json:"is_done"`
+	ID         string `json:"id"`
+	SubquestID string `json:"subquest_id"`
+	UserID     string `json:"user_id"`
+	IsDone     bool   `json:"is_done"`
 }
 
 type Subquest struct {
-	ID			int		`json:"id"`
-	TaskID		int		`json:"task_id"`
-	Reward		int		`json:"reward"`
-	IsDone		int		`json:"is_done"`
+	ID     string `json:"id"`
+	TaskID string `json:"task_id"`
+	Reward int    `json:"reward"`
+	IsDone int    `json:"is_done"`
 }
 
 type Tasks struct {
-	ID				int			`json:"id"`
-	Name			string		`json:"name"`
-	Description		string 		`json:"description"`
+	ID          string `json:"id"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
+}
+
+type OfflineShops struct {
+	ID       string `json:"id"`
+	Name     string `json:"name"`
+	Location string `json:"location"`
 }

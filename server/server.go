@@ -1,10 +1,9 @@
 package server
 
 import (
-	
-
 	swagger "github.com/arsmn/fiber-swagger/v2"
 	"github.com/gofiber/fiber/v2"
+	cors "github.com/gofiber/fiber/v2/middleware/cors"
 )
 
 var app *fiber.App
@@ -12,6 +11,9 @@ var app *fiber.App
 func Setup() {
 	// Default config
 	app = fiber.New()
+	app.Use(cors.New(cors.Config{
+		AllowOrigins: "*",
+		AllowHeaders: "Origin, Content-Type, Accept"}))
 
 	app.Get("/docs/*", swagger.HandlerDefault)
 	//https://docs.stripe.com/api/charges
@@ -35,6 +37,45 @@ func Setup() {
 	gifts.Get("/:id", getOneGiftHandler)
 
 	gifts.Patch("/:id", updateGiftHandler)
+
+	//Route: POST /quest
+	quest := app.Group("/quest")
+	quest.Post("", createQuestHandler)
+
+	quest.Delete("/:id", deleteQuestHandler)
+
+	gifts.Patch("/:id", updateQuestHandler)
+
+	//Route: POST /subquest
+	subquest := app.Group("/subquest")
+	subquest.Post("", createSubquestHandler)
+
+	subquest.Delete("/:id", deleteSubquestHandler)
+
+	subquest.Get("", getManySubquestHandler)
+
+	subquest.Get("/:id", getOneSubquestHandler)
+
+	//Route: POST /tasks
+	tasks := app.Group("/tasks")
+	tasks.Post("", createTasksHandler)
+
+	tasks.Delete("/:id", deleteTasksHandler)
+
+	tasks.Get("", getManyTasksHandler)
+
+	tasks.Get("/:id", getOneTasksHandler)
+
+	tasks.Patch("/:id", updateTasksHandler)
+
+	//Route: POST /offlineshops
+	offlineshops := app.Group("/offlineshops")
+
+	offlineshops.Post("", createOfflineShopsHandler)
+
+	offlineshops.Delete("/:id", deleteOfflineShopsHandler)
+
+	offlineshops.Patch("/:id", updateOfflineShopsHandler)
 
 	//
 	//request -> middleware -> handler -> response

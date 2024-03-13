@@ -51,7 +51,6 @@ func UpdateGift(gift Gift) bool {
 	return true
 }
 
-
 //Quest
 
 func CreateQuest(quest Quest) bool {
@@ -73,7 +72,7 @@ func DeleteQuest(id string) bool {
 }
 
 func UpdateQuest(quest Quest) bool {
-	result := Database.Create(&quest).Update("name", "hello") //TODO
+	result := Database.Model(&quest).Updates(map[string]interface{}{"subquest_id": quest.SubquestID, "user_id": quest.UserID, "is_done": quest.IsDone})
 	if result.Error != nil {
 		fmt.Println("Error in updateQuest", result.Error)
 		return false
@@ -87,6 +86,24 @@ func CreateSubquest(subquest Subquest) bool {
 	result := Database.Model(&subquest)
 	if result.Error != nil {
 		fmt.Println("Error in createSubquest", result.Error)
+		return false
+	}
+	return true
+}
+
+func FindManySubquest(subquest Subquest) bool {
+	result := Database.Find(&subquest)
+	if result.Error != nil {
+		fmt.Println("Error in findManySubquest", result.Error)
+		return false
+	}
+	return true
+}
+
+func FindOneSubquest(subquest Subquest) bool {
+	result := Database.Take(&subquest)
+	if result.Error != nil {
+		fmt.Println("Error in findOneSubquest", result.Error)
 		return false
 	}
 	return true
@@ -122,7 +139,7 @@ func DeleteTasks(id string) bool {
 }
 
 func UpdateTasks(tasks Tasks) bool {
-	result := Database.Create(&tasks).Update("name", "hello") //TODO
+	result := Database.Model(&tasks).Updates(map[string]interface{}{"name": tasks.Name, "description": tasks.Description})
 	if result.Error != nil {
 		fmt.Println("Error in updateTasks", result.Error)
 		return false
@@ -148,6 +165,31 @@ func FindOneTasks(tasks Tasks) bool {
 	return true
 }
 
+//OfflineShops
 
-таски созд наход удал редак
-саб не редакт 
+func CreateOfflineShops(offlineshops OfflineShops) bool {
+	result := Database.Model(&offlineshops)
+	if result.Error != nil {
+		fmt.Println("Error in createOfflineShops", result.Error)
+		return false
+	}
+	return true
+}
+
+func UpdateOfflineShops(offlineshops OfflineShops) bool {
+	result := Database.Model(&offlineshops).Updates(map[string]interface{}{"name": offlineshops.Name, "location": offlineshops.Location})
+	if result.Error != nil {
+		fmt.Println("Error in updateOfflineShops", result.Error)
+		return false
+	}
+	return true
+}
+
+func DeleteOfflineShops(id string) bool {
+	result := Database.Delete(OfflineShops{ID: id})
+	if result.Error != nil {
+		fmt.Println("Error in deleteOfflineShops", result.Error)
+		return false
+	}
+	return true
+}
