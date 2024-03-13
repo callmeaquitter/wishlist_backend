@@ -1,5 +1,7 @@
 package server
 
+import "wishlist/db"
+
 var sessions = map[string]string{
 	"loveyou":         "Axtem",
 	"callmeback":      "Asya",
@@ -42,3 +44,12 @@ func getUser(login, password string) (string, bool) {
 //3. Create a register & login handlers
 // - Register: add user to db, return session/jwt token
 // - Login: check user in db, return session/jwt token
+
+func test(wishlists []db.UserWishlist) []string {
+	var WishlistID []string
+	for _, wishlist := range wishlists {
+		WishlistID = append(WishlistID, wishlist.ID)
+	}
+	return WishlistID
+}
+

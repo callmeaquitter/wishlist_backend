@@ -25,10 +25,12 @@ func Setup(dsn string) {
 		fmt.Println("Error in New | Establishing a connection", err)
 	}
 
-	err = db.AutoMigrate(&Gift{}, &User{}, &Role{}, )
+	err = db.AutoMigrate(&Gift{}, &User{}, &Role{}, &UserWishlist{})
 	if err != nil {
 		fmt.Println("Couldn't Automigrate Database.", err)
 	}
+	db.Model(&UserWishlist{})
+	
 
 	Database = db
 }

@@ -8,9 +8,7 @@ type Gift struct {
 	Price       int    `json:"price"` //TODO: use decimal.Decimal instead of int
 	Photo       string `json:"photo"`
 	Description string `json:"description"`
-	IsFavorite  bool   `json:"is_favorite"`
 	Link        string `json:"link"`
-	Comments    string `json:"comments"`
 }
 
 type User struct {
@@ -25,17 +23,18 @@ type User struct {
 }
 
 type UserWishlist struct {
+	ID     string `json:"id"`
 	Name   string `json:"name"`
-	UserID string    `json:"user_id" gorm:"primaryKey"`
+	UserID string `json:"user_id"`
 }
 
 type Wishes struct {
-	GiftID	string `json:"gift_id" gorm:"primaryKey"`
+	GiftID     string `json:"gift_id" gorm:"primaryKey"`
 	WishlistID string `json:"wishlist_id" gorm:"primaryKey"`
 }
 
 type Role struct {
-	ID   string    `json:"id"`
+	ID   string `json:"id"`
 	Name string `json:"name"`
 }
 

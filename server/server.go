@@ -11,7 +11,7 @@ var app *fiber.App
 func Setup() {
 	// Default config
 	app = fiber.New()
-	
+
 	app.Use(cors.New(cors.Config{
 		AllowOrigins: "*",
 		AllowHeaders: "Origin, Content-Type, Accept"}))
@@ -49,6 +49,9 @@ func Setup() {
 
 	//
 	// app.Post("/register", registerHandler)
+
+	wishlists := app.Group("/wishlists")
+	wishlists.Get("")
 
 }
 

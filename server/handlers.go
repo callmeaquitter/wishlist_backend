@@ -144,41 +144,92 @@ func loginHandler(c *fiber.Ctx) error {
 	return c.JSON(AuthResponse{Session: session})
 }
 
-func CreateWish(c *fiber.Ctx) error {
+func AddWish(c *fiber.Ctx) error {
 	var wish db.Wishes
-	ok := db.CreateWish(wish)
+	gift_id := c.Params("gift_id")
+	wishlist_id := c.Params("wishlist_id")
+
+	if err := c.BodyParser(&wish); err != nil {
+		return c.SendString(err.Error())
+	}
+	ok := db.AddWish(wishlist_id, gift_id)
 	if !ok {
 		return c.SendString("Error in Create operation")
 	}
 	return c.SendString("Create Wish succesfully")
 }
 
-func GetManyWishes(c *fiber.Ctx) error {
-	var wish db.Wishes
-	ok := db.GetManyWishes(wish)
-	if !ok {
-		return c.SendString("Error in GetManyWishes operation")
-	}
-	return c.SendString("Get wishes succesfully")
+// Not need now
 
-}
+// func GetOneWish(c *fiber.Ctx) error {
+// 	var wish db.Wishes
+// 	ok := db.GetOneWish(wish)
+// 	if !ok {
+// 		return c.SendString("Error in GetOneWish operation")
+// 	}
+// 	return c.SendString("Get one Wish succesfully")
 
-func GetOneWish(c *fiber.Ctx) error {
-	var wish db.Wishes
-	ok := db.GetOneWish(wish)
-	if !ok {
-		return c.SendString("Error in GetOneWish operation")
-	}
-	return c.SendString("Get one Wish succesfully")
-
-}
+// }
 
 func DeleteWish(c *fiber.Ctx) error {
-	giftID := c.Params("gift_id")
 	wishlistID := c.Params("wishlist_id")
-	ok := db.DeleteWish(giftID, wishlistID)
+	giftID := c.Params("gift_id")
+	ok := db.DeleteWish(wishlistID, giftID)
 	if !ok {
-		return c.SendString("Error in Create operation")
+		return c.SendString("Error in Delete wish operation")
 	}
 	return c.SendString("Create Wish succesfully")
+}
+
+func CreateWishlist(c *fiber.Ctx) error {
+	var wishlist db.UserWishlist
+	if err := c.BodyParser(&wishlist); err != nil {
+		return c.SendString(err.Error())
+	}
+	ok := db.CreateWishlist(wishlist)
+	if !ok {
+		return c.SendString("Error in Create wishlist operation")
+	}
+
+	return c.SendString("Create Wishlist succesfully")
+}
+
+func FindManyWishlists(c *fiber.Ctx) error {
+	var wishlist db.UserWishlist
+	ok := db.FindManyWishlists(wishlist)
+	if !ok {
+		return c.SendString("Error in FindManyWishlists operation")
+	}
+	return c.SendString("Get all wishlists succesfully")
+}
+
+func FindAllWishesInWishlist(c *fiber.Ctx) error {
+	wishlistID := c.Params("wishlist_id")
+	ok := db.GetManyWishesInWishlist(wishlistID)
+	if !ok {
+		return c.SendString("Error in FindAllWishesInWishlist operation")
+	}
+
+	return c.SendString("Get all wishlists succesfully")
+}
+
+func UpdateWishlist(c *fiber.Ctx) error {
+	wishlistID := c.Params("wishlist_id")
+	name := c.FormValue("name")
+	ok := db.UpdateWishlist(wishlistID, name)
+	if !ok {
+		return c.SendString("Error in UpdateGift Operation")
+	}
+	return c.SendString("Update wishlist succesfully")
+}
+
+func DeleteWishist(c *fiber.Ctx) error {
+	wishlistID := c.Params("wishlist_id")
+	giftID := c.Params("gift_id")
+	userID := "user_1"
+	ok := db.DeleteWishlist(wishlistID, giftID, userID)
+	if !ok {
+		return c.SendString("Error in DeleteGift Operation")
+	}
+	return c.SendString("Delete wishlist succesfully")
 }

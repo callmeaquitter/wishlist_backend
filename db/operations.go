@@ -2,7 +2,6 @@ package db
 
 import (
 	"fmt"
-
 	_ "wishlist/docs"
 )
 
@@ -70,54 +69,98 @@ func CreateWishlist(wishlist UserWishlist) bool {
 
 func FindManyWishlists(wishlists UserWishlist) bool {
 	result := Database.Find(&wishlists)
-	if result != nil {
+	if result.Error != nil {
 		fmt.Println("Error in FindManyWishlists", result.Error)
 		return false
 	}
 	return true
 }
 
-func FindWishlistByName(wishlist UserWishlist) bool {
-	result := Database.Take(&wishlist)
-	if result != nil {
+func FindWishlistByName(name string) bool {
+	var wishlist UserWishlist
+	result := Database.Where(&wishlist, name).Take(&wishlist)
+	if result.Error != nil {
 		fmt.Println("Error in FindWishlistByName", result.Error)
 		return false
 	}
 	return true
 }
 
-func CreateWish(wishes Wishes, wishlistID string) bool {
-	user
-	result := Database.Create(&wishes)
-	if result != nil {
+func UpdateWishlist(wishlistID, wishlistName string) bool {
+	var wishlist UserWishlist
+	if err := Database.Where(&wishlist, wishlistID); err != nil {
+		fmt.Println("Error in finding wishlist for update", err)
+		return false
+	}
+
+	result := Database.Update("name", wishlistName)
+	if result.Error != nil {
+		fmt.Println("Error in UpdateWishlist", result.Error)
+		return false
+	}
+
+	return true
+}
+
+func AddWish(wishlistID, wishID string) bool {
+	var wish Wishes
+	result := Database.Select(wishlistID, wishID).Create(&wish)
+	if result.Error != nil {
 		fmt.Println("Error in CreateWish", result.Error)
+		return false
 	}
+
 	return true
 }
 
-func GetManyWishes(wishes Wishes) bool {
-	result := Database.Find(&wishes)
-	if result != nil {
-		fmt.Println("Error in GetManyWishes")
+func GetManyWishesInWishlist(wishlistID string) bool {
+	var wishes Wishes
+	result := Database.Where(&wishes, wishlistID).Find(&wishes)
+	if result.Error != nil {
+		fmt.Println("Error in GetManyWishes", result.Error)
 		return false
 	}
 	return true
 }
 
-func GetOneWish(wish Wishes) bool {
-	result := Database.Take(&wish)
-	if result != nil {
-		fmt.Println("Error in GetOneWish")
+// func GetOneWish(wish Wishes) bool {
+// 	result := Database.Take(&wish)
+// 	if result != nil {
+// 		fmt.Println("Error in GetOneWish")
+// 		return false
+// 	}
+// 	return true
+// }
+
+func DeleteWish(wishlistID, GiftID string) bool {
+	var wish Wishes
+	result := Database.Where(&wish, wishlistID, GiftID).Delete(&wish)
+	if result.Error != nil {
+		fmt.Println("Error in DeleteWish", result.Error)
 		return false
 	}
 	return true
 }
 
-func DeleteWish(giftID, wishlistID string) bool {
-	result := Database.Delete(Wishes{GiftID: giftID, WishlistID: wishlistID})
-	if result != nil {
-		fmt.Println("Error in DeleteWish")
+func DeleteWishlist(wishlistID, GiftID, userID string) bool {
+	var wishlist UserWishlist
+	var wishes Wishes
+
+	if err := Database.Where(&wishlist, wishlistID, userID).First(&wishlist); err != nil {
+		fmt.Println("Error in finding wishlist for deleting", err)
 		return false
 	}
+
+	if err := Database.Where(&wishes, wishlistID, GiftID).Delete(&wishes); err != nil {
+		fmt.Println("Error in deleting wishes", err)
+		return false
+	}
+
+	result := Database.Where(&wishlist, wishlistID, userID).Delete(&wishlist)
+	if result.Error != nil {
+		fmt.Println("Error in DeleteWishlist", result.Error)
+	}
+	
 	return true
+
 }
