@@ -86,16 +86,34 @@ func FindWishlistByName(name string) bool {
 	return true
 }
 
+// func UpdateWishlist(wishlistID, wishlistName string) bool {
+// 	var wishlist UserWishlist
+// 	if err := Database.Where("id = ?", wishlistID).First(&wishlist); err.Error != nil {
+// 		fmt.Println("Ошибка при поиске списка желаемого для обновления", err.Error)
+// 		return false
+// 	}
+
+// 	result := Database.Model(&wishlist).Update("name", wishlistName)
+// 	if result.Error != nil {
+// 		fmt.Println("Ошибка в UpdateWishlist", result.Error)
+// 		return false
+// 	}
+
+// 	return true
+// }
+
 func UpdateWishlist(wishlistID, wishlistName string) bool {
 	var wishlist UserWishlist
-	if err := Database.Where(&wishlist, wishlistID); err != nil {
-		fmt.Println("Error in finding wishlist for update", err)
+
+	err := Database.Where(&UserWishlist{ID: wishlistID}).First(&wishlist)
+	if err.Error != nil {
+		fmt.Println("Ошибка при поиске списка желаемого для обновления", err.Error)
 		return false
 	}
 
-	result := Database.Update("name", wishlistName)
+	result := Database.Model(&wishlist).Update("name", wishlistName)
 	if result.Error != nil {
-		fmt.Println("Error in UpdateWishlist", result.Error)
+		fmt.Println("Ошибка в UpdateWishlist", result.Error)
 		return false
 	}
 

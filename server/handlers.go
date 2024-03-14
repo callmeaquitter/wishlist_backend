@@ -1,6 +1,7 @@
 package server
 
 import (
+	"fmt"
 	"wishlist/db"
 	_ "wishlist/docs"
 
@@ -112,6 +113,7 @@ func getOneGiftHandler(c *fiber.Ctx) error {
 // @Failure 400 {object} ResponseHTTP{}
 // @Failure 500 {object} ResponseHTTP{}
 // @Router /gifts/{id} [patch]
+
 func updateGiftHandler(c *fiber.Ctx) error {
 	var gift db.Gift
 	ok := db.UpdateGift(gift)
@@ -219,11 +221,18 @@ func FindAllWishesInWishlistHandler(c *fiber.Ctx) error {
 }
 
 func UpdateWishlist(c *fiber.Ctx) error {
-	wishlistID := c.Params("wishlist_id")
-	name := c.FormValue("name")
-	ok := db.UpdateWishlist(wishlistID, name)
+	wishlistID := c.Params("id")
+	fmt.Println("wishlist id", wishlistID)
+	var wishlistName struct {
+		Name string `json:"name"`
+	}
+	if err := c.BodyParser(&wishlistName); err != nil {
+		return err
+	}
+
+	ok := db.UpdateWishlist(wishlistID, wishlistName.Name)
 	if !ok {
-		return c.SendString("Error in UpdateGift Operation")
+		return c.SendString("Error in UpdateWishlist Operation")
 	}
 	return c.SendString("Update wishlist succesfully")
 }
