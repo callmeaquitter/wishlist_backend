@@ -14,36 +14,28 @@ var validate = validator.New()
 
 var app *fiber.App
 
+// Custom validation — sees if IDs the user provides abide by the template
+func ValidateIDFormat(tag string) validator.Func {
+	return func (fl validator.FieldLevel) bool {
+		text := fl.Field().String()
+		if !strings.Contains(strings.ToLower(text), tag) {
+			return false
+		}
+		if !regexp.
+			MustCompile(`^[a-zA-Z0-9]*$`).
+			MatchString(text[strings.Index(text, "_")+1:]) {
+			return false
+		}
+		return true
+	}
+}
+
 func Setup() {
 	// Default config
 	app = fiber.New()
 
-	// Custom validation — sees if IDs the user provides abide by the template
-	validate.RegisterValidation("seller_", func(fl validator.FieldLevel) bool {
-		text := fl.Field().String()
-		if !strings.Contains(strings.ToLower(text), "seller_") {
-			return false
-		}
-		if !regexp.
-			MustCompile(`^[a-zA-Z0-9]*$`).
-			MatchString(text[strings.Index(text, "_")+1:]) {
-			return false
-		}
-		return true
-	})
-
-	validate.RegisterValidation("service_", func(fl validator.FieldLevel) bool {
-		text := fl.Field().String()
-		if !strings.Contains(strings.ToLower(text), "service_") {
-			return false
-		}
-		if !regexp.
-			MustCompile(`^[a-zA-Z0-9]*$`).
-			MatchString(text[strings.Index(text, "_")+1:]) {
-			return false
-		}
-		return true
-	})
+	validate.RegisterValidation("seller_", ValidateIDFormat("seller_"))
+	validate.RegisterValidation("service_", ValidateIDFormat("service_"))
 
 	app.Use(cors.New())
 	app.Use(cors.New(cors.Config{
