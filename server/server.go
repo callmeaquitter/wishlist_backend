@@ -59,7 +59,7 @@ func Setup() {
 	wishes := app.Group("/wishes")
 	wishes.Get("/:wishlist_id", FindManyWishlistsHandler)
 	wishes.Post("/:gift_id/:wishlist_id", AddWishHandler)
-	wishes.Delete("/:wishlist_id/:wish_id", DeleteWishHandler)
+	wishes.Delete("/:wishlist_id/:gift_id", DeleteWishHandler)
 
 	user := app.Group("/users")
 	user.Post("", CreateUserHandler)

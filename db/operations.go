@@ -67,7 +67,7 @@ func CreateWishlist(wishlist UserWishlist) bool {
 	return true
 }
 
-func FindManyWishlists(wishlists UserWishlist) bool {
+func FindManyWishlists(wishlists []UserWishlist) bool {
 	result := Database.Find(&wishlists)
 	if result.Error != nil {
 		fmt.Println("Error in FindManyWishlists", result.Error)
@@ -78,29 +78,13 @@ func FindManyWishlists(wishlists UserWishlist) bool {
 
 func FindWishlistByName(name string) bool {
 	var wishlist UserWishlist
-	result := Database.Where(&wishlist, name).Take(&wishlist)
+	result := Database.Where(&UserWishlist{Name: name}).Take(&wishlist)
 	if result.Error != nil {
 		fmt.Println("Error in FindWishlistByName", result.Error)
 		return false
 	}
 	return true
 }
-
-// func UpdateWishlist(wishlistID, wishlistName string) bool {
-// 	var wishlist UserWishlist
-// 	if err := Database.Where("id = ?", wishlistID).First(&wishlist); err.Error != nil {
-// 		fmt.Println("Ошибка при поиске списка желаемого для обновления", err.Error)
-// 		return false
-// 	}
-
-// 	result := Database.Model(&wishlist).Update("name", wishlistName)
-// 	if result.Error != nil {
-// 		fmt.Println("Ошибка в UpdateWishlist", result.Error)
-// 		return false
-// 	}
-
-// 	return true
-// }
 
 func UpdateWishlist(wishlistID, wishlistName string) bool {
 	var wishlist UserWishlist
@@ -132,7 +116,7 @@ func AddWish(wishlistID, giftID string) bool {
 }
 
 func GetManyWishesInWishlist(wishlistID string) bool {
-	var wishes Wishes
+	var wishes []Wishes
 	result := Database.Where(&wishes, wishlistID).Find(&wishes)
 	if result.Error != nil {
 		fmt.Println("Error in GetManyWishes", result.Error)
@@ -150,9 +134,9 @@ func GetManyWishesInWishlist(wishlistID string) bool {
 // 	return true
 // }
 
-func DeleteWish(wishlistID, GiftID string) bool {
+func DeleteWish(wishlistID, giftID string) bool {
 	var wish Wishes
-	result := Database.Where(&wish, wishlistID, GiftID).Delete(&wish)
+	result := Database.Where(&Wishes{GiftID: giftID, WishlistID: wishlistID}).Delete(&wish)
 	if result.Error != nil {
 		fmt.Println("Error in DeleteWish", result.Error)
 		return false

@@ -176,6 +176,7 @@ func AddWishHandler(c *fiber.Ctx) error {
 func DeleteWishHandler(c *fiber.Ctx) error {
 	wishlistID := c.Params("wishlist_id")
 	giftID := c.Params("gift_id")
+	fmt.Println("giftID", giftID)
 	ok := db.DeleteWish(wishlistID, giftID)
 	if !ok {
 		return c.SendString("Error in Delete wish operation")
@@ -202,7 +203,7 @@ func CreateWishlistHandler(c *fiber.Ctx) error {
 }
 
 func FindManyWishlistsHandler(c *fiber.Ctx) error {
-	var wishlist db.UserWishlist
+	var wishlist []db.UserWishlist
 	ok := db.FindManyWishlists(wishlist)
 	if !ok {
 		return c.SendString("Error in FindManyWishlists operation")
