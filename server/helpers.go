@@ -2,13 +2,13 @@ package server
 
 import "wishlist/db"
 
-var sessions = map[string]string{
-	"loveyou":         "Axtem",
-	"callmeback":      "Asya",
-	"cheatcode":       "Misha",
-	"totellthetruth":  "Tolya",
-	"prostopelmeshki": "Zlata",
-}
+// var sessions = map[string]string{
+// 	"loveyou":         "Axtem",
+// 	"callmeback":      "Asya",
+// 	"cheatcode":       "Misha",
+// 	"totellthetruth":  "Tolya",
+// 	"prostopelmeshki": "Zlata",
+// }
 
 
 
