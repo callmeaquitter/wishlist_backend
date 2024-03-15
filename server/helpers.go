@@ -10,19 +10,7 @@ var sessions = map[string]string{
 	"prostopelmeshki": "Zlata",
 }
 
-func getUserID(session string) (string, bool) {
-	user, ok := sessions[session] //TODO: change to db operation
-	return user, ok
-}
 
-func getUser(login, password string) (string, bool) {
-	for session, user := range sessions { //TODO: change to db operation
-		if user == login {
-			return session, true
-		}
-	}
-	return "", false
-}
 
 //Step by step guide to add a new feature:
 //1. Create a model (if doesn't exist)

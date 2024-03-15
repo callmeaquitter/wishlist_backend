@@ -208,3 +208,32 @@ func CreateUser(user User) bool {
 	}
 	return true
 }
+
+func FindUser(login, password string) (User, bool) {
+	var user User
+	result := Database.Where(&User{Login: login, Password: password}).First(&user)
+	if result.Error != nil {
+		fmt.Println("Error in FindUser", result.Error)
+		return user, false
+	}
+	return user, true
+}
+
+func CreateSession(session Session) bool {
+	result := Database.Create(&session)
+	if result.Error != nil {
+		fmt.Println("Error in CreateSession", result.Error)
+		return false
+	}
+	return true
+}
+
+func FindSession(sessionID string) (Session, bool) {
+	var session Session
+	result := Database.Where(&Session{ID: sessionID}).First(&session)
+	if result.Error != nil {
+		fmt.Println("Error in FindSession", result.Error)
+		return session, false
+	}
+	return session, true
+}

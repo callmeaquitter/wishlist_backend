@@ -17,6 +17,13 @@ type User struct {
 	Birthday string `json:"birthday"`
 	Coins    int    `json:"coins"`
 	RoleName string `json:"role_name"`
+	Login    string `json:"login"`
+	Password string `json:"password"`
+}
+
+type Session struct{
+	ID string `json:"id"`
+	UserID string `json:"user_id"`
 }
 
 type UserWishlist struct {
