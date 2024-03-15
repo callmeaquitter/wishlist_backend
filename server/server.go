@@ -35,7 +35,7 @@ func Setup() {
 	gifts.Patch("/:id", updateGiftHandler)
 
 	// ??
-	bookedGift := app.Group("/booked_gifts", authMiddleware)
+	bookedGift := app.Group("/booked_gifts")
 	bookedGift.Post("", createBookedGiftInWishlist)
 
 	//!!!!

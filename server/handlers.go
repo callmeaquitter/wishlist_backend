@@ -112,24 +112,32 @@ func getOneGiftHandler(c *fiber.Ctx) error {
 }
 
 // Update Gift godoc
-// @Summary Creates a new gift.
+// @Summary update gift by ID
 // @Description get the status of server.
 // @Tags 	Gifts
 // @Accept  json
 // @Produce json
-// @Param Gift body db.Gift true "Create Gift"
+// @Param Gift body db.Gift true "Update Gift"
 // @Success 200 {object} ResponseHTTP{data=db.Gift}
 // @Failure 400 {object} ResponseHTTP{}
 // @Failure 500 {object} ResponseHTTP{}
 // @Router /gifts/{id} [patch]
 func updateGiftHandler(c *fiber.Ctx) error {
-	var gift db.Gift
-	ok := db.UpdateGift(gift)
-	if !ok {
-		return c.SendString("Error in updateGift operation")
-	}
-	return c.SendString("Gift updated Succesfully")
+    giftID := c.Params("id")
+
+    var updatedGift db.Gift
+    if err := c.BodyParser(&updatedGift); err != nil {
+        return c.Status(fiber.StatusBadRequest).SendString("Error parsing request body")
+    }
+
+    ok := db.UpdateGift(giftID, updatedGift)
+    if !ok {
+        return c.SendString("Error in updateGift operation")
+    }
+
+    return c.SendString("Gift updated successfully")
 }
+
 
 // createBookedGiftInWishlist godoc
 // @Summary Creates a booked gift in the wishlist.
@@ -165,8 +173,8 @@ func createBookedGiftInWishlist(c *fiber.Ctx) error {
 // @Router /booked_gifts/{gift_id} [delete]
 func deleteBookedGiftInWishlist(c *fiber.Ctx) error {
 	giftID := c.Params("gift_id")
-	userID := c.Locals("user_id").(string)
-	ok := db.DeleteBookedGift(userID, giftID)
+	
+	ok := db.DeleteBookedGift(giftID)
 	if !ok {
 		return c.SendString("Error in deleteBookedGift operation")
 	}

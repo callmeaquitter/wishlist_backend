@@ -42,14 +42,48 @@ func FindOneGift(gift Gift) bool {
 	return true
 }
 
-func UpdateGift(gift Gift) bool {
-	result := Database.Model(&gift).Update("name", "hello")
-	if result.Error != nil {
-		fmt.Println("Error in updateGift", result.Error)
-		return false
-	}
-	return true
+
+
+func UpdateGift(id string, updatedGift Gift) bool {
+    
+    existingGift := Gift{}
+    result := Database.First(&existingGift, "id = ?", id)
+    if result.Error != nil {
+        fmt.Println("Error in finding gift:", result.Error)
+        return false
+    }
+
+	if updatedGift.Name != "" {
+        existingGift.Name = updatedGift.Name
+    }
+    if updatedGift.Price != 0 {
+        existingGift.Price = updatedGift.Price
+    }
+    if updatedGift.Photo != "" {
+        existingGift.Photo = updatedGift.Photo
+    }
+	if updatedGift.Description != "" {
+        existingGift.Description = updatedGift.Description
+    }
+	if updatedGift.Link != "" {
+        existingGift.Link = updatedGift.Link
+    }
+	if updatedGift.Comments != "" {
+        existingGift.Comments = updatedGift.Comments
+    }
+	if updatedGift.Category != "" {
+        existingGift.Category = updatedGift.Category
+    }
+	result = Database.Save(&existingGift)
+    if result.Error != nil {
+        fmt.Println("Error updating the gift:", result.Error)
+        return false
+    }
+
+    return true
 }
+	
+
 
 func CreateBookedGift(BookedGiftInWishlist BookedGiftInWishlist) bool {
 	result := Database.Create(&BookedGiftInWishlist)
@@ -59,9 +93,9 @@ func CreateBookedGift(BookedGiftInWishlist BookedGiftInWishlist) bool {
 	}
 	return true
 }
-
-func DeleteBookedGift(UserID, GiftID string) bool {
-	result := Database.Delete(BookedGiftInWishlist{UserID: UserID, GiftID: GiftID})
+//!!!
+func DeleteBookedGift(GiftID string) bool {
+	result := Database.Delete(BookedGiftInWishlist{GiftID: GiftID})
 	if result.Error != nil {
 		fmt.Println("Error in deleteBookedGift", result.Error)
 		return false
