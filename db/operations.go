@@ -67,8 +67,9 @@ func CreateWishlist(wishlist UserWishlist) bool {
 	return true
 }
 
-func FindManyWishlists(wishlists []UserWishlist) bool {
-	result := Database.Find(&wishlists)
+func FindManyWishlists(userID string) bool {
+	var wishlist UserWishlist
+	result := Database.Where(&UserWishlist{UserID: userID}).Find(&wishlist)
 	if result.Error != nil {
 		fmt.Println("Error in FindManyWishlists", result.Error)
 		return false

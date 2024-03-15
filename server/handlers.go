@@ -137,12 +137,11 @@ func registerHandler(c *fiber.Ctx) error {
 	if user.Login == "" {
 		return c.SendString("Login is required") //TODO: Check unique username
 	}
+
 	if user.Password == "" {
 		return c.SendString("Password is required")
 	}
-
 	user.ID = "user_" + xid.New().String()
-
 	ok := db.CreateUser(user)
 	if !ok {
 		return c.SendString("Error in CreateUser operation")
@@ -196,18 +195,6 @@ func AddWishHandler(c *fiber.Ctx) error {
 	return c.SendString("Create Wish succesfully")
 }
 
-// Not need now
-
-// func GetOneWish(c *fiber.Ctx) error {
-// 	var wish db.Wishes
-// 	ok := db.GetOneWish(wish)
-// 	if !ok {
-// 		return c.SendString("Error in GetOneWish operation")
-// 	}
-// 	return c.SendString("Get one Wish succesfully")
-
-// }
-
 func DeleteWishHandler(c *fiber.Ctx) error {
 	wishlistID := c.Params("wishlist_id")
 	giftID := c.Params("gift_id")
@@ -226,7 +213,7 @@ func CreateWishlistHandler(c *fiber.Ctx) error {
 	}
 
 	wishlist.ID = "wishlist_" + xid.New().String()
-	wishlist.UserID = "user_cnot2oc69lbksn28kko0"
+	wishlist.UserID = c.Locals("user").(string)
 
 	ok := db.CreateWishlist(wishlist)
 	if !ok {
@@ -238,8 +225,8 @@ func CreateWishlistHandler(c *fiber.Ctx) error {
 }
 
 func FindManyWishlistsHandler(c *fiber.Ctx) error {
-	var wishlist []db.UserWishlist
-	ok := db.FindManyWishlists(wishlist)
+	userID := c.Locals("user").(string)
+	ok := db.FindManyWishlists(userID)
 	if !ok {
 		return c.SendString("Error in FindManyWishlists operation")
 	}
@@ -286,24 +273,10 @@ func UpdateWishlist(c *fiber.Ctx) error {
 func DeleteWishlistHandler(c *fiber.Ctx) error {
 	wishlistID := c.Params("id")
 	giftID := c.Params("gift_id")
-	userID := c.Params("user_id")
+	userID := c.Locals("user").(string)
 	ok := db.DeleteWishlist(wishlistID, giftID, userID)
 	if !ok {
 		return c.SendString("Error in DeleteGift Operation")
 	}
 	return c.SendString("Delete wishlist succesfully")
 }
-
-// func CreateUserHandler(c *fiber.Ctx) error {
-// 	var user db.User
-// 	if err := c.BodyParser(&user); err != nil {
-// 		return c.SendString(err.Error())
-// 	}
-
-// 	ok := db.CreateUser(user)
-// 	if !ok {
-// 		return c.SendString("Error in CreateUser operation")
-// 	}
-
-// 	return c.SendString("Succsesfully create user!")
-// }
