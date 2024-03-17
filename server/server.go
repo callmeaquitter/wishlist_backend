@@ -2,7 +2,6 @@ package server
 
 import (
 	"regexp"
-	"strings"
 
 	swagger "github.com/arsmn/fiber-swagger/v2"
 	"github.com/go-playground/validator/v10"
@@ -14,19 +13,11 @@ var validate = validator.New()
 
 var app *fiber.App
 
-// Custom validation — sees if IDs the user provides abide by the template
-func ValidateIDFormat(tag string) validator.Func {
+// Custom validation — sees if IDs the user provides abides by the template "tag_{base32 random id}"
+func ValidateIDFormat(tag_ string) validator.Func {
 	return func (fl validator.FieldLevel) bool {
 		text := fl.Field().String()
-		if !strings.Contains(strings.ToLower(text), tag) {
-			return false
-		}
-		if !regexp.
-			MustCompile(`^[a-zA-Z0-9]*$`).
-			MatchString(text[strings.Index(text, "_")+1:]) {
-			return false
-		}
-		return true
+		return regexp.MustCompile(tag_ + `[a-z0-9]{20}$`).MatchString(text) 
 	}
 }
 
@@ -36,6 +27,7 @@ func Setup() {
 
 	validate.RegisterValidation("seller_", ValidateIDFormat("seller_"))
 	validate.RegisterValidation("service_", ValidateIDFormat("service_"))
+	validate.RegisterValidation("user_", ValidateIDFormat("user_"))
 
 	app.Use(cors.New())
 	app.Use(cors.New(cors.Config{
@@ -67,22 +59,30 @@ func Setup() {
 	gifts.Patch("/:id", updateGiftHandler)
 
 	sellers := app.Group("/sellers")
-	sellers.Post("", createSellerHandler)
-	sellers.Get("", getManySellersHandler)
 	sellers.Get("/:id", getOneSellerHandler)
+	sellers.Get("", getManySellersHandler)
+	sellers.Post("", createSellerHandler)
 	sellers.Patch("/:id", updateSellerHandler)
 	sellers.Delete("/:id", deleteSellerHandler)
 
+	serviceReviews := app.Group("/serviceReviews")
+	serviceReviews.Get("/:id", getOneServiceReviewHandler)
+	serviceReviews.Get("/service/:service_id", getSingleServiceReviewHandler)
+	serviceReviews.Get("", getManyServiceReviewsHandler)
+	serviceReviews.Post("", createServiceReviewHandler)
+	serviceReviews.Patch("/:id", updateServiceReviewHandler)
+	serviceReviews.Delete("/:id", deleteServiceReviewHandler)
+
 	sellersServices := app.Group("/sellerToService")
-	sellersServices.Post("", createSellerToServiceHandler)
-	sellersServices.Get("", getManySellerToServiceHandler)
 	sellersServices.Get("/:id", getOneSellerToServiceHandler)
+	sellersServices.Get("", getManySellerToServiceHandler)
+	sellersServices.Post("", createSellerToServiceHandler)
 	sellersServices.Delete("/:id", deleteSellerToServiceHandler)
 
 	services := app.Group("/services")
-	services.Post("", createServiceHandler)
-	services.Get("", getManyServicesHandler)
 	services.Get("/:id", getOneServiceHandler)
+	services.Get("", getManyServicesHandler)
+	services.Post("", createServiceHandler)
 	services.Patch("/:id", updateServiceHandler)
 	services.Delete("/:id", deleteServiceHandler)
 
