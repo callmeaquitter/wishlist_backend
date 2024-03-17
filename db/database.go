@@ -25,25 +25,8 @@ func Setup(dsn string) {
 		fmt.Println("Error in New | Establishing a connection", err)
 	}
 
-	err = db.AutoMigrate(&Gift{})
-	if err != nil {
-		fmt.Println("Couldn't Automigrate Database.", err)
-	}
-	Database = db
-
-	err = db.AutoMigrate(&Seller{})
-	if err != nil {
-		fmt.Println("Couldn't Automigrate Database.", err)
-	}
-	Database = db
-
-	err = db.AutoMigrate(&Service{})
-	if err != nil {
-		fmt.Println("Couldn't Automigrate Database.", err)
-	}
-	Database = db
-
-	err = db.AutoMigrate(&SellerToService{})
+	err = db.AutoMigrate(
+		&Gift{}, &Seller{}, &Service{}, &SellerToService{}, &ServiceReview{})
 	if err != nil {
 		fmt.Println("Couldn't Automigrate Database.", err)
 	}

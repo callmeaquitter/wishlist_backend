@@ -65,6 +65,23 @@ definitions:
     - name
     - price
     type: object
+  db.ServiceReview:
+    properties:
+      comment:
+        maxLength: 5000
+        type: string
+      mark:
+        type: number
+      service_id:
+        type: string
+      user_id:
+        type: string
+    required:
+    - comment
+    - mark
+    - service_id
+    - user_id
+    type: object
   server.ResponseHTTP:
     properties:
       data: {}
@@ -356,6 +373,173 @@ paths:
       summary: Updates an existing seller.
       tags:
       - Sellers
+  /serviceReviews:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.ServiceReview'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Fetches all serviceReviews.
+      tags:
+      - ServiceReviews
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Create ServiceReview
+        in: body
+        name: ServiceReview
+        required: true
+        schema:
+          $ref: '#/definitions/db.ServiceReview'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.ServiceReview'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Creates a new serviceReview.
+      tags:
+      - ServiceReviews
+  /serviceReviews/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: Delete ServiceReview
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.ServiceReview'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Deletes a specified serviceReview.
+      tags:
+      - ServiceReviews
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: ServiceReview ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.ServiceReview'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Fetches a specific serviceReview.
+      tags:
+      - ServiceReviews
+    patch:
+      consumes:
+      - application/json
+      parameters:
+      - description: Update ServiceReview
+        in: body
+        name: ServiceReview
+        required: true
+        schema:
+          $ref: '#/definitions/db.ServiceReview'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.ServiceReview'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Updates an existing serviceReview.
+      tags:
+      - ServiceReviews
+  /serviceReviews/service/{service_id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Service ID
+        in: path
+        name: service_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.ServiceReview'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Fetches all Service Reviews for a specified Service.
+      tags:
+      - ServiceReviews
   /services:
     get:
       consumes:

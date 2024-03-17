@@ -1,11 +1,13 @@
 package server
 
 import (
+	"time"
 	"wishlist/db"
 	_ "wishlist/docs"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/rs/xid"
+	"github.com/shopspring/decimal"
 )
 
 type ResponseHTTP struct {
@@ -197,7 +199,11 @@ func updateSellerHandler(c *fiber.Ctx) error {
 	if !ok {
 		return c.SendString("Error in updateSeller operation")
 	}
-	return c.SendString("Seller updated Succesfully")
+	return c.JSON(ResponseHTTP{
+		Success: true,
+		Message: "Successfully updated the Seller.",
+		Data:    &seller,
+	})
 }
 
 // createService godoc
@@ -219,6 +225,11 @@ func createServiceHandler(c *fiber.Ctx) error {
         if err != nil {
 		return c.Status(fiber.StatusUnprocessableEntity).
 			SendString(err.Error())
+        }
+	// Костыль. Кастомную валидацию для Decimal не прописать :(
+        if !service.Price.IsPositive() {
+            return c.Status(fiber.StatusUnprocessableEntity).
+			SendString("Only positive deicmals are allowed!")
         }
 
 	service.ServiceID = "service_" + xid.New().String()
@@ -288,12 +299,20 @@ func updateServiceHandler(c *fiber.Ctx) error {
         if err != nil {
             return c.Status(fiber.StatusUnprocessableEntity).SendString(err.Error())
         }
+        if !service.Price.IsPositive() {
+            return c.Status(fiber.StatusUnprocessableEntity).
+			SendString("Only positive deicmals are allowed!")
+        }
 
 	ok := db.UpdateService(service)
 	if !ok {
 		return c.SendString("Error in updateService operation")
 	}
-	return c.SendString("Service updated Succesfully")
+	return c.JSON(ResponseHTTP{
+		Success: true,
+		Message: "Successfully updated the Service.",
+		Data:    &service,
+	})
 }
 
 // deleteService godoc
@@ -394,6 +413,157 @@ func deleteSellerToServiceHandler(c *fiber.Ctx) error {
 		return c.SendString("Error in deleteSellerToService operation")
 	}
 	return c.SendString("SellerService deleted successfully")
+}
+
+// createServiceReview godoc
+// @Summary Creates a new serviceReview.
+// @Tags ServiceReviews
+// @Accept json
+// @Produce json
+// @Param ServiceReview body db.ServiceReview true "Create ServiceReview"
+// @Success 200 {object} ResponseHTTP{data=db.ServiceReview}
+// @Failure 400 {object} ResponseHTTP{}
+// @Router /serviceReviews [post]
+func createServiceReviewHandler(c *fiber.Ctx) error {
+	var serviceReview db.ServiceReview
+	if err := c.BodyParser(&serviceReview); err != nil {
+		return c.SendString(err.Error())
+	}
+
+	err := validate.Struct(serviceReview)
+        if err != nil {
+		return c.Status(fiber.StatusUnprocessableEntity).
+			SendString(err.Error())
+        }
+        if serviceReview.Mark.IsNegative() || 
+		serviceReview.Mark.GreaterThan(decimal.NewFromInt(5)) {
+		return c.Status(fiber.StatusUnprocessableEntity).
+			SendString("Only positive marks less or equal to 5 are allowed!")
+        }
+
+	serviceReview.ID = "serviceReview_" + xid.New().String()
+	serviceReview.CreateDate = time.Now()
+	serviceReview.UpdateDate = time.Now()
+
+	ok := db.CreateServiceReview(serviceReview)
+	if !ok {
+		return c.SendString("Error in createServiceReview operation")
+	}
+
+	return c.JSON(ResponseHTTP{
+		Success: true,
+		Message: "Success register a serviceReview.",
+		Data:    &serviceReview,
+	})
+}
+
+// getManyServiceReviews godoc
+// @Summary Fetches all serviceReviews.
+// @Tags ServiceReviews
+// @Accept json
+// @Produce json
+// @Success 200 {object} ResponseHTTP{data=db.ServiceReview}
+// @Failure 400 {object} ResponseHTTP{}
+// @Router /serviceReviews [get]
+func getManyServiceReviewsHandler(c *fiber.Ctx) error {
+	result, ok := db.FindManyServiceReview()
+	if !ok {
+		return c.SendString("Error in findManyServiceReviews operation")
+	}
+	return c.JSON(result)
+}
+
+// getOneServiceReview godoc
+// @Summary Fetches a specific serviceReview.
+// @Tags ServiceReviews
+// @Accept json
+// @Produce json
+// @Param id path string true "ServiceReview ID"
+// @Success 200 {object} ResponseHTTP{data=db.ServiceReview}
+// @Failure 400 {object} ResponseHTTP{}
+// @Router /serviceReviews/{id} [get]
+func getOneServiceReviewHandler(c *fiber.Ctx) error {
+	serviceReviewId := c.Params("id")
+	result, ok := db.FindOneServiceReview(serviceReviewId)
+	if !ok {
+		return c.SendString("Error in findOneServiceReview operation")
+	}
+	return c.JSON(result)
+}
+
+// getSingleServiceReview godoc
+// @Summary Fetches all Service Reviews for a specified Service.
+// @Tags ServiceReviews
+// @Accept json
+// @Produce json
+// @Param service_id path string true "Service ID"
+// @Success 200 {object} ResponseHTTP{data=db.ServiceReview}
+// @Failure 400 {object} ResponseHTTP{}
+// @Router /serviceReviews/service/{service_id} [get]
+func getSingleServiceReviewHandler(c *fiber.Ctx) error {
+	serviceId := c.Params("service_id")
+	result, ok := db.FindSingleServiceReview(serviceId)
+	if !ok {
+		return c.SendString("Error in findSingleServiceReview operation")
+	}
+	return c.JSON(result)
+}
+
+// updateServiceReview godoc
+// @Summary Updates an existing serviceReview.
+// @Tags ServiceReviews
+// @Accept json
+// @Produce json
+// @Param ServiceReview body db.ServiceReview true "Update ServiceReview"
+// @Success 200 {object} ResponseHTTP{data=db.ServiceReview}
+// @Failure 400 {object} ResponseHTTP{}
+// @Router /serviceReviews/{id} [patch]
+func updateServiceReviewHandler(c *fiber.Ctx) error {
+	var serviceReview db.ServiceReview
+	if err := c.BodyParser(&serviceReview); err != nil {
+		return c.SendString(err.Error())
+	}
+
+	err := validate.Struct(serviceReview)
+        if err != nil {
+            return c.Status(fiber.StatusUnprocessableEntity).SendString(err.Error())
+        }
+        if serviceReview.Mark.IsNegative() || 
+		serviceReview.Mark.GreaterThan(decimal.NewFromInt(5)) {
+		return c.Status(fiber.StatusUnprocessableEntity).
+			SendString("Only positive marks less or equal to 5 are allowed!")
+        }
+
+	serviceReview.UpdateDate = time.Now()
+
+	ok := db.UpdateServiceReview(serviceReview)
+	if !ok {
+		return c.SendString("Error in updateServiceReview operation")
+	}
+	return c.JSON(ResponseHTTP{
+		Success: true,
+		Message: "Successfully updated the ServiceReview",
+		Data:    &serviceReview,
+	})
+}
+
+// deleteServiceReview godoc
+// @Summary Deletes a specified serviceReview.
+// @Tags ServiceReviews
+// @Accept json
+// @Produce json
+// @Param id path string true "Delete ServiceReview"
+// @Success 200 {object} ResponseHTTP{data=db.ServiceReview}
+// @Failure 400 {object} ResponseHTTP{}
+// @Router /serviceReviews/{id} [delete]
+func deleteServiceReviewHandler(c *fiber.Ctx) error {
+	id := c.Params("id")
+
+	ok := db.DeleteServiceReview(id)
+	if !ok {
+		return c.SendString("Error in deleteServiceReview operation")
+	}
+	return c.SendString("ServiceReview deleted successfully")
 }
 
 func superSecretHandler(c *fiber.Ctx) error {

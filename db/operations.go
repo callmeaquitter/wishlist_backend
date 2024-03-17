@@ -83,9 +83,9 @@ func FindOneSeller(sellerId string) (Seller, bool) {
 }
 
 func UpdateSeller(seller Seller) bool {
-	validation := Database.Find(&seller, "id = ?", seller.SellerID)
-	if validation.Error != nil {
-		fmt.Println("Error in updateSeller", validation.Error)
+	result := Database.Find(&seller, "id = ?", seller.SellerID)
+	if result.Error != nil {
+		fmt.Println("Error in updateSeller", result.Error)
 		return false
 	}
 
@@ -96,12 +96,10 @@ func UpdateSeller(seller Seller) bool {
 			return false
 		}
 	}
-	if seller.Email != "string" {
-		result := Database.Model(&seller).Update("email", seller.Email)
-		if result.Error != nil {
-			fmt.Println("Error in updateSeller", result.Error)
-			return false
-		}
+	result = Database.Model(&seller).Update("email", seller.Email)
+	if result.Error != nil {
+		fmt.Println("Error in updateSeller", result.Error)
+		return false
 	}
 	if seller.Photo != "string" {
 		result := Database.Model(&seller).Update("photo", seller.Photo)
@@ -153,9 +151,9 @@ func FindOneService(serviceId string) (Service, bool) {
 }
 
 func UpdateService(service Service) bool {
-	validation := Database.Find(&service, "id = ?", service.ServiceID)
-	if validation.Error != nil {
-		fmt.Println("Error in updateservice", validation.Error)
+	result := Database.Find(&service, "id = ?", service.ServiceID)
+	if result.Error != nil {
+		fmt.Println("Error in updateservice", result.Error)
 		return false
 	}
 
@@ -166,12 +164,10 @@ func UpdateService(service Service) bool {
 			return false
 		}
 	}
-	if service.Price != 0 {
-		result := Database.Model(&service).Update("price", service.Price)
-		if result.Error != nil {
-			fmt.Println("Error in updateservice", result.Error)
-			return false
-		}
+	result = Database.Model(&service).Update("price", service.Price)
+	if result.Error != nil {
+		fmt.Println("Error in updateservice", result.Error)
+		return false
 	}
 	if service.Location != "string" {
 		result := Database.Model(&service).Update("location", service.Location)
@@ -233,6 +229,97 @@ func DeleteSellerToService(serviceId string) bool {	// Связь удаляет
 	result := Database.Delete(SellerToService{}, "service_id = ?", serviceId)
 	if result.Error != nil {
 		fmt.Println("Error in deleteSellerToService", result.Error)
+		return false
+	}
+	return true
+}
+
+func CreateServiceReview(serviceReview ServiceReview) bool {
+	result := Database.Create(&serviceReview)
+	if result.Error != nil {
+		fmt.Println("Error in createServiceReview", result.Error)
+		return false
+	}
+	return true
+}
+
+func FindManyServiceReview() ([]ServiceReview, bool) {
+	var serviceReview []ServiceReview
+	result := Database.Find(&serviceReview)
+	if result.Error != nil {
+		fmt.Println("Error in findManyServiceReview", result.Error)
+		return serviceReview, false
+	}
+	return serviceReview, true
+}
+
+func FindOneServiceReview(serviceReviewId string) (ServiceReview, bool) {
+	var serviceReview ServiceReview
+	result := Database.Take(&serviceReview, "id = ?", serviceReviewId)
+	if result.Error != nil {
+		fmt.Println("Error in findOneServiceReview", result.Error)
+		return serviceReview, false
+	}
+	return serviceReview, true
+}
+
+func FindSingleServiceReview(serviceId string) ([]ServiceReview, bool) {
+	var serviceReview []ServiceReview
+	result := Database.Find(&serviceReview, "service_id = ?", serviceId)
+	if result.Error != nil {
+		fmt.Println("Error in findSingleServiceReview", result.Error)
+		return serviceReview, false
+	}
+	return serviceReview, true
+}
+
+func UpdateServiceReview(serviceReview ServiceReview) bool {
+	result := Database.Find(&serviceReview, "id = ?", serviceReview.ID)
+	if result.Error != nil {
+		fmt.Println("Error in updateServiceReview", result.Error)
+		return false
+	}
+
+	result = Database.Model(&serviceReview).
+		Update("service_id", serviceReview.ServiceID)
+	if result.Error != nil {
+		fmt.Println("Error in updateServiceReview", result.Error)
+		return false
+	}
+	result = Database.Model(&serviceReview).
+		Update("mark", serviceReview.Mark)
+	if result.Error != nil {
+		fmt.Println("Error in updateServiceReview", result.Error)
+		return false
+	}
+	if serviceReview.Comment != "string" {
+		result := Database.Model(&serviceReview).
+			Update("comment", serviceReview.Comment)
+		if result.Error != nil {
+			fmt.Println("Error in updateServiceReview", result.Error)
+			return false
+		}
+	}
+	result = Database.Model(&serviceReview).
+		Update("user_id", serviceReview.UserID)
+	if result.Error != nil {
+		fmt.Println("Error in updateServiceReview", result.Error)
+		return false
+	}
+	result = Database.Model(&serviceReview).
+		Update("update_date", serviceReview.UpdateDate)
+	if result.Error != nil {
+		fmt.Println("Error in updateServiceReview", result.Error)
+		return false
+	}
+	
+	return true
+}
+
+func DeleteServiceReview(id string) bool {
+	result := Database.Delete(&ServiceReview{}, "id = ?", id)
+	if result.Error != nil {
+		fmt.Println("Error in deleteServiceReview", result.Error)
 		return false
 	}
 	return true
