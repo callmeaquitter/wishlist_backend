@@ -25,7 +25,11 @@ func Setup(dsn string) {
 	}
 
 	err = db.AutoMigrate(
-		&Gift{},
+		&Gift{}, 
+		&Quest{}, 
+		&Subquest{}, 
+		&Tasks{}, 
+		&OfflineShops{},
 		&Seller{},
 		&Service{},
 		&SellerToService{},

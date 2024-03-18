@@ -132,3 +132,30 @@ type ServiceReview struct {
 	CreateDate time.Time       `json:"create_date" swaggerignore:"true"`
 	UpdateDate time.Time       `json:"update_date" swaggerignore:"true"`
 }
+
+
+type Quest struct {
+	ID         string `json:"id"`
+	SubquestID string `json:"subquest_id"`
+	UserID     string `json:"user_id"`
+	IsDone     bool   `json:"is_done"`
+}
+
+type Subquest struct {
+	ID     string `json:"id"`
+	TaskID string `json:"task_id"`
+	Reward int    `json:"reward"`
+	IsDone int    `json:"is_done"`
+}
+
+type Tasks struct {
+	ID          string `json:"id"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
+}
+
+type OfflineShops struct {
+	ID       string `json:"id"`
+	Name     string `json:"name"`
+	Location string `json:"location"`
+}

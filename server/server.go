@@ -24,6 +24,23 @@ func ValidateIDFormat(tag_ string) validator.Func {
 func Setup() {
 	// Default config
 	app = fiber.New()
+	app.Use(cors.New(cors.Config{
+		AllowOrigins: "*",
+		AllowHeaders: "Origin, Content-Type, Accept"}))
+
+	validate.RegisterValidation("seller_", ValidateIDFormat("seller_"))
+	validate.RegisterValidation("service_", ValidateIDFormat("service_"))
+	validate.RegisterValidation("user_", ValidateIDFormat("user_"))
+
+	app.Use(cors.New())
+	app.Use(cors.New(cors.Config{
+		AllowOrigins: "*",
+		AllowHeaders: "Origin, Content-Type, Accept",
+	}))
+
+	app.Use(cors.New(cors.Config{
+		AllowOrigins: "*",
+		AllowHeaders: "Origin, Content-Type, Accept"}))
 
 	validate.RegisterValidation("seller_", ValidateIDFormat("seller_"))
 	validate.RegisterValidation("service_", ValidateIDFormat("service_"))
@@ -115,6 +132,45 @@ func Setup() {
 	services.Post("", createServiceHandler)
 	services.Patch("/:id", updateServiceHandler)
 	services.Delete("/:id", deleteServiceHandler)
+
+	//Route: POST /quest
+	quest := app.Group("/quest")
+	quest.Post("", createQuestHandler)
+
+	quest.Delete("/:id", deleteQuestHandler)
+
+	gifts.Patch("/:id", updateQuestHandler)
+
+	//Route: POST /subquest
+	subquest := app.Group("/subquest")
+	subquest.Post("", createSubquestHandler)
+
+	subquest.Delete("/:id", deleteSubquestHandler)
+
+	subquest.Get("", getManySubquestHandler)
+
+	subquest.Get("/:id", getOneSubquestHandler)
+
+	//Route: POST /tasks
+	tasks := app.Group("/tasks")
+	tasks.Post("", createTasksHandler)
+
+	tasks.Delete("/:id", deleteTasksHandler)
+
+	tasks.Get("", getManyTasksHandler)
+
+	tasks.Get("/:id", getOneTasksHandler)
+
+	tasks.Patch("/:id", updateTasksHandler)
+
+	//Route: POST /offlineshops
+	offlineshops := app.Group("/offlineshops")
+
+	offlineshops.Post("", createOfflineShopsHandler)
+
+	offlineshops.Delete("/:id", deleteOfflineShopsHandler)
+
+	offlineshops.Patch("/:id", updateOfflineShopsHandler)
 
 	//
 	//request -> middleware -> handler -> response

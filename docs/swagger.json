@@ -865,9 +865,15 @@
                 }
             }
         },
+<<<<<<< HEAD
         "/gifts/{id}": {
             "get": {
                 "description": "Get one gift",
+=======
+        "/offline-shop/create": {
+            "post": {
+                "description": "Принимает JSON тело запроса с полями Offline Shop и создает новый Offline Shop",
+>>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
                 "consumes": [
                     "application/json"
                 ],
@@ -875,6 +881,7 @@
                     "application/json"
                 ],
                 "tags": [
+<<<<<<< HEAD
                     "Gifts"
                 ],
                 "summary": "Get one gift",
@@ -885,6 +892,20 @@
                         "name": "id",
                         "in": "path",
                         "required": true
+=======
+                    "Offline Shops"
+                ],
+                "summary": "Создает новый Offline Shop",
+                "parameters": [
+                    {
+                        "description": "Create Offline Shop",
+                        "name": "OfflineShop",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/db.OfflineShops"
+                        }
+>>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
                     }
                 ],
                 "responses": {
@@ -899,23 +920,33 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
+<<<<<<< HEAD
                                             "type": "array",
                                             "items": {
                                                 "$ref": "#/definitions/db.Gift"
                                             }
+=======
+                                            "$ref": "#/definitions/db.OfflineShops"
+>>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
                                         }
                                     }
                                 }
                             ]
                         }
                     },
+<<<<<<< HEAD
                     "503": {
                         "description": "Service Unavailable",
+=======
+                    "400": {
+                        "description": "Bad Request",
+>>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
                         "schema": {
                             "$ref": "#/definitions/server.ResponseHTTP"
                         }
                     }
                 }
+<<<<<<< HEAD
             },
             "delete": {
                 "description": "Deletes a gift from the database using the provided ID.",
@@ -933,6 +964,21 @@
                     {
                         "type": "string",
                         "description": "Gift ID to delete",
+=======
+            }
+        },
+        "/offline-shop/delete/{id}": {
+            "delete": {
+                "description": "Принимает ID офлайн магазина в URL и удаляет соответствующий офлайн магазин",
+                "tags": [
+                    "Offline Shops"
+                ],
+                "summary": "Удаляет существующий Offline Shop по ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Offline Shop ID",
+>>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -940,21 +986,38 @@
                 ],
                 "responses": {
                     "200": {
+<<<<<<< HEAD
                         "description": "Gift deleted successfully",
+=======
+                        "description": "Offline Shop deleted successfully",
+>>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
                         "schema": {
                             "type": "string"
                         }
                     },
+<<<<<<< HEAD
                     "400": {
                         "description": "Error in deleteGift operation",
+=======
+                    "404": {
+                        "description": "Offline Shop not found",
+>>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
                         "schema": {
                             "type": "string"
                         }
                     }
                 }
+<<<<<<< HEAD
             },
             "patch": {
                 "description": "get the status of server.",
+=======
+            }
+        },
+        "/offline-shop/update/{id}": {
+            "put": {
+                "description": "Принимает JSON тело запроса с обновленными полями Offline Shop и обновляет существующий Offline Shop по его ID",
+>>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
                 "consumes": [
                     "application/json"
                 ],
@@ -962,6 +1025,7 @@
                     "application/json"
                 ],
                 "tags": [
+<<<<<<< HEAD
                     "Gifts"
                 ],
                 "summary": "update gift by ID",
@@ -973,6 +1037,26 @@
                         "required": true,
                         "schema": {
                             "$ref": "#/definitions/db.Gift"
+=======
+                    "Offline Shops"
+                ],
+                "summary": "Обновляет существующий Offline Shop по ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Offline Shop ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Update Offline Shop",
+                        "name": "OfflineShop",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/db.OfflineShops"
+>>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
                         }
                     }
                 ],
@@ -988,7 +1072,11 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
+<<<<<<< HEAD
                                             "$ref": "#/definitions/db.Gift"
+=======
+                                            "$ref": "#/definitions/db.OfflineShops"
+>>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
                                         }
                                     }
                                 }
@@ -1000,19 +1088,28 @@
                         "schema": {
                             "$ref": "#/definitions/server.ResponseHTTP"
                         }
+<<<<<<< HEAD
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
                             "$ref": "#/definitions/server.ResponseHTTP"
                         }
+=======
+>>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
                     }
                 }
             }
         },
+<<<<<<< HEAD
         "/likeToSelection": {
             "post": {
                 "description": "Принимает LikeToSelection в теле запроса и создает соответствующий LikeToSelection",
+=======
+        "/quest/create": {
+            "post": {
+                "description": "Принимает JSON тело запроса с полями Quest и создает новый Quest",
+>>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
                 "consumes": [
                     "application/json"
                 ],
@@ -1020,6 +1117,7 @@
                     "application/json"
                 ],
                 "tags": [
+<<<<<<< HEAD
                     "LikeToSelection"
                 ],
                 "summary": "Создает новый LikeToSelection",
@@ -1031,6 +1129,19 @@
                         "required": true,
                         "schema": {
                             "$ref": "#/definitions/db.LikeToSelection"
+=======
+                    "Quest"
+                ],
+                "summary": "Создает новый Quest",
+                "parameters": [
+                    {
+                        "description": "Create Quest",
+                        "name": "Quest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/db.Quest"
+>>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
                         }
                     }
                 ],
@@ -1038,7 +1149,23 @@
                     "200": {
                         "description": "OK",
                         "schema": {
+<<<<<<< HEAD
                             "$ref": "#/definitions/server.ResponseHTTP"
+=======
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/server.ResponseHTTP"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/db.Quest"
+                                        }
+                                    }
+                                }
+                            ]
+>>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
                         }
                     },
                     "400": {
@@ -1050,6 +1177,7 @@
                 }
             }
         },
+<<<<<<< HEAD
         "/likeToSelection/{id}": {
             "delete": {
                 "description": "Принимает id LikeToSelection в качестве параметра пути и удаляет соответствующий LikeToSelection",
@@ -1343,6 +1471,19 @@
                     {
                         "type": "integer",
                         "description": "Selection ID",
+=======
+        "/quest/delete/{id}": {
+            "delete": {
+                "description": "Принимает ID квеста в URL и удаляет соответствующий квест",
+                "tags": [
+                    "Quest"
+                ],
+                "summary": "Удаляет существующий Quest по ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Quest ID",
+>>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -1350,6 +1491,7 @@
                 ],
                 "responses": {
                     "200": {
+<<<<<<< HEAD
                         "description": "OK",
                         "schema": {
                             "allOf": [
@@ -1377,6 +1519,25 @@
             },
             "put": {
                 "description": "Принимает id Selection в качестве параметра пути и JSON тело запроса с новыми полями Selection",
+=======
+                        "description": "Quest deleted successfully",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Quest not found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/quest/update": {
+            "put": {
+                "description": "Принимает JSON тело запроса с обновленными полями Quest и обновляет существующий Quest",
+>>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
                 "consumes": [
                     "application/json"
                 ],
@@ -1384,6 +1545,7 @@
                     "application/json"
                 ],
                 "tags": [
+<<<<<<< HEAD
                     "Selection"
                 ],
                 "summary": "Обновляет существующий Selection",
@@ -1395,6 +1557,19 @@
                         "required": true,
                         "schema": {
                             "$ref": "#/definitions/db.Selection"
+=======
+                    "Quest"
+                ],
+                "summary": "Обновляет существующий Quest",
+                "parameters": [
+                    {
+                        "description": "Update Quest",
+                        "name": "Quest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/db.Quest"
+>>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
                         }
                     }
                 ],
@@ -1410,7 +1585,11 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
+<<<<<<< HEAD
                                             "$ref": "#/definitions/db.Selection"
+=======
+                                            "$ref": "#/definitions/db.Quest"
+>>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
                                         }
                                     }
                                 }
@@ -1424,6 +1603,7 @@
                         }
                     }
                 }
+<<<<<<< HEAD
             },
             "delete": {
                 "description": "Принимает id Selection в качестве параметра пути и удаляет соответствующий Selection",
@@ -1467,6 +1647,13 @@
         "/selectionCategory": {
             "post": {
                 "description": "Принимает SelectionCategory в теле запроса и создает соответствующий SelectionCategory",
+=======
+            }
+        },
+        "/subquest/create": {
+            "post": {
+                "description": "Принимает JSON тело запроса с полями Subquest и создает новый Subquest",
+>>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
                 "consumes": [
                     "application/json"
                 ],
@@ -1474,6 +1661,7 @@
                     "application/json"
                 ],
                 "tags": [
+<<<<<<< HEAD
                     "SelectionCategory"
                 ],
                 "summary": "Создает новый SelectionCategory",
@@ -1485,6 +1673,19 @@
                         "required": true,
                         "schema": {
                             "$ref": "#/definitions/db.SelectionCategory"
+=======
+                    "Subquest"
+                ],
+                "summary": "Создает новый Subquest",
+                "parameters": [
+                    {
+                        "description": "Create Subquest",
+                        "name": "Subquest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/db.Subquest"
+>>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
                         }
                     }
                 ],
@@ -1492,7 +1693,23 @@
                     "200": {
                         "description": "OK",
                         "schema": {
+<<<<<<< HEAD
                             "$ref": "#/definitions/server.ResponseHTTP"
+=======
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/server.ResponseHTTP"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/db.Subquest"
+                                        }
+                                    }
+                                }
+                            ]
+>>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
                         }
                     },
                     "400": {
@@ -1504,16 +1721,55 @@
                 }
             }
         },
+<<<<<<< HEAD
         "/selectionCategory/{id}": {
             "get": {
                 "description": "Принимает id SelectionCategory в качестве параметра пути и находит соответствующий SelectionCategory",
                 "consumes": [
                     "application/json"
                 ],
+=======
+        "/subquest/delete/{id}": {
+            "delete": {
+                "description": "Принимает ID подзадания в URL и удаляет соответствующее подзадание",
+                "tags": [
+                    "Subquest"
+                ],
+                "summary": "Удаляет существующий Subquest по ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Subquest ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Subquest deleted successfully",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Subquest not found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/subquest/getmany": {
+            "get": {
+                "description": "Возвращает список всех подзаданий (Subquest)",
+>>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
+<<<<<<< HEAD
                     "SelectionCategory"
                 ],
                 "summary": "Находит существующий SelectionCategory",
@@ -1521,6 +1777,47 @@
                     {
                         "type": "string",
                         "description": "SelectionCategory ID",
+=======
+                    "Subquest"
+                ],
+                "summary": "Получает список Subquest",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/server.ResponseHTTP"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/db.Subquest"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/subquest/getone/{id}": {
+            "get": {
+                "description": "Возвращает информацию о конкретном подзадании (Subquest) по его ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Subquest"
+                ],
+                "summary": "Получает одно Subquest по ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Subquest ID",
+>>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -1530,7 +1827,75 @@
                     "200": {
                         "description": "OK",
                         "schema": {
+<<<<<<< HEAD
                             "$ref": "#/definitions/server.ResponseHTTP"
+=======
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/server.ResponseHTTP"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/db.Subquest"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "404": {
+                        "description": "Subquest not found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/tasks/create": {
+            "post": {
+                "description": "Принимает JSON тело запроса с полями Tasks и создает новое задание",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tasks"
+                ],
+                "summary": "Создает новое задание Tasks",
+                "parameters": [
+                    {
+                        "description": "Create Tasks",
+                        "name": "Tasks",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/db.Tasks"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/server.ResponseHTTP"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/db.Tasks"
+                                        }
+                                    }
+                                }
+                            ]
+>>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
                         }
                     },
                     "400": {
@@ -1540,9 +1905,128 @@
                         }
                     }
                 }
+<<<<<<< HEAD
             },
             "put": {
                 "description": "Принимает id SelectionCategory в качестве параметра пути и обновляет соответствующий SelectionCategory",
+=======
+            }
+        },
+        "/tasks/delete/{id}": {
+            "delete": {
+                "description": "Принимает ID задания в URL и удаляет соответствующее задание",
+                "tags": [
+                    "Tasks"
+                ],
+                "summary": "Удаляет существующее задание Tasks по ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Tasks ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Tasks deleted successfully",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Tasks not found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/tasks/getmany": {
+            "get": {
+                "description": "Возвращает список всех заданий Tasks",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tasks"
+                ],
+                "summary": "Получает список заданий Tasks",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/server.ResponseHTTP"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/db.Tasks"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/tasks/getone/{id}": {
+            "get": {
+                "description": "Возвращает информацию о конкретном задании Tasks по его ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tasks"
+                ],
+                "summary": "Получает одно задание Tasks по ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Tasks ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/server.ResponseHTTP"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/db.Tasks"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "404": {
+                        "description": "Tasks not found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/tasks/update": {
+            "put": {
+                "description": "Принимает JSON тело запроса с обновленными полями Tasks и обновляет существующее задание",
+>>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
                 "consumes": [
                     "application/json"
                 ],
@@ -1550,6 +2034,7 @@
                     "application/json"
                 ],
                 "tags": [
+<<<<<<< HEAD
                     "SelectionCategory"
                 ],
                 "summary": "Обновляет существующий SelectionCategory",
@@ -1674,6 +2159,19 @@
                         "required": true,
                         "schema": {
                             "$ref": "#/definitions/db.SellerToService"
+=======
+                    "Tasks"
+                ],
+                "summary": "Обновляет существующее задание Tasks",
+                "parameters": [
+                    {
+                        "description": "Update Tasks",
+                        "name": "Tasks",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/db.Tasks"
+>>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
                         }
                     }
                 ],
@@ -1689,6 +2187,7 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
+<<<<<<< HEAD
                                             "$ref": "#/definitions/db.SellerToService"
                                         }
                                     }
@@ -2895,6 +3394,9 @@
                                     "properties": {
                                         "data": {
                                             "$ref": "#/definitions/db.UserWishlist"
+=======
+                                            "$ref": "#/definitions/db.Tasks"
+>>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
                                         }
                                     }
                                 }
@@ -2971,17 +3473,28 @@
                 }
             }
         },
+<<<<<<< HEAD
         "db.GiftCategory": {
+=======
+        "db.OfflineShops": {
+>>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
             "type": "object",
             "properties": {
                 "id": {
                     "type": "string"
                 },
+<<<<<<< HEAD
+=======
+                "location": {
+                    "type": "string"
+                },
+>>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
                 "name": {
                     "type": "string"
                 }
             }
         },
+<<<<<<< HEAD
         "db.GiftReview": {
             "type": "object",
             "properties": {
@@ -3017,6 +3530,18 @@
             "type": "object",
             "properties": {
                 "selection_id": {
+=======
+        "db.Quest": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "is_done": {
+                    "type": "boolean"
+                },
+                "subquest_id": {
+>>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
                     "type": "string"
                 },
                 "user_id": {
@@ -3024,7 +3549,28 @@
                 }
             }
         },
+<<<<<<< HEAD
         "db.Selection": {
+=======
+        "db.Subquest": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "is_done": {
+                    "type": "integer"
+                },
+                "reward": {
+                    "type": "integer"
+                },
+                "task_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "db.Tasks": {
+>>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
             "type": "object",
             "properties": {
                 "description": {
@@ -3033,6 +3579,7 @@
                 "id": {
                     "type": "string"
                 },
+<<<<<<< HEAD
                 "is_generated": {
                     "type": "boolean"
                 },
@@ -3050,11 +3597,14 @@
                 "id": {
                     "type": "string"
                 },
+=======
+>>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
                 "name": {
                     "type": "string"
                 }
             }
         },
+<<<<<<< HEAD
         "db.Seller": {
             "type": "object",
             "required": [
@@ -3194,6 +3744,8 @@
                 }
             }
         },
+=======
+>>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
         "server.ResponseHTTP": {
             "type": "object",
             "properties": {
