@@ -2,7 +2,6 @@ package server
 
 import (
 	"fmt"
-	"net/url"
 	"time"
 	"wishlist/db"
 	_ "wishlist/docs"
@@ -375,8 +374,8 @@ func createSellerHandler(c *fiber.Ctx) error {
 
 	err := validate.Struct(seller)
 	if err != nil {
-            return c.Status(fiber.StatusUnprocessableEntity).SendString(err.Error())
-        }
+		return c.Status(fiber.StatusUnprocessableEntity).SendString(err.Error())
+	}
 
 	seller.SellerID = "seller_" + xid.New().String()
 
@@ -458,8 +457,8 @@ func updateSellerHandler(c *fiber.Ctx) error {
 
 	err := validate.Struct(seller)
 	if err != nil {
-            return c.Status(fiber.StatusUnprocessableEntity).SendString(err.Error())
-        }
+		return c.Status(fiber.StatusUnprocessableEntity).SendString(err.Error())
+	}
 
 	ok := db.UpdateSeller(seller)
 	if !ok {
@@ -488,15 +487,15 @@ func createServiceHandler(c *fiber.Ctx) error {
 	}
 
 	err := validate.Struct(service)
-        if err != nil {
+	if err != nil {
 		return c.Status(fiber.StatusUnprocessableEntity).
 			SendString(err.Error())
-        }
+	}
 	// Костыль. Кастомную валидацию для Decimal не прописать :(
-        if !service.Price.IsPositive() {
-            return c.Status(fiber.StatusUnprocessableEntity).
+	if !service.Price.IsPositive() {
+		return c.Status(fiber.StatusUnprocessableEntity).
 			SendString("Only positive deicmals are allowed!")
-        }
+	}
 
 	service.ServiceID = "service_" + xid.New().String()
 
@@ -562,13 +561,13 @@ func updateServiceHandler(c *fiber.Ctx) error {
 	}
 
 	err := validate.Struct(service)
-        if err != nil {
-            return c.Status(fiber.StatusUnprocessableEntity).SendString(err.Error())
-        }
-        if !service.Price.IsPositive() {
-            return c.Status(fiber.StatusUnprocessableEntity).
+	if err != nil {
+		return c.Status(fiber.StatusUnprocessableEntity).SendString(err.Error())
+	}
+	if !service.Price.IsPositive() {
+		return c.Status(fiber.StatusUnprocessableEntity).
 			SendString("Only positive deicmals are allowed!")
-        }
+	}
 
 	ok := db.UpdateService(service)
 	if !ok {
@@ -616,9 +615,9 @@ func createSellerToServiceHandler(c *fiber.Ctx) error {
 	}
 
 	err := validate.Struct(sellerToService)
-        if err != nil {
-            return c.Status(fiber.StatusUnprocessableEntity).SendString(err.Error())
-        }
+	if err != nil {
+		return c.Status(fiber.StatusUnprocessableEntity).SendString(err.Error())
+	}
 
 	ok := db.CreateSellerToService(sellerToService)
 	if !ok {
@@ -697,15 +696,15 @@ func createServiceReviewHandler(c *fiber.Ctx) error {
 	}
 
 	err := validate.Struct(serviceReview)
-        if err != nil {
+	if err != nil {
 		return c.Status(fiber.StatusUnprocessableEntity).
 			SendString(err.Error())
-        }
-        if serviceReview.Mark.IsNegative() || 
+	}
+	if serviceReview.Mark.IsNegative() ||
 		serviceReview.Mark.GreaterThan(decimal.NewFromInt(5)) {
 		return c.Status(fiber.StatusUnprocessableEntity).
 			SendString("Only positive marks less or equal to 5 are allowed!")
-        }
+	}
 
 	serviceReview.ID = "serviceReview_" + xid.New().String()
 	serviceReview.CreateDate = time.Now()
@@ -791,14 +790,14 @@ func updateServiceReviewHandler(c *fiber.Ctx) error {
 	}
 
 	err := validate.Struct(serviceReview)
-        if err != nil {
-            return c.Status(fiber.StatusUnprocessableEntity).SendString(err.Error())
-        }
-        if serviceReview.Mark.IsNegative() || 
+	if err != nil {
+		return c.Status(fiber.StatusUnprocessableEntity).SendString(err.Error())
+	}
+	if serviceReview.Mark.IsNegative() ||
 		serviceReview.Mark.GreaterThan(decimal.NewFromInt(5)) {
 		return c.Status(fiber.StatusUnprocessableEntity).
 			SendString("Only positive marks less or equal to 5 are allowed!")
-        }
+	}
 
 	serviceReview.UpdateDate = time.Now()
 
@@ -849,8 +848,8 @@ func createSellerHandler(c *fiber.Ctx) error {
 
 	err := validate.Struct(seller)
 	if err != nil {
-            return c.Status(fiber.StatusUnprocessableEntity).SendString(err.Error())
-        }
+		return c.Status(fiber.StatusUnprocessableEntity).SendString(err.Error())
+	}
 
 	seller.SellerID = "seller_" + xid.New().String()
 
@@ -932,8 +931,8 @@ func updateSellerHandler(c *fiber.Ctx) error {
 
 	err := validate.Struct(seller)
 	if err != nil {
-            return c.Status(fiber.StatusUnprocessableEntity).SendString(err.Error())
-        }
+		return c.Status(fiber.StatusUnprocessableEntity).SendString(err.Error())
+	}
 
 	ok := db.UpdateSeller(seller)
 	if !ok {
@@ -962,15 +961,15 @@ func createServiceHandler(c *fiber.Ctx) error {
 	}
 
 	err := validate.Struct(service)
-        if err != nil {
+	if err != nil {
 		return c.Status(fiber.StatusUnprocessableEntity).
 			SendString(err.Error())
-        }
+	}
 	// Костыль. Кастомную валидацию для Decimal не прописать :(
-        if !service.Price.IsPositive() {
-            return c.Status(fiber.StatusUnprocessableEntity).
+	if !service.Price.IsPositive() {
+		return c.Status(fiber.StatusUnprocessableEntity).
 			SendString("Only positive deicmals are allowed!")
-        }
+	}
 
 	service.ServiceID = "service_" + xid.New().String()
 
@@ -1036,13 +1035,13 @@ func updateServiceHandler(c *fiber.Ctx) error {
 	}
 
 	err := validate.Struct(service)
-        if err != nil {
-            return c.Status(fiber.StatusUnprocessableEntity).SendString(err.Error())
-        }
-        if !service.Price.IsPositive() {
-            return c.Status(fiber.StatusUnprocessableEntity).
+	if err != nil {
+		return c.Status(fiber.StatusUnprocessableEntity).SendString(err.Error())
+	}
+	if !service.Price.IsPositive() {
+		return c.Status(fiber.StatusUnprocessableEntity).
 			SendString("Only positive deicmals are allowed!")
-        }
+	}
 
 	ok := db.UpdateService(service)
 	if !ok {
@@ -1090,9 +1089,9 @@ func createSellerToServiceHandler(c *fiber.Ctx) error {
 	}
 
 	err := validate.Struct(sellerToService)
-        if err != nil {
-            return c.Status(fiber.StatusUnprocessableEntity).SendString(err.Error())
-        }
+	if err != nil {
+		return c.Status(fiber.StatusUnprocessableEntity).SendString(err.Error())
+	}
 
 	ok := db.CreateSellerToService(sellerToService)
 	if !ok {
@@ -1171,15 +1170,15 @@ func createServiceReviewHandler(c *fiber.Ctx) error {
 	}
 
 	err := validate.Struct(serviceReview)
-        if err != nil {
+	if err != nil {
 		return c.Status(fiber.StatusUnprocessableEntity).
 			SendString(err.Error())
-        }
-        if serviceReview.Mark.IsNegative() || 
+	}
+	if serviceReview.Mark.IsNegative() ||
 		serviceReview.Mark.GreaterThan(decimal.NewFromInt(5)) {
 		return c.Status(fiber.StatusUnprocessableEntity).
 			SendString("Only positive marks less or equal to 5 are allowed!")
-        }
+	}
 
 	serviceReview.ID = "serviceReview_" + xid.New().String()
 	serviceReview.CreateDate = time.Now()
@@ -1265,14 +1264,14 @@ func updateServiceReviewHandler(c *fiber.Ctx) error {
 	}
 
 	err := validate.Struct(serviceReview)
-        if err != nil {
-            return c.Status(fiber.StatusUnprocessableEntity).SendString(err.Error())
-        }
-        if serviceReview.Mark.IsNegative() || 
+	if err != nil {
+		return c.Status(fiber.StatusUnprocessableEntity).SendString(err.Error())
+	}
+	if serviceReview.Mark.IsNegative() ||
 		serviceReview.Mark.GreaterThan(decimal.NewFromInt(5)) {
 		return c.Status(fiber.StatusUnprocessableEntity).
 			SendString("Only positive marks less or equal to 5 are allowed!")
-        }
+	}
 
 	serviceReview.UpdateDate = time.Now()
 

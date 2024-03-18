@@ -24,14 +24,12 @@ type GiftCategory struct {
 }
 
 type GiftReview struct {
-	ID      string  	`json:"id"`
-	GiftID  string  	`json:"gift_id"`
-	Mark    float32 	`json:"mark"`
-	Comment string  	`json:"comment"`
-	Date    time.Time	`json:"date"`
+	ID      string    `json:"id"`
+	GiftID  string    `json:"gift_id"`
+	Mark    float32   `json:"mark"`
+	Comment string    `json:"comment"`
+	Date    time.Time `json:"date"`
 }
-
-
 
 type User struct {
 	ID       string `json:"id"`
@@ -44,8 +42,8 @@ type User struct {
 	Password string `json:"password"`
 }
 
-type Session struct{
-	ID string `json:"id"`
+type Session struct {
+	ID     string `json:"id"`
 	UserID string `json:"user_id"`
 }
 
