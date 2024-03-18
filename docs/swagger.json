@@ -17,798 +17,11 @@
     "host": "localhost:7777",
     "basePath": "/",
     "paths": {
-        "/booked_gifts/create": {
+        "/": {
             "post": {
-                "description": "Creates a booked gift in the wishlist based on the provided data.",
+                "description": "get the status of server.",
                 "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "BookedGifts"
-                ],
-                "summary": "Creates a booked gift in the wishlist.",
-                "parameters": [
-                    {
-                        "description": "Booked Gift in Wishlist object to be created",
-                        "name": "BookedGiftInWishlist",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/db.BookedGiftInWishlist"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/server.ResponseHTTP"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/db.BookedGiftInWishlist"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    }
-                }
-            }
-        },
-        "/booked_gifts/{gift_id}": {
-            "delete": {
-                "description": "Deletes a booked gift from the wishlist based on the provided gift ID and user ID.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "BookedGifts"
-                ],
-                "summary": "Deletes a booked gift from the wishlist.",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "ID of the booked gift to be deleted",
-                        "name": "gift_id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/server.ResponseHTTP"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/db.BookedGiftInWishlist"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    }
-                }
-            }
-        },
-        "/booked_gifts/{user_id}": {
-            "get": {
-                "description": "Finds all booked gifts in the wishlist for a specific user based on the provided user ID.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "BookedGifts"
-                ],
-                "summary": "Finds booked gifts for a specific user.",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "ID of the user",
-                        "name": "user_id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/server.ResponseHTTP"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/db.BookedGiftInWishlist"
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "503": {
-                        "description": "Service Unavailable",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    }
-                }
-            }
-        },
-        "/commentToSelection": {
-            "post": {
-                "description": "Принимает CommentToSelection в теле запроса и создает соответствующий CommentToSelection",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "CommentToSelection"
-                ],
-                "summary": "Создает новый CommentToSelection",
-                "parameters": [
-                    {
-                        "description": "Create CommentToSelection",
-                        "name": "CommentToSelection",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/db.CommentToSelection"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    }
-                }
-            }
-        },
-        "/commentToSelection/{id}": {
-            "get": {
-                "description": "Принимает id Selection в качестве параметра пути и возвращает комментарии для соответствующего Selection",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "CommentToSelection"
-                ],
-                "summary": "Получает комментарии для Selection",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Selection ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    }
-                }
-            },
-            "put": {
-                "description": "Принимает id CommentToSelection в качестве параметра пути и обновляет соответствующий CommentToSelection",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "CommentToSelection"
-                ],
-                "summary": "Обновляет существующий CommentToSelection",
-                "parameters": [
-                    {
-                        "description": "Update CommentToSelection",
-                        "name": "CommentToSelection",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/db.CommentToSelection"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "description": "Принимает id CommentToSelection в качестве параметра пути и удаляет соответствующий CommentToSelection",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "CommentToSelection"
-                ],
-                "summary": "Удаляет существующий CommentToSelection",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "CommentToSelection ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    }
-                }
-            }
-        },
-        "/giftToSelection": {
-            "post": {
-                "description": "Принимает GiftToSelection в теле запроса и создает соответствующий GiftToSelection",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "GiftToSelection"
-                ],
-                "summary": "Создает новый GiftToSelection",
-                "parameters": [
-                    {
-                        "description": "Create GiftToSelection",
-                        "name": "GiftToSelection",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/db.GiftToSelection"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    }
-                }
-            }
-        },
-        "/giftToSelection/{id}": {
-            "get": {
-                "description": "Принимает id GiftToSelection в качестве параметра пути и находит соответствующий GiftToSelection",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "GiftToSelection"
-                ],
-                "summary": "Находит существующий GiftToSelection",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "GiftToSelection ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    }
-                }
-            },
-            "put": {
-                "description": "Принимает id GiftToSelection в качестве параметра пути и обновляет соответствующий GiftToSelection",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "GiftToSelection"
-                ],
-                "summary": "Обновляет существующий GiftToSelection",
-                "parameters": [
-                    {
-                        "description": "Update GiftToSelection",
-                        "name": "GiftToSelection",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/db.GiftToSelection"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "description": "Принимает id GiftToSelection в качестве параметра пути и удаляет соответствующий GiftToSelection",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "GiftToSelection"
-                ],
-                "summary": "Удаляет существующий GiftToSelection",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "GiftToSelection ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    }
-                }
-            }
-        },
-        "/gift_category/create": {
-            "post": {
-                "description": "Creates a new gift category based on the provided data.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "GiftCategory"
-                ],
-                "summary": "Creates a new gift category.",
-                "parameters": [
-                    {
-                        "description": "Gift Category object to be created",
-                        "name": "GiftCategory",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/db.GiftCategory"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/server.ResponseHTTP"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/db.GiftCategory"
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Failed to create gift category",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/gift_category/{id}": {
-            "delete": {
-                "description": "Deletes a gift category based on the provided category ID.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "GiftCategory"
-                ],
-                "summary": "Deletes a gift category.",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "ID of the gift category to be deleted",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/server.ResponseHTTP"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/db.GiftCategory"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    }
-                }
-            }
-        },
-        "/gift_review": {
-            "post": {
-                "description": "Create a new review for gift.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "GiftReview"
-                ],
-                "summary": "Create a new review for gift.",
-                "parameters": [
-                    {
-                        "description": "Create GiftReview",
-                        "name": "Gift",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/db.GiftReview"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/server.ResponseHTTP"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/db.GiftReview"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    }
-                }
-            }
-        },
-        "/gift_review/{gift_id}": {
-            "get": {
-                "description": "Calculate average mark for a gift by its ID",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "GiftReview"
-                ],
-                "summary": "Calculate average mark for a gift by its ID",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Gift ID",
-                        "name": "gift_id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Average mark",
-                        "schema": {
-                            "type": "number"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/gift_review/{id}": {
-            "get": {
-                "description": "Get gift review by id",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "GiftReview"
-                ],
-                "summary": "Get gift review by id",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/server.ResponseHTTP"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/db.GiftReview"
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "503": {
-                        "description": "Service Unavailable",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "description": "Deletes a giftReview from the database using the provided ID.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "GiftReview"
-                ],
-                "summary": "Delete a giftReview by ID.",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "GiftReview ID to delete",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "GiftReview deleted successfully",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "400": {
-                        "description": "Error in deleteGiftReview operation",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/gifts": {
-            "get": {
-                "description": "Get all gifts",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Gifts"
-                ],
-                "summary": "Get all gifts",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/server.ResponseHTTP"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/db.Gift"
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "503": {
-                        "description": "Service Unavailable",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "consumes": [
-                    "application/json"
+                    "*/*"
                 ],
                 "produces": [
                     "application/json"
@@ -817,26 +30,6 @@
                     "Gifts"
                 ],
                 "summary": "Creates a new gift.",
-                "parameters": [
-                    {
-                        "description": "Create Gift",
-                        "name": "Gift",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/db.Gift"
-                        }
-                    },
-                    {
-                        "description": "Create Gift",
-                        "name": "Gift",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/db.Gift"
-                        }
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -865,15 +58,9 @@
                 }
             }
         },
-<<<<<<< HEAD
-        "/gifts/{id}": {
-            "get": {
-                "description": "Get one gift",
-=======
         "/offline-shop/create": {
             "post": {
                 "description": "Принимает JSON тело запроса с полями Offline Shop и создает новый Offline Shop",
->>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
                 "consumes": [
                     "application/json"
                 ],
@@ -881,18 +68,6 @@
                     "application/json"
                 ],
                 "tags": [
-<<<<<<< HEAD
-                    "Gifts"
-                ],
-                "summary": "Get one gift",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Gift ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-=======
                     "Offline Shops"
                 ],
                 "summary": "Создает новый Offline Shop",
@@ -905,7 +80,6 @@
                         "schema": {
                             "$ref": "#/definitions/db.OfflineShops"
                         }
->>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
                     }
                 ],
                 "responses": {
@@ -920,51 +94,20 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-<<<<<<< HEAD
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/db.Gift"
-                                            }
-=======
                                             "$ref": "#/definitions/db.OfflineShops"
->>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
                                         }
                                     }
                                 }
                             ]
                         }
                     },
-<<<<<<< HEAD
-                    "503": {
-                        "description": "Service Unavailable",
-=======
                     "400": {
                         "description": "Bad Request",
->>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
                         "schema": {
                             "$ref": "#/definitions/server.ResponseHTTP"
                         }
                     }
                 }
-<<<<<<< HEAD
-            },
-            "delete": {
-                "description": "Deletes a gift from the database using the provided ID.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Gifts"
-                ],
-                "summary": "Delete a gift by ID.",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Gift ID to delete",
-=======
             }
         },
         "/offline-shop/delete/{id}": {
@@ -978,7 +121,6 @@
                     {
                         "type": "string",
                         "description": "Offline Shop ID",
->>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -986,38 +128,23 @@
                 ],
                 "responses": {
                     "200": {
-<<<<<<< HEAD
-                        "description": "Gift deleted successfully",
-=======
                         "description": "Offline Shop deleted successfully",
->>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
                         "schema": {
                             "type": "string"
                         }
                     },
-<<<<<<< HEAD
-                    "400": {
-                        "description": "Error in deleteGift operation",
-=======
                     "404": {
                         "description": "Offline Shop not found",
->>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
                         "schema": {
                             "type": "string"
                         }
                     }
                 }
-<<<<<<< HEAD
-            },
-            "patch": {
-                "description": "get the status of server.",
-=======
             }
         },
         "/offline-shop/update/{id}": {
             "put": {
                 "description": "Принимает JSON тело запроса с обновленными полями Offline Shop и обновляет существующий Offline Shop по его ID",
->>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
                 "consumes": [
                     "application/json"
                 ],
@@ -1025,19 +152,6 @@
                     "application/json"
                 ],
                 "tags": [
-<<<<<<< HEAD
-                    "Gifts"
-                ],
-                "summary": "update gift by ID",
-                "parameters": [
-                    {
-                        "description": "Update Gift",
-                        "name": "Gift",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/db.Gift"
-=======
                     "Offline Shops"
                 ],
                 "summary": "Обновляет существующий Offline Shop по ID",
@@ -1056,7 +170,6 @@
                         "required": true,
                         "schema": {
                             "$ref": "#/definitions/db.OfflineShops"
->>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
                         }
                     }
                 ],
@@ -1072,11 +185,7 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-<<<<<<< HEAD
-                                            "$ref": "#/definitions/db.Gift"
-=======
                                             "$ref": "#/definitions/db.OfflineShops"
->>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
                                         }
                                     }
                                 }
@@ -1088,28 +197,13 @@
                         "schema": {
                             "$ref": "#/definitions/server.ResponseHTTP"
                         }
-<<<<<<< HEAD
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-=======
->>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
                     }
                 }
             }
         },
-<<<<<<< HEAD
-        "/likeToSelection": {
-            "post": {
-                "description": "Принимает LikeToSelection в теле запроса и создает соответствующий LikeToSelection",
-=======
         "/quest/create": {
             "post": {
                 "description": "Принимает JSON тело запроса с полями Quest и создает новый Quest",
->>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
                 "consumes": [
                     "application/json"
                 ],
@@ -1117,19 +211,6 @@
                     "application/json"
                 ],
                 "tags": [
-<<<<<<< HEAD
-                    "LikeToSelection"
-                ],
-                "summary": "Создает новый LikeToSelection",
-                "parameters": [
-                    {
-                        "description": "Create LikeToSelection",
-                        "name": "LikeToSelection",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/db.LikeToSelection"
-=======
                     "Quest"
                 ],
                 "summary": "Создает новый Quest",
@@ -1141,7 +222,6 @@
                         "required": true,
                         "schema": {
                             "$ref": "#/definitions/db.Quest"
->>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
                         }
                     }
                 ],
@@ -1149,9 +229,6 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-<<<<<<< HEAD
-                            "$ref": "#/definitions/server.ResponseHTTP"
-=======
                             "allOf": [
                                 {
                                     "$ref": "#/definitions/server.ResponseHTTP"
@@ -1165,7 +242,6 @@
                                     }
                                 }
                             ]
->>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
                         }
                     },
                     "400": {
@@ -1177,301 +253,6 @@
                 }
             }
         },
-<<<<<<< HEAD
-        "/likeToSelection/{id}": {
-            "delete": {
-                "description": "Принимает id LikeToSelection в качестве параметра пути и удаляет соответствующий LikeToSelection",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "LikeToSelection"
-                ],
-                "summary": "Удаляет существующий LikeToSelection",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "LikeToSelection ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    }
-                }
-            }
-        },
-        "/likeToSelection/{id}/count": {
-            "get": {
-                "description": "Принимает id Selection в качестве параметра пути и возвращает количество лайков для соответствующего Selection",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "LikeToSelection"
-                ],
-                "summary": "Получает количество лайков для Selection",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Selection ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    }
-                }
-            }
-        },
-        "/login": {
-            "post": {
-                "description": "get the status of server.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "auth"
-                ],
-                "summary": "Creates a new gift.",
-                "parameters": [
-                    {
-                        "description": "Reg user",
-                        "name": "User",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/db.User"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/server.ResponseHTTP"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/db.User"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    }
-                }
-            }
-        },
-        "/register": {
-            "post": {
-                "description": "get the status of server.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "auth"
-                ],
-                "summary": "Creates a new gift.",
-                "parameters": [
-                    {
-                        "description": "Reg user",
-                        "name": "User",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/db.User"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/server.ResponseHTTP"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/db.User"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    }
-                }
-            }
-        },
-        "/selection": {
-            "get": {
-                "description": "Возвращает все Selections из базы данных",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Selection"
-                ],
-                "summary": "Получает все Selections",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/server.ResponseHTTP"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/db.Selection"
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    }
-                }
-            }
-        },
-        "/selection/create": {
-            "post": {
-                "description": "Принимает JSON тело запроса с полями Selection и создает новый Selection",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Selection"
-                ],
-                "summary": "Создает новый Selection",
-                "parameters": [
-                    {
-                        "description": "Create Selection",
-                        "name": "Selection",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/db.Selection"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/server.ResponseHTTP"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/db.Selection"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    }
-                }
-            }
-        },
-        "/selection/{id}": {
-            "get": {
-                "description": "Возвращает один Selection из базы данных по id",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Selection"
-                ],
-                "summary": "Получает один Selection",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Selection ID",
-=======
         "/quest/delete/{id}": {
             "delete": {
                 "description": "Принимает ID квеста в URL и удаляет соответствующий квест",
@@ -1483,7 +264,6 @@
                     {
                         "type": "integer",
                         "description": "Quest ID",
->>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -1491,35 +271,6 @@
                 ],
                 "responses": {
                     "200": {
-<<<<<<< HEAD
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/server.ResponseHTTP"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/db.Selection"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    }
-                }
-            },
-            "put": {
-                "description": "Принимает id Selection в качестве параметра пути и JSON тело запроса с новыми полями Selection",
-=======
                         "description": "Quest deleted successfully",
                         "schema": {
                             "type": "string"
@@ -1537,7 +288,6 @@
         "/quest/update": {
             "put": {
                 "description": "Принимает JSON тело запроса с обновленными полями Quest и обновляет существующий Quest",
->>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
                 "consumes": [
                     "application/json"
                 ],
@@ -1545,19 +295,6 @@
                     "application/json"
                 ],
                 "tags": [
-<<<<<<< HEAD
-                    "Selection"
-                ],
-                "summary": "Обновляет существующий Selection",
-                "parameters": [
-                    {
-                        "description": "Create Selection",
-                        "name": "Selection",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/db.Selection"
-=======
                     "Quest"
                 ],
                 "summary": "Обновляет существующий Quest",
@@ -1569,7 +306,6 @@
                         "required": true,
                         "schema": {
                             "$ref": "#/definitions/db.Quest"
->>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
                         }
                     }
                 ],
@@ -1585,11 +321,7 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-<<<<<<< HEAD
-                                            "$ref": "#/definitions/db.Selection"
-=======
                                             "$ref": "#/definitions/db.Quest"
->>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
                                         }
                                     }
                                 }
@@ -1603,57 +335,11 @@
                         }
                     }
                 }
-<<<<<<< HEAD
-            },
-            "delete": {
-                "description": "Принимает id Selection в качестве параметра пути и удаляет соответствующий Selection",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Selection"
-                ],
-                "summary": "Удаляет существующий Selection",
-                "parameters": [
-                    {
-                        "description": "Create Selection",
-                        "name": "Selection",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/db.Selection"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    }
-                }
-            }
-        },
-        "/selectionCategory": {
-            "post": {
-                "description": "Принимает SelectionCategory в теле запроса и создает соответствующий SelectionCategory",
-=======
             }
         },
         "/subquest/create": {
             "post": {
                 "description": "Принимает JSON тело запроса с полями Subquest и создает новый Subquest",
->>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
                 "consumes": [
                     "application/json"
                 ],
@@ -1661,19 +347,6 @@
                     "application/json"
                 ],
                 "tags": [
-<<<<<<< HEAD
-                    "SelectionCategory"
-                ],
-                "summary": "Создает новый SelectionCategory",
-                "parameters": [
-                    {
-                        "description": "Create SelectionCategory",
-                        "name": "SelectionCategory",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/db.SelectionCategory"
-=======
                     "Subquest"
                 ],
                 "summary": "Создает новый Subquest",
@@ -1685,7 +358,6 @@
                         "required": true,
                         "schema": {
                             "$ref": "#/definitions/db.Subquest"
->>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
                         }
                     }
                 ],
@@ -1693,9 +365,6 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-<<<<<<< HEAD
-                            "$ref": "#/definitions/server.ResponseHTTP"
-=======
                             "allOf": [
                                 {
                                     "$ref": "#/definitions/server.ResponseHTTP"
@@ -1709,7 +378,6 @@
                                     }
                                 }
                             ]
->>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
                         }
                     },
                     "400": {
@@ -1721,14 +389,6 @@
                 }
             }
         },
-<<<<<<< HEAD
-        "/selectionCategory/{id}": {
-            "get": {
-                "description": "Принимает id SelectionCategory в качестве параметра пути и находит соответствующий SelectionCategory",
-                "consumes": [
-                    "application/json"
-                ],
-=======
         "/subquest/delete/{id}": {
             "delete": {
                 "description": "Принимает ID подзадания в URL и удаляет соответствующее подзадание",
@@ -1764,20 +424,10 @@
         "/subquest/getmany": {
             "get": {
                 "description": "Возвращает список всех подзаданий (Subquest)",
->>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-<<<<<<< HEAD
-                    "SelectionCategory"
-                ],
-                "summary": "Находит существующий SelectionCategory",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "SelectionCategory ID",
-=======
                     "Subquest"
                 ],
                 "summary": "Получает список Subquest",
@@ -1817,7 +467,6 @@
                     {
                         "type": "integer",
                         "description": "Subquest ID",
->>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -1827,9 +476,6 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-<<<<<<< HEAD
-                            "$ref": "#/definitions/server.ResponseHTTP"
-=======
                             "allOf": [
                                 {
                                     "$ref": "#/definitions/server.ResponseHTTP"
@@ -1895,7 +541,6 @@
                                     }
                                 }
                             ]
->>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
                         }
                     },
                     "400": {
@@ -1905,11 +550,6 @@
                         }
                     }
                 }
-<<<<<<< HEAD
-            },
-            "put": {
-                "description": "Принимает id SelectionCategory в качестве параметра пути и обновляет соответствующий SelectionCategory",
-=======
             }
         },
         "/tasks/delete/{id}": {
@@ -2026,7 +666,6 @@
         "/tasks/update": {
             "put": {
                 "description": "Принимает JSON тело запроса с обновленными полями Tasks и обновляет существующее задание",
->>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
                 "consumes": [
                     "application/json"
                 ],
@@ -2034,132 +673,6 @@
                     "application/json"
                 ],
                 "tags": [
-<<<<<<< HEAD
-                    "SelectionCategory"
-                ],
-                "summary": "Обновляет существующий SelectionCategory",
-                "parameters": [
-                    {
-                        "description": "Update SelectionCategory",
-                        "name": "SelectionCategory",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/db.SelectionCategory"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "description": "Принимает id SelectionCategory в качестве параметра пути и удаляет соответствующий SelectionCategory",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "SelectionCategory"
-                ],
-                "summary": "Удаляет существующий SelectionCategory",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "SelectionCategory ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    }
-                }
-            }
-        },
-        "/sellerToService": {
-            "get": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "SellerToService"
-                ],
-                "summary": "Fetches all Seller-Service connections.",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/server.ResponseHTTP"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/db.SellerToService"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "SellerToService"
-                ],
-                "summary": "Creates a new connection of Seller-Service.",
-                "parameters": [
-                    {
-                        "description": "Create Selllers-Services",
-                        "name": "SellerToService",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/db.SellerToService"
-=======
                     "Tasks"
                 ],
                 "summary": "Обновляет существующее задание Tasks",
@@ -2171,7 +684,6 @@
                         "required": true,
                         "schema": {
                             "$ref": "#/definitions/db.Tasks"
->>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
                         }
                     }
                 ],
@@ -2187,1216 +699,7 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-<<<<<<< HEAD
-                                            "$ref": "#/definitions/db.SellerToService"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    }
-                }
-            }
-        },
-        "/sellerToService/{id}": {
-            "get": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "SellerToService"
-                ],
-                "summary": "Fetches all Services that belong to the speicfied Seller.",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Seller ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/server.ResponseHTTP"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/db.SellerToService"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "SellerToService"
-                ],
-                "summary": "Deletes a specified Seller-Service connection.",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Service ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/server.ResponseHTTP"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/db.SellerToService"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    }
-                }
-            }
-        },
-        "/sellers": {
-            "get": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Sellers"
-                ],
-                "summary": "Fetches all sellers.",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/server.ResponseHTTP"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/db.Seller"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Sellers"
-                ],
-                "summary": "Creates a new seller.",
-                "parameters": [
-                    {
-                        "description": "Create Seller",
-                        "name": "Seller",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/db.Seller"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/server.ResponseHTTP"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/db.Seller"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    }
-                }
-            }
-        },
-        "/sellers/{id}": {
-            "get": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Sellers"
-                ],
-                "summary": "Fetches a specific seller.",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Seller ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/server.ResponseHTTP"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/db.Seller"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Sellers"
-                ],
-                "summary": "Deletes a specified seller.",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Delete Seller",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/server.ResponseHTTP"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/db.Seller"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    }
-                }
-            },
-            "patch": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Sellers"
-                ],
-                "summary": "Updates an existing seller.",
-                "parameters": [
-                    {
-                        "description": "Update Seller",
-                        "name": "Seller",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/db.Seller"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/server.ResponseHTTP"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/db.Seller"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    }
-                }
-            }
-        },
-        "/serviceReviews": {
-            "get": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "ServiceReviews"
-                ],
-                "summary": "Fetches all serviceReviews.",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/server.ResponseHTTP"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/db.ServiceReview"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "ServiceReviews"
-                ],
-                "summary": "Creates a new serviceReview.",
-                "parameters": [
-                    {
-                        "description": "Create ServiceReview",
-                        "name": "ServiceReview",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/db.ServiceReview"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/server.ResponseHTTP"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/db.ServiceReview"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    }
-                }
-            }
-        },
-        "/serviceReviews/service/{service_id}": {
-            "get": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "ServiceReviews"
-                ],
-                "summary": "Fetches all Service Reviews for a specified Service.",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Service ID",
-                        "name": "service_id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/server.ResponseHTTP"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/db.ServiceReview"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    }
-                }
-            }
-        },
-        "/serviceReviews/{id}": {
-            "get": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "ServiceReviews"
-                ],
-                "summary": "Fetches a specific serviceReview.",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "ServiceReview ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/server.ResponseHTTP"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/db.ServiceReview"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "ServiceReviews"
-                ],
-                "summary": "Deletes a specified serviceReview.",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Delete ServiceReview",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/server.ResponseHTTP"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/db.ServiceReview"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    }
-                }
-            },
-            "patch": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "ServiceReviews"
-                ],
-                "summary": "Updates an existing serviceReview.",
-                "parameters": [
-                    {
-                        "description": "Update ServiceReview",
-                        "name": "ServiceReview",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/db.ServiceReview"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/server.ResponseHTTP"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/db.ServiceReview"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    }
-                }
-            }
-        },
-        "/services": {
-            "get": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Services"
-                ],
-                "summary": "Fetches all services.",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/server.ResponseHTTP"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/db.Service"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Services"
-                ],
-                "summary": "Creates a new service.",
-                "parameters": [
-                    {
-                        "description": "Create Service",
-                        "name": "Service",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/db.Service"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/server.ResponseHTTP"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/db.Service"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    }
-                }
-            }
-        },
-        "/services/{id}": {
-            "get": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Services"
-                ],
-                "summary": "Fetches a specific service.",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Service ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/server.ResponseHTTP"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/db.Service"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Services"
-                ],
-                "summary": "Deletes a specified service.",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Delete Service",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/server.ResponseHTTP"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/db.Service"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    }
-                }
-            },
-            "patch": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Services"
-                ],
-                "summary": "Updates an existing service.",
-                "parameters": [
-                    {
-                        "description": "Update Service",
-                        "name": "Service",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/db.Service"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/server.ResponseHTTP"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/db.Service"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    }
-                }
-            }
-        },
-        "/wishes/{id}/{wishlist_id}": {
-            "get": {
-                "description": "get the status of server.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Wishes"
-                ],
-                "summary": "Creates a new gift.",
-                "parameters": [
-                    {
-                        "description": "Add wishes",
-                        "name": "Wishes",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/db.Wishes"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/server.ResponseHTTP"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/db.Wishes"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "description": "get the status of server.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Wishes"
-                ],
-                "summary": "Creates a new gift.",
-                "parameters": [
-                    {
-                        "description": "Add wishes",
-                        "name": "Wishes",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/db.Wishes"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/server.ResponseHTTP"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/db.Wishes"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    }
-                }
-            }
-        },
-        "/wishes/{wishlist_id}": {
-            "post": {
-                "description": "get the status of server.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Wishes"
-                ],
-                "summary": "Creates a new gift.",
-                "parameters": [
-                    {
-                        "description": "Add wishes",
-                        "name": "Wishes",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/db.Wishes"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/server.ResponseHTTP"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/db.Wishes"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    }
-                }
-            }
-        },
-        "/wishlists": {
-            "get": {
-                "description": "get the status of server.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Wishlist"
-                ],
-                "summary": "Creates a new gift.",
-                "parameters": [
-                    {
-                        "description": "Create Wishlist",
-                        "name": "UserWishlist",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/db.UserWishlist"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/server.ResponseHTTP"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/db.UserWishlist"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    }
-                }
-            },
-            "put": {
-                "description": "get the status of server.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Wishlist"
-                ],
-                "summary": "Creates a new gift.",
-                "parameters": [
-                    {
-                        "description": "Create Wishlist",
-                        "name": "UserWishlist",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/db.UserWishlist"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/server.ResponseHTTP"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/db.UserWishlist"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "description": "get the status of server.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Wishlist"
-                ],
-                "summary": "Creates a new gift.",
-                "parameters": [
-                    {
-                        "description": "Create Wishlist",
-                        "name": "UserWishlist",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/db.UserWishlist"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/server.ResponseHTTP"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/db.UserWishlist"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    }
-                }
-            }
-        },
-        "/wishlists/{wishlist_id}/{gift_id}": {
-            "delete": {
-                "description": "get the status of server.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Wishlist"
-                ],
-                "summary": "Creates a new gift.",
-                "parameters": [
-                    {
-                        "description": "Delete Wishlist",
-                        "name": "Wishlist",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/db.UserWishlist"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/server.ResponseHTTP"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/db.UserWishlist"
-=======
                                             "$ref": "#/definitions/db.Tasks"
->>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
                                         }
                                     }
                                 }
@@ -3414,41 +717,10 @@
         }
     },
     "definitions": {
-        "db.BookedGiftInWishlist": {
-            "type": "object",
-            "properties": {
-                "gift_id": {
-                    "type": "string"
-                },
-                "user_id": {
-                    "type": "string"
-                }
-            }
-        },
-        "db.CommentToSelection": {
-            "type": "object",
-            "properties": {
-                "created_at": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "selection_id": {
-                    "type": "string"
-                },
-                "text": {
-                    "type": "string"
-                },
-                "user_id": {
-                    "type": "string"
-                }
-            }
-        },
         "db.Gift": {
             "type": "object",
             "properties": {
-                "category": {
+                "comments": {
                     "type": "string"
                 },
                 "description": {
@@ -3458,10 +730,14 @@
                     "description": "LIFEHACK: use string id like 'gift_ajdsjanjklsnls'",
                     "type": "string"
                 },
+                "is_favorite": {
+                    "type": "boolean"
+                },
                 "link": {
                     "type": "string"
                 },
                 "name": {
+                    "description": "UserID      string `json:\"user_id\"`",
                     "type": "string"
                 },
                 "photo": {
@@ -3473,64 +749,20 @@
                 }
             }
         },
-<<<<<<< HEAD
-        "db.GiftCategory": {
-=======
         "db.OfflineShops": {
->>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
             "type": "object",
             "properties": {
                 "id": {
                     "type": "string"
                 },
-<<<<<<< HEAD
-=======
                 "location": {
                     "type": "string"
                 },
->>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
                 "name": {
                     "type": "string"
                 }
             }
         },
-<<<<<<< HEAD
-        "db.GiftReview": {
-            "type": "object",
-            "properties": {
-                "comment": {
-                    "type": "string"
-                },
-                "date": {
-                    "type": "string"
-                },
-                "gift_id": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "mark": {
-                    "type": "number"
-                }
-            }
-        },
-        "db.GiftToSelection": {
-            "type": "object",
-            "properties": {
-                "gift_id": {
-                    "type": "string"
-                },
-                "selection_id": {
-                    "type": "string"
-                }
-            }
-        },
-        "db.LikeToSelection": {
-            "type": "object",
-            "properties": {
-                "selection_id": {
-=======
         "db.Quest": {
             "type": "object",
             "properties": {
@@ -3541,7 +773,6 @@
                     "type": "boolean"
                 },
                 "subquest_id": {
->>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
                     "type": "string"
                 },
                 "user_id": {
@@ -3549,9 +780,6 @@
                 }
             }
         },
-<<<<<<< HEAD
-        "db.Selection": {
-=======
         "db.Subquest": {
             "type": "object",
             "properties": {
@@ -3570,7 +798,6 @@
             }
         },
         "db.Tasks": {
->>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
             "type": "object",
             "properties": {
                 "description": {
@@ -3579,173 +806,11 @@
                 "id": {
                     "type": "string"
                 },
-<<<<<<< HEAD
-                "is_generated": {
-                    "type": "boolean"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "user_id": {
-                    "type": "string"
-                }
-            }
-        },
-        "db.SelectionCategory": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "string"
-                },
-=======
->>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
                 "name": {
                     "type": "string"
                 }
             }
         },
-<<<<<<< HEAD
-        "db.Seller": {
-            "type": "object",
-            "required": [
-                "email",
-                "name"
-            ],
-            "properties": {
-                "email": {
-                    "type": "string",
-                    "minLength": 5
-                },
-                "name": {
-                    "type": "string",
-                    "maxLength": 50,
-                    "minLength": 5
-                },
-                "photo": {
-                    "type": "string"
-                }
-            }
-        },
-        "db.SellerToService": {
-            "type": "object",
-            "required": [
-                "seller_id",
-                "service_id"
-            ],
-            "properties": {
-                "seller_id": {
-                    "type": "string"
-                },
-                "service_id": {
-                    "type": "string"
-                }
-            }
-        },
-        "db.Service": {
-            "type": "object",
-            "required": [
-                "location",
-                "name",
-                "price"
-            ],
-            "properties": {
-                "location": {
-                    "type": "string",
-                    "minLength": 5
-                },
-                "name": {
-                    "type": "string",
-                    "maxLength": 50,
-                    "minLength": 5
-                },
-                "photos": {
-                    "type": "string"
-                },
-                "price": {
-                    "type": "number"
-                }
-            }
-        },
-        "db.ServiceReview": {
-            "type": "object",
-            "required": [
-                "comment",
-                "mark",
-                "service_id",
-                "user_id"
-            ],
-            "properties": {
-                "comment": {
-                    "type": "string",
-                    "maxLength": 5000
-                },
-                "mark": {
-                    "type": "number"
-                },
-                "service_id": {
-                    "type": "string"
-                },
-                "user_id": {
-                    "type": "string"
-                }
-            }
-        },
-        "db.User": {
-            "type": "object",
-            "properties": {
-                "birthday": {
-                    "type": "string"
-                },
-                "coins": {
-                    "type": "integer"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "lastname": {
-                    "type": "string"
-                },
-                "login": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "password": {
-                    "type": "string"
-                },
-                "role_name": {
-                    "type": "string"
-                }
-            }
-        },
-        "db.UserWishlist": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "user_id": {
-                    "type": "string"
-                }
-            }
-        },
-        "db.Wishes": {
-            "type": "object",
-            "properties": {
-                "gift_id": {
-                    "type": "string"
-                },
-                "wishlist_id": {
-                    "type": "string"
-                }
-            }
-        },
-=======
->>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
         "server.ResponseHTTP": {
             "type": "object",
             "properties": {
