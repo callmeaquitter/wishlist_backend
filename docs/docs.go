@@ -509,7 +509,6 @@ const docTemplate = `{
                 }
             },
             "post": {
-                "description": "get the status of server.",
                 "consumes": [
                     "application/json",
                     "application/json"
