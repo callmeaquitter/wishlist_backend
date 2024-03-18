@@ -21,7 +21,6 @@ definitions:
       link:
         type: string
       name:
-        description: UserID      string `json:"user_id"`
         type: string
       photo:
         type: string
@@ -365,6 +364,13 @@ paths:
       consumes:
       - application/json
       description: get the status of server.
+      parameters:
+      - description: Create Gift
+        in: body
+        name: Gift
+        required: true
+        schema:
+          $ref: '#/definitions/db.Gift'
       parameters:
       - description: Create Gift
         in: body

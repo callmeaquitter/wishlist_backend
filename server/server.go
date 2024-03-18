@@ -3,6 +3,7 @@ package server
 import (
 	swagger "github.com/arsmn/fiber-swagger/v2"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 )
 
 var app *fiber.App
@@ -10,6 +11,10 @@ var app *fiber.App
 func Setup() {
 	// Default config
 	app = fiber.New()
+
+	app.Use(cors.New(cors.Config{
+		AllowOrigins: "*",
+		AllowHeaders: "Origin, Content-Type, Accept"}))
 
 	app.Get("/docs/*", swagger.HandlerDefault)
 	//https://docs.stripe.com/api/charges
@@ -71,6 +76,22 @@ func Setup() {
 	//
 	// app.Post("/register", registerHandler)
 
+	wishlists := app.Group("/wishlists", authMiddleware)
+	wishlists.Get("", FindManyWishlistsHandler)
+	wishlists.Post("", CreateWishlistHandler)
+	wishlists.Put("/:id", UpdateWishlist)
+	wishlists.Delete("/:id/:gift_id/:user_id", DeleteWishlistHandler)
+
+	wishes := app.Group("/wishes", authMiddleware)
+	wishes.Get("/:wishlist_id", FindManyWishlistsHandler)
+	wishes.Post("/:gift_id/:wishlist_id", AddWishHandler)
+	wishes.Delete("/:wishlist_id/:gift_id", DeleteWishHandler)
+
+	// user := app.Group("/users")
+	// user.Post("", CreateUserHandler)
+
+	app.Post("/register", registerHandler)
+	app.Post("/login", loginHandler)
 }
 
 func Start() {
