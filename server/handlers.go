@@ -529,9 +529,10 @@ func updateServiceReviewHandler(c *fiber.Ctx) error {
             return c.Status(fiber.StatusUnprocessableEntity).SendString(err.Error())
         }
         if serviceReview.Mark.IsNegative() || 
-		serviceReview.Mark.GreaterThan(decimal.NewFromInt(5)) {
+		serviceReview.Mark.GreaterThan(decimal.NewFromInt(5)) ||
+		serviceReview.Mark.LessThan(decimal.NewFromInt(1)) {
 		return c.Status(fiber.StatusUnprocessableEntity).
-			SendString("Only positive marks less or equal to 5 are allowed!")
+			SendString("Only positive marks in range from 1 to 5 are allowed!")
         }
 
 	serviceReview.UpdateDate = time.Now()
