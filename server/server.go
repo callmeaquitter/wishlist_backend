@@ -23,23 +23,23 @@ func Setup() {
 
 	//Route: POST /gifts
 	gifts := app.Group("/gifts")
-	gifts.Post("", createGiftHandler)
+	gifts.Post("", createGiftHandler, authMiddleware)
 	//Route: DELETE /gifts/:id
 	//DELETE /gifts/gift_cneq8k9u9g5j3m6ft0v0
-	gifts.Delete("/:id", deleteGiftHandler)
+	gifts.Delete("/:id", deleteGiftHandler, authMiddleware)
 
 	gifts.Get("", getManyGiftsHandler)
 
 	gifts.Get("/:id", getOneGiftHandler)
 
-	gifts.Patch("/:id", updateGiftHandler)
+	gifts.Patch("/:id", updateGiftHandler, authMiddleware)
 
 	// ??
 	bookedGift := app.Group("/booked_gifts")
-	bookedGift.Post("", createBookedGiftInWishlist)
+	bookedGift.Post("", createBookedGiftInWishlist, authMiddleware)
 
 	//!!!!
-	bookedGift.Delete("/:gift_id", deleteBookedGiftInWishlist)
+	bookedGift.Delete("/:gift_id", deleteBookedGiftInWishlist, authMiddleware)
 
 	//http://localhost:7777/booked_gifts/:user_id
 	bookedGift.Get("/:user_id", findUserBookedGifts)
@@ -50,13 +50,15 @@ func Setup() {
 	giftCategory.Delete("/:id", deleteGiftCategory)
 
 	giftReview := app.Group("/gift_review")
-	giftReview.Post("", createGiftReviwHandler)
+	giftReview.Post("", createGiftReviwHandler, authMiddleware)
 
-	giftReview.Delete("/:id", deleteGiftReviewHandler)
+	giftReview.Delete("/:id", deleteGiftReviewHandler, authMiddleware)
 
 	giftReview.Get("/review/:id", getGiftReviewByIDHandler)
 
 	giftReview.Get("/gift/:gift_id", getGiftReviewsByGiftIDHandler)
+
+	giftReview.Get("/mark/:gift_id", calculateAverageMarkByGiftIDHandler)
 
 	//
 	//request -> middleware -> handler -> response

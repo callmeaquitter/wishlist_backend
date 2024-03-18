@@ -11,7 +11,6 @@ type Gift struct {
 	Photo       string `json:"photo"`
 	Description string `json:"description"`
 	Link        string `json:"link"`
-	Comments    string `json:"comments"`
 	Category    string `json:"category"`
 }
 

@@ -74,9 +74,9 @@ func deleteGiftHandler(c *fiber.Ctx) error {
 	return c.SendString("Gift deleted successfully")
 }
 
-// GetAllGifts is a function to get all books data from database
-// @Summary Get all books
-// @Description Get all books
+// GetAllGifts is a function to get all gifts data from database
+// @Summary Get all gifts
+// @Description Get all gifts
 // @Tags Gifts
 // @Accept json
 // @Produce json
@@ -93,8 +93,8 @@ func getManyGiftsHandler(c *fiber.Ctx) error {
 }
 
 // GetOneGifts is a function to get all books data from database
-// @Summary Get one books
-// @Description Get one books
+// @Summary Get one gift
+// @Description Get one gift
 // @Tags Gifts
 // @Accept json
 // @Produce json
@@ -173,7 +173,7 @@ func createBookedGiftInWishlist(c *fiber.Ctx) error {
 // @Router /booked_gifts/{gift_id} [delete]
 func deleteBookedGiftInWishlist(c *fiber.Ctx) error {
 	giftID := c.Params("gift_id")
-	
+
 	ok := db.DeleteBookedGift(giftID)
 	if !ok {
 		return c.SendString("Error in deleteBookedGift operation")
@@ -330,6 +330,27 @@ func getGiftReviewsByGiftIDHandler(c *fiber.Ctx) error{
 		return c.SendString("Error in getGiftReviewsByGiftID operation")
 	}
 	return c.JSON(giftReviews)
+}
+
+// calculateAverageMarkByGiftIDHandler godoc
+// @Summary Calculate average mark for a gift by its ID
+// @Description Calculate average mark for a gift by its ID
+// @Tags GiftReview
+// @Accept json
+// @Produce json
+// @Param gift_id path string true "Gift ID"
+// @Success 200 {object} float32 "Average mark"
+// @Failure 400 {string} string "Bad Request"
+// @Failure 404 {string} string "Not Found"
+// @Failure 500 {string} string "Internal Server Error"
+// @Router /gift_review/{gift_id} [get]
+func calculateAverageMarkByGiftIDHandler(c *fiber.Ctx) error{
+	giftID := c.Params("gift_id")
+	averageMark, ok := db.CalculateAverageMarkByGiftID(giftID)
+	if !ok {
+		return c.SendString("calculateAverageMarkByGiftID operation")
+	}
+	return c.JSON(averageMark)
 }
 
 func superSecretHandler(c *fiber.Ctx) error {

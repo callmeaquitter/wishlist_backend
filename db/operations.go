@@ -68,9 +68,7 @@ func UpdateGift(id string, updatedGift Gift) bool {
 	if updatedGift.Link != "" {
         existingGift.Link = updatedGift.Link
     }
-	if updatedGift.Comments != "" {
-        existingGift.Comments = updatedGift.Comments
-    }
+
 	if updatedGift.Category != "" {
         existingGift.Category = updatedGift.Category
     }
@@ -93,15 +91,15 @@ func CreateBookedGift(BookedGiftInWishlist BookedGiftInWishlist) bool {
 	}
 	return true
 }
-//!!!
-func DeleteBookedGift(GiftID string) bool {
-	result := Database.Delete(BookedGiftInWishlist{GiftID: GiftID})
+
+func DeleteBookedGift(giftID string) bool {
+	var bookedGiftInWishlist BookedGiftInWishlist
+	result := Database.Where(&BookedGiftInWishlist{GiftID: giftID}).Delete(&bookedGiftInWishlist)
 	if result.Error != nil {
 		fmt.Println("Error in deleteBookedGift", result.Error)
 		return false
 	}
 	return true
-
 }
 
 func FindManyUsersGift(UserID string) ([]BookedGiftInWishlist, bool) {
@@ -172,15 +170,15 @@ func GetGiftReviewsByGiftID(giftID string) ([]GiftReview, bool) {
     return giftReviews, true
 }
 
-// func CalculateAverageMarkByGiftID(giftID string) (float32, bool){
-// 	giftReviews, found := GetGiftReviewsByGiftID(giftID)
-// 	if !found || len(giftReviews) == 0 {
-//         return 0.0, false
-//     }
-// 	totalMarks := float32(0)
-//     for _, review := range giftReviews {
-//         totalMarks += review.Mark
-//     }
-// 	averageMark := totalMarks / float32(len(giftReviews))
-//     return averageMark, true
-// }
+func CalculateAverageMarkByGiftID(giftID string) (float32, bool){
+	giftReviews, found := GetGiftReviewsByGiftID(giftID)
+	if !found || len(giftReviews) == 0 {
+        return 0.0, false
+    }
+	totalMarks := float32(0)
+    for _, review := range giftReviews {
+        totalMarks += review.Mark
+    }
+	averageMark := totalMarks / float32(len(giftReviews))
+    return averageMark, true
+}
