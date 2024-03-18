@@ -23,7 +23,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/booked_gifts/creategifts": {
+        "/booked_gifts/create": {
             "post": {
                 "description": "Creates a booked gift in the wishlist based on the provided data.",
                 "consumes": [
@@ -337,7 +337,7 @@ const docTemplate = `{
         },
         "/gift_review/{gift_id}": {
             "get": {
-                "description": "Get all gift reviews by giftId",
+                "description": "Calculate average mark for a gift by its ID",
                 "consumes": [
                     "application/json"
                 ],
@@ -347,33 +347,39 @@ const docTemplate = `{
                 "tags": [
                     "GiftReview"
                 ],
-                "summary": "Get all gift reviews by giftId",
+                "summary": "Calculate average mark for a gift by its ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Gift ID",
+                        "name": "gift_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "Average mark",
                         "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/server.ResponseHTTP"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/db.GiftReview"
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
+                            "type": "number"
                         }
                     },
-                    "503": {
-                        "description": "Service Unavailable",
+                    "400": {
+                        "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 }
@@ -461,7 +467,7 @@ const docTemplate = `{
         },
         "/gifts": {
             "get": {
-                "description": "Get all books",
+                "description": "Get all gifts",
                 "consumes": [
                     "application/json"
                 ],
@@ -471,49 +477,7 @@ const docTemplate = `{
                 "tags": [
                     "Gifts"
                 ],
-                "summary": "Get all books",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/server.ResponseHTTP"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/db.Gift"
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "503": {
-                        "description": "Service Unavailable",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    }
-                }
-            },
-            "get": {
-                "description": "Get all books",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Gifts"
-                ],
-                "summary": "Get all books",
+                "summary": "Get all gifts",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -547,6 +511,7 @@ const docTemplate = `{
             "post": {
                 "description": "get the status of server.",
                 "consumes": [
+                    "application/json",
                     "application/json"
                 ],
                 "produces": [
@@ -557,6 +522,15 @@ const docTemplate = `{
                 ],
                 "summary": "Creates a new gift.",
                 "parameters": [
+                    {
+                        "description": "Create Gift",
+                        "name": "Gift",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/db.Gift"
+                        }
+                    },
                     {
                         "description": "Create Gift",
                         "name": "Gift",
@@ -597,7 +571,7 @@ const docTemplate = `{
         },
         "/gifts/{id}": {
             "get": {
-                "description": "Get one books",
+                "description": "Get one gift",
                 "consumes": [
                     "application/json"
                 ],
@@ -607,7 +581,7 @@ const docTemplate = `{
                 "tags": [
                     "Gifts"
                 ],
-                "summary": "Get one books",
+                "summary": "Get one gift",
                 "parameters": [
                     {
                         "type": "string",
@@ -694,10 +668,10 @@ const docTemplate = `{
                 "tags": [
                     "Gifts"
                 ],
-                "summary": "Creates a new gift.",
+                "summary": "update gift by ID",
                 "parameters": [
                     {
-                        "description": "Create Gift",
+                        "description": "Update Gift",
                         "name": "Gift",
                         "in": "body",
                         "required": true,
@@ -740,8 +714,8 @@ const docTemplate = `{
                 }
             }
         },
-        "/gifts/{id}": {
-            "delete": {
+        "/login": {
+            "post": {
                 "description": "get the status of server.",
                 "consumes": [
                     "application/json"
@@ -750,17 +724,17 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Gifts"
+                    "auth"
                 ],
                 "summary": "Creates a new gift.",
                 "parameters": [
                     {
-                        "description": "Create Gift",
-                        "name": "Gift",
+                        "description": "Reg user",
+                        "name": "User",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/db.Gift"
+                            "$ref": "#/definitions/db.User"
                         }
                     }
                 ],
@@ -776,7 +750,111 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/db.Gift"
+                                            "$ref": "#/definitions/db.User"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseHTTP"
+                        }
+                    }
+                }
+            }
+        },
+        "/register": {
+            "post": {
+                "description": "get the status of server.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Creates a new gift.",
+                "parameters": [
+                    {
+                        "description": "Reg user",
+                        "name": "User",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/db.User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/server.ResponseHTTP"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/db.User"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseHTTP"
+                        }
+                    }
+                }
+            }
+        },
+        "/wishes/{id}/{wishlist_id}": {
+            "get": {
+                "description": "get the status of server.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Wishes"
+                ],
+                "summary": "Creates a new gift.",
+                "parameters": [
+                    {
+                        "description": "Add wishes",
+                        "name": "Wishes",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/db.Wishes"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/server.ResponseHTTP"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/db.Wishes"
                                         }
                                     }
                                 }
@@ -791,7 +869,7 @@ const docTemplate = `{
                     }
                 }
             },
-            "patch": {
+            "delete": {
                 "description": "get the status of server.",
                 "consumes": [
                     "application/json"
@@ -800,17 +878,17 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Gifts"
+                    "Wishes"
                 ],
                 "summary": "Creates a new gift.",
                 "parameters": [
                     {
-                        "description": "Create Gift",
-                        "name": "Gift",
+                        "description": "Add wishes",
+                        "name": "Wishes",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/db.Gift"
+                            "$ref": "#/definitions/db.Wishes"
                         }
                     }
                 ],
@@ -826,7 +904,7 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/db.Gift"
+                                            "$ref": "#/definitions/db.Wishes"
                                         }
                                     }
                                 }
@@ -838,9 +916,55 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/server.ResponseHTTP"
                         }
+                    }
+                }
+            }
+        },
+        "/wishes/{wishlist_id}": {
+            "post": {
+                "description": "get the status of server.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Wishes"
+                ],
+                "summary": "Creates a new gift.",
+                "parameters": [
+                    {
+                        "description": "Add wishes",
+                        "name": "Wishes",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/db.Wishes"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/server.ResponseHTTP"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/db.Wishes"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
                     },
-                    "500": {
-                        "description": "Internal Server Error",
+                    "400": {
+                        "description": "Bad Request",
                         "schema": {
                             "$ref": "#/definitions/server.ResponseHTTP"
                         }
@@ -848,7 +972,211 @@ const docTemplate = `{
                 }
             }
         },
-        "/wishlists/wishlist_cnothhc69lbkfh15tmmg/gift_cnos0qk69lbkli6i79ug/user_cnot2oc69lbksn28kko0": {
+        "/wishlists": {
+            "get": {
+                "description": "get the status of server.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Wishlist"
+                ],
+                "summary": "Creates a new gift.",
+                "parameters": [
+                    {
+                        "description": "Create Wishlist",
+                        "name": "UserWishlist",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/db.UserWishlist"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/server.ResponseHTTP"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/db.UserWishlist"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseHTTP"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "get the status of server.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Wishlist"
+                ],
+                "summary": "Creates a new gift.",
+                "parameters": [
+                    {
+                        "description": "Create Wishlist",
+                        "name": "UserWishlist",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/db.UserWishlist"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/server.ResponseHTTP"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/db.UserWishlist"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseHTTP"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "get the status of server.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Wishlist"
+                ],
+                "summary": "Creates a new gift.",
+                "parameters": [
+                    {
+                        "description": "Create Wishlist",
+                        "name": "UserWishlist",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/db.UserWishlist"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/server.ResponseHTTP"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/db.UserWishlist"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseHTTP"
+                        }
+                    }
+                }
+            }
+        },
+        "/wishlists/{name}": {
+            "get": {
+                "description": "get the status of server.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Wishlist"
+                ],
+                "summary": "Creates a new gift.",
+                "parameters": [
+                    {
+                        "description": "Create Wishlist",
+                        "name": "UserWishlist",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/db.UserWishlist"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/server.ResponseHTTP"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/db.UserWishlist"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseHTTP"
+                        }
+                    }
+                }
+            }
+        },
+        "/wishlists/{wishlist_id}/{gift_id}": {
             "delete": {
                 "description": "get the status of server.",
                 "consumes": [
@@ -972,6 +1300,35 @@ const docTemplate = `{
                 }
             }
         },
+        "db.User": {
+            "type": "object",
+            "properties": {
+                "birthday": {
+                    "type": "string"
+                },
+                "coins": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "lastname": {
+                    "type": "string"
+                },
+                "login": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "role_name": {
+                    "type": "string"
+                }
+            }
+        },
         "db.UserWishlist": {
             "type": "object",
             "properties": {
@@ -982,6 +1339,17 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "user_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "db.Wishes": {
+            "type": "object",
+            "properties": {
+                "gift_id": {
+                    "type": "string"
+                },
+                "wishlist_id": {
                     "type": "string"
                 }
             }

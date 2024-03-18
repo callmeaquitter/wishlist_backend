@@ -11,8 +11,6 @@ definitions:
     properties:
       category:
         type: string
-      comments:
-        type: string
       description:
         type: string
       id:
@@ -47,6 +45,41 @@ definitions:
         type: string
       mark:
         type: number
+    type: object
+  db.User:
+    properties:
+      birthday:
+        type: string
+      coins:
+        type: integer
+      id:
+        type: string
+      lastname:
+        type: string
+      login:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+      role_name:
+        type: string
+    type: object
+  db.UserWishlist:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      user_id:
+        type: string
+    type: object
+  db.Wishes:
+    properties:
+      gift_id:
+        type: string
+      wishlist_id:
+        type: string
     type: object
   server.ResponseHTTP:
     properties:
@@ -262,26 +295,33 @@ paths:
     get:
       consumes:
       - application/json
-      description: Get all gift reviews by giftId
+      description: Calculate average mark for a gift by its ID
+      parameters:
+      - description: Gift ID
+        in: path
+        name: gift_id
+        required: true
+        type: string
       produces:
       - application/json
       responses:
         "200":
-          description: OK
+          description: Average mark
           schema:
-            allOf:
-            - $ref: '#/definitions/server.ResponseHTTP'
-            - properties:
-                data:
-                  items:
-                    $ref: '#/definitions/db.GiftReview'
-                  type: array
-              type: object
-        "503":
-          description: Service Unavailable
+            type: number
+        "400":
+          description: Bad Request
           schema:
-            $ref: '#/definitions/server.ResponseHTTP'
-      summary: Get all gift reviews by giftId
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Calculate average mark for a gift by its ID
       tags:
       - GiftReview
   /gift_review/{id}:
@@ -338,7 +378,7 @@ paths:
     get:
       consumes:
       - application/json
-      description: Get all books
+      description: Get all gifts
       produces:
       - application/json
       responses:
@@ -357,11 +397,12 @@ paths:
           description: Service Unavailable
           schema:
             $ref: '#/definitions/server.ResponseHTTP'
-      summary: Get all books
+      summary: Get all gifts
       tags:
       - Gifts
     post:
       consumes:
+      - application/json
       - application/json
       description: get the status of server.
       parameters:
@@ -371,7 +412,6 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/db.Gift'
-      parameters:
       - description: Create Gift
         in: body
         name: Gift
@@ -425,7 +465,7 @@ paths:
     get:
       consumes:
       - application/json
-      description: Get one books
+      description: Get one gift
       parameters:
       - description: Gift ID
         in: path
@@ -450,7 +490,7 @@ paths:
           description: Service Unavailable
           schema:
             $ref: '#/definitions/server.ResponseHTTP'
-      summary: Get one books
+      summary: Get one gift
       tags:
       - Gifts
     patch:
@@ -458,7 +498,7 @@ paths:
       - application/json
       description: get the status of server.
       parameters:
-      - description: Create Gift
+      - description: Update Gift
         in: body
         name: Gift
         required: true
@@ -484,7 +524,314 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/server.ResponseHTTP'
-      summary: Creates a new gift.
+      summary: update gift by ID
       tags:
       - Gifts
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: get the status of server.
+      parameters:
+      - description: Reg user
+        in: body
+        name: User
+        required: true
+        schema:
+          $ref: '#/definitions/db.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.User'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Creates a new gift.
+      tags:
+      - auth
+  /register:
+    post:
+      consumes:
+      - application/json
+      description: get the status of server.
+      parameters:
+      - description: Reg user
+        in: body
+        name: User
+        required: true
+        schema:
+          $ref: '#/definitions/db.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.User'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Creates a new gift.
+      tags:
+      - auth
+  /wishes/{id}/{wishlist_id}:
+    delete:
+      consumes:
+      - application/json
+      description: get the status of server.
+      parameters:
+      - description: Add wishes
+        in: body
+        name: Wishes
+        required: true
+        schema:
+          $ref: '#/definitions/db.Wishes'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.Wishes'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Creates a new gift.
+      tags:
+      - Wishes
+    get:
+      consumes:
+      - application/json
+      description: get the status of server.
+      parameters:
+      - description: Add wishes
+        in: body
+        name: Wishes
+        required: true
+        schema:
+          $ref: '#/definitions/db.Wishes'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.Wishes'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Creates a new gift.
+      tags:
+      - Wishes
+  /wishes/{wishlist_id}:
+    post:
+      consumes:
+      - application/json
+      description: get the status of server.
+      parameters:
+      - description: Add wishes
+        in: body
+        name: Wishes
+        required: true
+        schema:
+          $ref: '#/definitions/db.Wishes'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.Wishes'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Creates a new gift.
+      tags:
+      - Wishes
+  /wishlists:
+    get:
+      consumes:
+      - application/json
+      description: get the status of server.
+      parameters:
+      - description: Create Wishlist
+        in: body
+        name: UserWishlist
+        required: true
+        schema:
+          $ref: '#/definitions/db.UserWishlist'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.UserWishlist'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Creates a new gift.
+      tags:
+      - Wishlist
+    post:
+      consumes:
+      - application/json
+      description: get the status of server.
+      parameters:
+      - description: Create Wishlist
+        in: body
+        name: UserWishlist
+        required: true
+        schema:
+          $ref: '#/definitions/db.UserWishlist'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.UserWishlist'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Creates a new gift.
+      tags:
+      - Wishlist
+    put:
+      consumes:
+      - application/json
+      description: get the status of server.
+      parameters:
+      - description: Create Wishlist
+        in: body
+        name: UserWishlist
+        required: true
+        schema:
+          $ref: '#/definitions/db.UserWishlist'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.UserWishlist'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Creates a new gift.
+      tags:
+      - Wishlist
+  /wishlists/{name}:
+    get:
+      consumes:
+      - application/json
+      description: get the status of server.
+      parameters:
+      - description: Create Wishlist
+        in: body
+        name: UserWishlist
+        required: true
+        schema:
+          $ref: '#/definitions/db.UserWishlist'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.UserWishlist'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Creates a new gift.
+      tags:
+      - Wishlist
+  /wishlists/{wishlist_id}/{gift_id}:
+    delete:
+      consumes:
+      - application/json
+      description: get the status of server.
+      parameters:
+      - description: Delete Wishlist
+        in: body
+        name: Wishlist
+        required: true
+        schema:
+          $ref: '#/definitions/db.UserWishlist'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.UserWishlist'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Creates a new gift.
+      tags:
+      - Wishlist
 swagger: "2.0"

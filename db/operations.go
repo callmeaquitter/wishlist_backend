@@ -49,46 +49,42 @@ func FindOneGift(gift Gift) bool {
 	return true
 }
 
-
-
 func UpdateGift(id string, updatedGift Gift) bool {
-    
-    existingGift := Gift{}
-    result := Database.First(&existingGift, "id = ?", id)
-    if result.Error != nil {
-        fmt.Println("Error in finding gift:", result.Error)
-        return false
-    }
+
+	existingGift := Gift{}
+	result := Database.First(&existingGift, "id = ?", id)
+	if result.Error != nil {
+		fmt.Println("Error in finding gift:", result.Error)
+		return false
+	}
 
 	if updatedGift.Name != "" {
-        existingGift.Name = updatedGift.Name
-    }
-    if updatedGift.Price != 0 {
-        existingGift.Price = updatedGift.Price
-    }
-    if updatedGift.Photo != "" {
-        existingGift.Photo = updatedGift.Photo
-    }
+		existingGift.Name = updatedGift.Name
+	}
+	if updatedGift.Price != 0 {
+		existingGift.Price = updatedGift.Price
+	}
+	if updatedGift.Photo != "" {
+		existingGift.Photo = updatedGift.Photo
+	}
 	if updatedGift.Description != "" {
-        existingGift.Description = updatedGift.Description
-    }
+		existingGift.Description = updatedGift.Description
+	}
 	if updatedGift.Link != "" {
-        existingGift.Link = updatedGift.Link
-    }
+		existingGift.Link = updatedGift.Link
+	}
 
 	if updatedGift.Category != "" {
-        existingGift.Category = updatedGift.Category
-    }
+		existingGift.Category = updatedGift.Category
+	}
 	result = Database.Save(&existingGift)
-    if result.Error != nil {
-        fmt.Println("Error updating the gift:", result.Error)
-        return false
-    }
+	if result.Error != nil {
+		fmt.Println("Error updating the gift:", result.Error)
+		return false
+	}
 
-    return true
+	return true
 }
-	
-
 
 func CreateBookedGift(BookedGiftInWishlist BookedGiftInWishlist) bool {
 	result := Database.Create(&BookedGiftInWishlist)
@@ -157,24 +153,24 @@ func CreateWishlist(wishlist UserWishlist) bool {
 	return true
 }
 
-func FindManyWishlists(userID string) bool {
+func FindManyWishlists(userID string) (UserWishlist, bool) {
 	var wishlist UserWishlist
 	result := Database.Where(&UserWishlist{UserID: userID}).Find(&wishlist)
 	if result.Error != nil {
 		fmt.Println("Error in FindManyWishlists", result.Error)
-		return false
+		return wishlist, false
 	}
-	return true
+	return wishlist,true
 }
 
-func FindWishlistByName(name string) bool {
+func FindWishlistByName(name string) (UserWishlist,bool) {
 	var wishlist UserWishlist
 	result := Database.Where(&UserWishlist{Name: name}).Take(&wishlist)
 	if result.Error != nil {
 		fmt.Println("Error in FindWishlistByName", result.Error)
-		return false
+		return wishlist, false
 	}
-	return true
+	return wishlist, true
 }
 
 func UpdateWishlist(wishlistID, wishlistName string) bool {
@@ -206,14 +202,14 @@ func AddWish(wishlistID, giftID string) bool {
 	return true
 }
 
-func GetManyWishesInWishlist(wishlistID string) bool {
+func GetManyWishesInWishlist(wishlistID string) ([]Wishes,bool) {
 	var wishes []Wishes
 	result := Database.Where(&wishes, wishlistID).Find(&wishes)
 	if result.Error != nil {
 		fmt.Println("Error in GetManyWishes", result.Error)
-		return false
+		return wishes, false
 	}
-	return true
+	return wishes, true
 }
 
 // func GetOneWish(wish Wishes) bool {
@@ -317,187 +313,6 @@ func CreateSession(session Session) bool {
 		return false
 	}
 	return true
-}
-
-func CreateWishlist(wishlist UserWishlist) bool {
-	result := Database.Create(&wishlist)
-	if result.Error != nil {
-		fmt.Println("Error in CreateWishlist", result.Error)
-		return false
-	}
-	return true
-}
-
-func FindManyWishlists(userID string) bool {
-	var wishlist UserWishlist
-	result := Database.Where(&UserWishlist{UserID: userID}).Find(&wishlist)
-	if result.Error != nil {
-		fmt.Println("Error in FindManyWishlists", result.Error)
-		return false
-	}
-	return true
-}
-
-func FindWishlistByName(name string) bool {
-	var wishlist UserWishlist
-	result := Database.Where(&UserWishlist{Name: name}).Take(&wishlist)
-	if result.Error != nil {
-		fmt.Println("Error in FindWishlistByName", result.Error)
-		return false
-	}
-	return true
-}
-
-func UpdateWishlist(wishlistID, wishlistName string) bool {
-	var wishlist UserWishlist
-
-	err := Database.Where(&UserWishlist{ID: wishlistID}).First(&wishlist)
-	if err.Error != nil {
-		fmt.Println("Ошибка при поиске списка желаемого для обновления", err.Error)
-		return false
-	}
-
-	result := Database.Model(&wishlist).Update("name", wishlistName)
-	if result.Error != nil {
-		fmt.Println("Ошибка в UpdateWishlist", result.Error)
-		return false
-	}
-
-	return true
-}
-
-func AddWish(wishlistID, giftID string) bool {
-	wish := Wishes{GiftID: giftID, WishlistID: wishlistID}
-	result := Database.Create(wish)
-	if result.Error != nil {
-		fmt.Println("Error in CreateWish", result.Error)
-		return false
-	}
-
-	return true
-}
-
-func GetManyWishesInWishlist(wishlistID string) bool {
-	var wishes []Wishes
-	result := Database.Where(&wishes, wishlistID).Find(&wishes)
-	if result.Error != nil {
-		fmt.Println("Error in GetManyWishes", result.Error)
-		return false
-	}
-	return true
-}
-
-// func GetOneWish(wish Wishes) bool {
-// 	result := Database.Take(&wish)
-// 	if result != nil {
-// 		fmt.Println("Error in GetOneWish")
-// 		return false
-// 	}
-// 	return true
-// }
-
-func DeleteWish(wishlistID, giftID string) bool {
-	var wish Wishes
-	result := Database.Where(&Wishes{GiftID: giftID, WishlistID: wishlistID}).Delete(&wish)
-	if result.Error != nil {
-		fmt.Println("Error in DeleteWish", result.Error)
-		return false
-	}
-	return true
-}
-
-func DeleteWishlist(wishlistID, giftID, userID string) bool {
-	var wishlist UserWishlist
-	var wishes Wishes
-
-	if err := Database.Where(&UserWishlist{ID: wishlistID, UserID: userID}).First(&wishlist); err != nil {
-		fmt.Println("Error in finding wishlist for deleting", err)
-		return false
-	}
-
-	if err := Database.Where(&Wishes{WishlistID: wishlistID, GiftID: giftID}).Find(&wishes); err != nil {
-		fmt.Println("Error in deleting wishes", err)
-		return false
-	}
-
-	if err := Database.Delete(&wishes); err.Error != nil {
-		fmt.Println("Error in deleting wish", err.Error)
-		return false
-	}
-
-	result := Database.Delete(&wishlist)
-	if result.Error != nil {
-		fmt.Println("Error in DeleteWishlist", result.Error)
-		return false
-	}
-
-	return true
-
-	// // Находим wishlist
-	// if err := Database.Where(&UserWishlist{ID: wishlistID, UserID: userID}).First(&wishlist); err.Error != nil {
-	// 	fmt.Println("Error in finding wishlist for deleting", err.Error)
-	// 	return false
-	// }
-
-	// // Находим соответствующую запись wishes
-	// if err := Database.Where(&Wishes{WishlistID: wishlistID, GiftID: giftID}).First(&wishes); err.Error != nil {
-	// 	fmt.Println("Error in finding wish for deletion", err.Error)
-	// 	return false
-	// }
-
-	// // Удаляем запись wishes
-	// if err := Database.Delete(&wishes); err.Error != nil {
-	// 	fmt.Println("Error in deleting wish", err.Error)
-	// 	return false
-	// }
-
-	// // Удаляем wishlist
-	// if err := Database.Delete(&wishlist); err.Error != nil {
-	// 	fmt.Println("Error in deleting wishlist", err.Error)
-	// 	return false
-	// }
-
-	// // Возвращаем успешное завершение операции
-	// return true
-
-}
-
-func CreateUser(user User) bool {
-	result := Database.Create(&user)
-	if result.Error != nil {
-		fmt.Println("Error in CreateUser", result.Error)
-		return false
-	}
-	return true
-}
-
-func FindUser(login, password string) (User, bool) {
-	var user User
-	result := Database.Where(&User{Login: login, Password: password}).First(&user)
-	if result.Error != nil {
-		fmt.Println("Error in FindUser", result.Error)
-		return user, false
-	}
-	return user, true
-}
-
-func CreateSession(session Session) bool {
-	result := Database.Create(&session)
-	if result.Error != nil {
-		fmt.Println("Error in CreateSession", result.Error)
-		return false
-	}
-	return true
-}
-
-func FindSession(sessionID string) (Session, bool) {
-	var session Session
-	result := Database.Where(&Session{ID: sessionID}).First(&session)
-	if result.Error != nil {
-		fmt.Println("Error in FindSession", result.Error)
-		return session, false
-	}
-	return session, true
 }
 
 func FindSession(sessionID string) (Session, bool) {
@@ -518,7 +333,8 @@ func DeleteGiftReview(id string) bool {
 	}
 	return true
 }
-//получение review по его id
+
+// получение review по его id
 func GetGiftReviewByID(id string) (GiftReview, bool) {
 	var giftReview GiftReview
 	result := Database.First(&giftReview, "id = ?", id)
@@ -534,20 +350,20 @@ func GetGiftReviewsByGiftID(giftID string) ([]GiftReview, bool) {
 	result := Database.Where("gift_id = ?", giftID).Find(&giftReviews)
 	if result.Error != nil {
 		fmt.Println("Error in getGiftReviewsGiftID", result.Error)
-        return nil, false
-    }
-    return giftReviews, true
+		return nil, false
+	}
+	return giftReviews, true
 }
 
-func CalculateAverageMarkByGiftID(giftID string) (float32, bool){
+func CalculateAverageMarkByGiftID(giftID string) (float32, bool) {
 	giftReviews, found := GetGiftReviewsByGiftID(giftID)
 	if !found || len(giftReviews) == 0 {
-        return 0.0, false
-    }
+		return 0.0, false
+	}
 	totalMarks := float32(0)
-    for _, review := range giftReviews {
-        totalMarks += review.Mark
-    }
+	for _, review := range giftReviews {
+		totalMarks += review.Mark
+	}
 	averageMark := totalMarks / float32(len(giftReviews))
-    return averageMark, true
+	return averageMark, true
 }

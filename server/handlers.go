@@ -2,6 +2,7 @@ package server
 
 import (
 	"fmt"
+	"net/url"
 	"wishlist/db"
 	_ "wishlist/docs"
 
@@ -116,30 +117,6 @@ func getOneGiftHandler(c *fiber.Ctx) error {
 }
 
 // Update Gift godoc
-// @Summary Creates a new gift.
-// @Description get the status of server.
-// @Tags 	Gifts
-// @Accept  json
-// @Produce json
-// @Param Gift body db.Gift true "Create Gift"
-// @Success 200 {object} ResponseHTTP{data=db.Gift}
-// @Failure 400 {object} ResponseHTTP{}
-// @Failure 500 {object} ResponseHTTP{}
-// @Router /gifts/{id} [patch]
-
-// Update Gift godoc
-// @Summary Creates a new gift.
-// @Description get the status of server.
-// @Tags 	Gifts
-// @Accept  json
-// @Produce json
-// @Param Gift body db.Gift true "Create Gift"
-// @Success 200 {object} ResponseHTTP{data=db.Gift}
-// @Failure 400 {object} ResponseHTTP{}
-// @Failure 500 {object} ResponseHTTP{}
-// @Router /gifts/{id} [patch]
-
-// Update Gift godoc
 // @Summary update gift by ID
 // @Description get the status of server.
 // @Tags 	Gifts
@@ -151,21 +128,20 @@ func getOneGiftHandler(c *fiber.Ctx) error {
 // @Failure 500 {object} ResponseHTTP{}
 // @Router /gifts/{id} [patch]
 func updateGiftHandler(c *fiber.Ctx) error {
-    giftID := c.Params("id")
+	giftID := c.Params("id")
 
-    var updatedGift db.Gift
-    if err := c.BodyParser(&updatedGift); err != nil {
-        return c.Status(fiber.StatusBadRequest).SendString("Error parsing request body")
-    }
+	var updatedGift db.Gift
+	if err := c.BodyParser(&updatedGift); err != nil {
+		return c.Status(fiber.StatusBadRequest).SendString("Error parsing request body")
+	}
 
-    ok := db.UpdateGift(giftID, updatedGift)
-    if !ok {
-        return c.SendString("Error in updateGift operation")
-    }
+	ok := db.UpdateGift(giftID, updatedGift)
+	if !ok {
+		return c.SendString("Error in updateGift operation")
+	}
 
-    return c.SendString("Gift updated successfully")
+	return c.SendString("Gift updated successfully")
 }
-
 
 // createBookedGiftInWishlist godoc
 // @Summary Creates a booked gift in the wishlist.
@@ -325,15 +301,15 @@ func deleteGiftReviewHandler(c *fiber.Ctx) error {
 }
 
 // getGiftReviewByID godoc
-// @Summary Get gift review by id 
-// @Description Get gift review by id 
+// @Summary Get gift review by id
+// @Description Get gift review by id
 // @Tags GiftReview
 // @Accept json
 // @Produce json
 // @Success 200 {object} ResponseHTTP{data=[]db.GiftReview}
 // @Failure 503 {object} ResponseHTTP{}
 // @Router /gift_review/{id} [get]
-func getGiftReviewByIDHandler(c *fiber.Ctx) error{
+func getGiftReviewByIDHandler(c *fiber.Ctx) error {
 	reviewID := c.Params("id")
 	giftReview, ok := db.GetGiftReviewByID(reviewID)
 	if !ok {
@@ -343,7 +319,7 @@ func getGiftReviewByIDHandler(c *fiber.Ctx) error{
 }
 
 // getGiftReviewsByGiftID godoc
-// @Summary Get all gift reviews by giftId 
+// @Summary Get all gift reviews by giftId
 // @Description  Get all gift reviews by giftId
 // @Tags GiftReview
 // @Accept json
@@ -351,7 +327,7 @@ func getGiftReviewByIDHandler(c *fiber.Ctx) error{
 // @Success 200 {object} ResponseHTTP{data=[]db.GiftReview}
 // @Failure 503 {object} ResponseHTTP{}
 // @Router /gift_review/{gift_id} [get]
-func getGiftReviewsByGiftIDHandler(c *fiber.Ctx) error{
+func getGiftReviewsByGiftIDHandler(c *fiber.Ctx) error {
 	giftID := c.Params("gift_id")
 	giftReviews, ok := db.GetGiftReviewsByGiftID(giftID)
 	if !ok {
@@ -372,7 +348,7 @@ func getGiftReviewsByGiftIDHandler(c *fiber.Ctx) error{
 // @Failure 404 {string} string "Not Found"
 // @Failure 500 {string} string "Internal Server Error"
 // @Router /gift_review/{gift_id} [get]
-func calculateAverageMarkByGiftIDHandler(c *fiber.Ctx) error{
+func calculateAverageMarkByGiftIDHandler(c *fiber.Ctx) error {
 	giftID := c.Params("gift_id")
 	averageMark, ok := db.CalculateAverageMarkByGiftID(giftID)
 	if !ok {
@@ -386,6 +362,16 @@ func superSecretHandler(c *fiber.Ctx) error {
 	return c.SendString("This is a super secret route. Hi " + user + "!")
 }
 
+// Register Handler godoc
+// @Summary Creates a new gift.
+// @Description get the status of server.
+// @Tags auth
+// @Accept  json
+// @Produce json
+// @Param User body db.User true "Reg user"
+// @Success 200 {object} ResponseHTTP{data=db.User}
+// @Failure 400 {object} ResponseHTTP{}
+// @Router /register [post]
 func registerHandler(c *fiber.Ctx) error {
 	var user db.User
 	if err := c.BodyParser(&user); err != nil {
@@ -399,6 +385,8 @@ func registerHandler(c *fiber.Ctx) error {
 	if user.Password == "" {
 		return c.SendString("Password is required")
 	}
+
+	user.ID = ""
 	user.ID = "user_" + xid.New().String()
 	ok := db.CreateUser(user)
 	if !ok {
@@ -409,6 +397,16 @@ func registerHandler(c *fiber.Ctx) error {
 
 }
 
+// Login Handler godoc
+// @Summary Creates a new gift.
+// @Description get the status of server.
+// @Tags auth
+// @Accept  json
+// @Produce json
+// @Param User body db.User true "Reg user"
+// @Success 200 {object} ResponseHTTP{data=db.User}
+// @Failure 400 {object} ResponseHTTP{}
+// @Router /login [post]
 func loginHandler(c *fiber.Ctx) error {
 	var authCredentials AuthCredentials
 	if err := c.BodyParser(&authCredentials); err != nil {
@@ -438,6 +436,16 @@ func loginHandler(c *fiber.Ctx) error {
 	// return c.JSON(AuthResponse{Session: session})
 }
 
+// AddWishHandler godoc
+// @Summary Creates a new gift.
+// @Description get the status of server.
+// @Tags Wishes
+// @Accept  json
+// @Produce json
+// @Param Wishes body db.Wishes true "Add wishes"
+// @Success 200 {object} ResponseHTTP{data=db.Wishes}
+// @Failure 400 {object} ResponseHTTP{}
+// @Router /wishes/{wishlist_id} [post]
 func AddWishHandler(c *fiber.Ctx) error {
 	var wish db.Wishes
 	gift_id := c.Params("gift_id")
@@ -453,6 +461,16 @@ func AddWishHandler(c *fiber.Ctx) error {
 	return c.SendString("Create Wish succesfully")
 }
 
+// DeleteWishHandler godoc
+// @Summary Creates a new gift.
+// @Description get the status of server.
+// @Tags Wishes
+// @Accept  json
+// @Produce json
+// @Param Wishes body db.Wishes true "Add wishes"
+// @Success 200 {object} ResponseHTTP{data=db.Wishes}
+// @Failure 400 {object} ResponseHTTP{}
+// @Router /wishes/{id}/{wishlist_id} [delete]
 func DeleteWishHandler(c *fiber.Ctx) error {
 	wishlistID := c.Params("wishlist_id")
 	giftID := c.Params("gift_id")
@@ -464,10 +482,23 @@ func DeleteWishHandler(c *fiber.Ctx) error {
 	return c.SendString("Create Wish succesfully")
 }
 
+// createWishlist godoc
+// @Summary Creates a new gift.
+// @Description get the status of server.
+// @Tags Wishlist
+// @Accept  json
+// @Produce json
+// @Param UserWishlist body db.UserWishlist true "Create Wishlist"
+// @Success 200 {object} ResponseHTTP{data=db.UserWishlist}
+// @Failure 400 {object} ResponseHTTP{}
+// @Router /wishlists [post]
 func CreateWishlistHandler(c *fiber.Ctx) error {
 	var wishlist db.UserWishlist
 	if err := c.BodyParser(&wishlist); err != nil {
 		return c.SendString(err.Error())
+	}
+	if wishlist.Name == "" {
+		return c.SendString("Name is required")
 	}
 
 	wishlist.ID = "wishlist_" + xid.New().String()
@@ -482,25 +513,55 @@ func CreateWishlistHandler(c *fiber.Ctx) error {
 
 }
 
+// createWishlist godoc
+// @Summary Creates a new gift.
+// @Description get the status of server.
+// @Tags Wishlist
+// @Accept  json
+// @Produce json
+// @Param UserWishlist body db.UserWishlist true "Create Wishlist"
+// @Success 200 {object} ResponseHTTP{data=db.UserWishlist}
+// @Failure 400 {object} ResponseHTTP{}
+// @Router /wishlists [get]
 func FindManyWishlistsHandler(c *fiber.Ctx) error {
 	userID := c.Locals("user").(string)
-	ok := db.FindManyWishlists(userID)
+	wishlists, ok := db.FindManyWishlists(userID)
 	if !ok {
 		return c.SendString("Error in FindManyWishlists operation")
 	}
-	return c.SendString("Get all wishlists succesfully")
+	return c.JSON(wishlists)
 }
 
+// DeleteWishHandler godoc
+// @Summary Creates a new gift.
+// @Description get the status of server.
+// @Tags Wishes
+// @Accept  json
+// @Produce json
+// @Param Wishes body db.Wishes true "Add wishes"
+// @Success 200 {object} ResponseHTTP{data=db.Wishes}
+// @Failure 400 {object} ResponseHTTP{}
+// @Router /wishes/{id}/{wishlist_id} [get]
 func FindAllWishesInWishlistHandler(c *fiber.Ctx) error {
 	wishlistID := c.Params("wishlist_id")
-	ok := db.GetManyWishesInWishlist(wishlistID)
+	wishes, ok := db.GetManyWishesInWishlist(wishlistID)
 	if !ok {
 		return c.SendString("Error in FindAllWishesInWishlist operation")
 	}
 
-	return c.SendString("Get all wishlists succesfully")
+	return c.JSON(wishes)
 }
 
+// updateWishlist godoc
+// @Summary Creates a new gift.
+// @Description get the status of server.
+// @Tags Wishlist
+// @Accept  json
+// @Produce json
+// @Param UserWishlist body db.UserWishlist true "Create Wishlist"
+// @Success 200 {object} ResponseHTTP{data=db.UserWishlist}
+// @Failure 400 {object} ResponseHTTP{}
+// @Router /wishlists [put]
 func UpdateWishlist(c *fiber.Ctx) error {
 	wishlistID := c.Params("id")
 	fmt.Println("wishlist id", wishlistID)
@@ -518,7 +579,7 @@ func UpdateWishlist(c *fiber.Ctx) error {
 	return c.SendString("Update wishlist succesfully")
 }
 
-// deleteGift godoc
+// deleteWishlist godoc
 // @Summary Creates a new gift.
 // @Description get the status of server.
 // @Tags Wishlist
@@ -527,7 +588,7 @@ func UpdateWishlist(c *fiber.Ctx) error {
 // @Param Wishlist body db.UserWishlist true "Delete Wishlist"
 // @Success 200 {object} ResponseHTTP{data=db.UserWishlist}
 // @Failure 400 {object} ResponseHTTP{}
-// @Router /wishlists/wishlist_cnothhc69lbkfh15tmmg/gift_cnos0qk69lbkli6i79ug/user_cnot2oc69lbksn28kko0 [delete]
+// @Router /wishlists/{wishlist_id}/{gift_id} [delete]
 func DeleteWishlistHandler(c *fiber.Ctx) error {
 	wishlistID := c.Params("id")
 	giftID := c.Params("gift_id")
@@ -537,4 +598,28 @@ func DeleteWishlistHandler(c *fiber.Ctx) error {
 		return c.SendString("Error in DeleteGift Operation")
 	}
 	return c.SendString("Delete wishlist succesfully")
+}
+
+// FindWishlistByName godoc
+// @Summary Creates a new gift.
+// @Description get the status of server.
+// @Tags Wishlist
+// @Accept  json
+// @Produce json
+// @Param UserWishlist body db.UserWishlist true "Create Wishlist"
+// @Success 200 {object} ResponseHTTP{data=db.UserWishlist}
+// @Failure 400 {object} ResponseHTTP{}
+// @Router /wishlists/{name} [get]
+func FindWishlistByName(c *fiber.Ctx) error {
+	wishlistName, err := url.QueryUnescape(c.Params("wishlist_name"))
+	if err != nil {
+		return c.SendStatus(fiber.StatusBadRequest)
+	}
+	fmt.Println(wishlistName)
+	wishlist, ok := db.FindWishlistByName(wishlistName)
+	if !ok {
+		return c.SendString("Error in FindWishlistByName Operation")
+	}
+	return c.JSON(wishlist)
+
 }

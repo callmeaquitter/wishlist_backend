@@ -31,7 +31,7 @@ type GiftReview struct {
 	Date    time.Time	`json:"date"`
 }
 
-}
+
 
 type User struct {
 	ID       string `json:"id"`
