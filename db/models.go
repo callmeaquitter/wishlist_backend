@@ -1,6 +1,10 @@
 package db
 
-import "time"
+import (
+	"time"
+
+	"github.com/shopspring/decimal"
+)
 
 type Gift struct {
 	//LIFEHACK: use string id like 'gift_ajdsjanjklsnls'
@@ -68,20 +72,63 @@ type UserRole struct {
 	RoleID string `gorm:"primaryKey"`
 }
 
-
 type Selection struct {
-	ID          int    `json:"id"`
+	ID          string `json:"id"`
 	Name        string `json:"name"`
 	Description string `json:"description"`
-	UserID       int   `json:"user_id"`
+	UserID      string    `json:"user_id"`
+	IsGenerated bool   `json:"is_generated"`
 }
 
 type GiftToSelection struct {
-	SelectionID  int   `json:"selection_id" gorm:"primaryKey"`
-	GiftID       int   `json:"gift_id" gorm:"primaryKey"`
+	SelectionID string `json:"selection_id" gorm:"primaryKey"`
+	GiftID      string `json:"gift_id" gorm:"primaryKey"`
 }
 
 type SelectionCategory struct {
-	ID   int	       `json:"id"`
-	Name string        `json:"name"`
+	ID   string `json:"id"`
+	Name string `json:"name"`
+}
+
+type LikeToSelection struct {
+	UserID      string `json:"user_id" gorm:"primaryKey"`
+	SelectionID string `json:"selection_id" gorm:"primaryKey"`
+}
+
+type CommentToSelection struct {
+	ID          string    `json:"id"`
+	UserID      string    `json:"user_id"`
+	SelectionID string    `json:"selection_id"`
+	Text        string    `json:"text"`
+	CreatedAt   time.Time `json:"created_at"`
+}
+
+type Seller struct {
+	SellerID string `json:"id" gorm:"primaryKey" swaggerignore:"true"`
+	Name     string `json:"name" validate:"required,min=5,max=50"`
+	Email    string `json:"email" validate:"required,min=5,email"`
+	Photo    string `json:"photo"`
+}
+
+type SellerToService struct {
+	SellerID  string `json:"seller_id" gorm:"primaryKey" validate:"required,seller_"`
+	ServiceID string `json:"service_id" gorm:"primaryKey" validate:"required,service_"`
+}
+
+type Service struct {
+	ServiceID string          `json:"id" gorm:"primaryKey" swaggerignore:"true"`
+	Name      string          `json:"name" validate:"required,min=5,max=50"`
+	Price     decimal.Decimal `json:"price" validate:"required"`
+	Location  string          `json:"location" validate:"required,min=5"`
+	Photos    string          `json:"photos"`
+}
+
+type ServiceReview struct {
+	ID         string          `json:"id" swaggerignore:"true"`
+	ServiceID  string          `json:"service_id" validate:"required,service_"`
+	Mark       decimal.Decimal `json:"mark" validate:"required"`
+	Comment    string          `json:"comment" validate:"required,max=5000"`
+	UserID     string          `json:"user_id" validate:"required,user_"`
+	CreateDate time.Time       `json:"create_date" swaggerignore:"true"`
+	UpdateDate time.Time       `json:"update_date" swaggerignore:"true"`
 }

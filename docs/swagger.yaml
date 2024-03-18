@@ -7,6 +7,19 @@ definitions:
       user_id:
         type: string
     type: object
+  db.CommentToSelection:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: string
+      selection_id:
+        type: string
+      text:
+        type: string
+      user_id:
+        type: string
+    type: object
   db.Gift:
     properties:
       category:
@@ -25,6 +38,60 @@ definitions:
       price:
         description: 'TODO: use decimal.Decimal instead of int'
         type: integer
+    type: object
+  db.GiftCategory:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+  db.GiftReview:
+    properties:
+      comment:
+        type: string
+      date:
+        type: string
+      gift_id:
+        type: string
+      id:
+        type: string
+      mark:
+        type: number
+    type: object
+  db.GiftToSelection:
+    properties:
+      gift_id:
+        type: string
+      selection_id:
+        type: string
+    type: object
+  db.LikeToSelection:
+    properties:
+      selection_id:
+        type: string
+      user_id:
+        type: string
+    type: object
+  db.Selection:
+    properties:
+      description:
+        type: string
+      id:
+        type: string
+      is_generated:
+        type: boolean
+      name:
+        type: string
+      user_id:
+        type: string
+    type: object
+  db.SelectionCategory:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
     type: object
   db.Seller:
     properties:
@@ -85,26 +152,6 @@ definitions:
     - mark
     - service_id
     - user_id
-    type: object
-  db.GiftCategory:
-    properties:
-      id:
-        type: string
-      name:
-        type: string
-    type: object
-  db.GiftReview:
-    properties:
-      comment:
-        type: string
-      date:
-        type: string
-      gift_id:
-        type: string
-      id:
-        type: string
-      mark:
-        type: number
     type: object
   db.User:
     properties:
@@ -257,6 +304,110 @@ paths:
       summary: Creates a booked gift in the wishlist.
       tags:
       - BookedGifts
+  /commentToSelection:
+    post:
+      consumes:
+      - application/json
+      description: Принимает CommentToSelection в теле запроса и создает соответствующий
+        CommentToSelection
+      parameters:
+      - description: Create CommentToSelection
+        in: body
+        name: CommentToSelection
+        required: true
+        schema:
+          $ref: '#/definitions/db.CommentToSelection'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Создает новый CommentToSelection
+      tags:
+      - CommentToSelection
+  /commentToSelection/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Принимает id CommentToSelection в качестве параметра пути и удаляет
+        соответствующий CommentToSelection
+      parameters:
+      - description: CommentToSelection ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Удаляет существующий CommentToSelection
+      tags:
+      - CommentToSelection
+    get:
+      consumes:
+      - application/json
+      description: Принимает id Selection в качестве параметра пути и возвращает комментарии
+        для соответствующего Selection
+      parameters:
+      - description: Selection ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Получает комментарии для Selection
+      tags:
+      - CommentToSelection
+    put:
+      consumes:
+      - application/json
+      description: Принимает id CommentToSelection в качестве параметра пути и обновляет
+        соответствующий CommentToSelection
+      parameters:
+      - description: Update CommentToSelection
+        in: body
+        name: CommentToSelection
+        required: true
+        schema:
+          $ref: '#/definitions/db.CommentToSelection'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Обновляет существующий CommentToSelection
+      tags:
+      - CommentToSelection
   /gift_category/{id}:
     delete:
       consumes:
@@ -434,6 +585,110 @@ paths:
       summary: Get gift review by id
       tags:
       - GiftReview
+  /giftToSelection:
+    post:
+      consumes:
+      - application/json
+      description: Принимает GiftToSelection в теле запроса и создает соответствующий
+        GiftToSelection
+      parameters:
+      - description: Create GiftToSelection
+        in: body
+        name: GiftToSelection
+        required: true
+        schema:
+          $ref: '#/definitions/db.GiftToSelection'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Создает новый GiftToSelection
+      tags:
+      - GiftToSelection
+  /giftToSelection/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Принимает id GiftToSelection в качестве параметра пути и удаляет
+        соответствующий GiftToSelection
+      parameters:
+      - description: GiftToSelection ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Удаляет существующий GiftToSelection
+      tags:
+      - GiftToSelection
+    get:
+      consumes:
+      - application/json
+      description: Принимает id GiftToSelection в качестве параметра пути и находит
+        соответствующий GiftToSelection
+      parameters:
+      - description: GiftToSelection ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Находит существующий GiftToSelection
+      tags:
+      - GiftToSelection
+    put:
+      consumes:
+      - application/json
+      description: Принимает id GiftToSelection в качестве параметра пути и обновляет
+        соответствующий GiftToSelection
+      parameters:
+      - description: Update GiftToSelection
+        in: body
+        name: GiftToSelection
+        required: true
+        schema:
+          $ref: '#/definitions/db.GiftToSelection'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Обновляет существующий GiftToSelection
+      tags:
+      - GiftToSelection
   /gifts:
     get:
       consumes:
@@ -463,8 +718,6 @@ paths:
     post:
       consumes:
       - application/json
-      - application/json
-      description: get the status of server.
       parameters:
       - description: Create Gift
         in: body
@@ -587,6 +840,85 @@ paths:
       summary: update gift by ID
       tags:
       - Gifts
+  /likeToSelection:
+    post:
+      consumes:
+      - application/json
+      description: Принимает LikeToSelection в теле запроса и создает соответствующий
+        LikeToSelection
+      parameters:
+      - description: Create LikeToSelection
+        in: body
+        name: LikeToSelection
+        required: true
+        schema:
+          $ref: '#/definitions/db.LikeToSelection'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Создает новый LikeToSelection
+      tags:
+      - LikeToSelection
+  /likeToSelection/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Принимает id LikeToSelection в качестве параметра пути и удаляет
+        соответствующий LikeToSelection
+      parameters:
+      - description: LikeToSelection ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Удаляет существующий LikeToSelection
+      tags:
+      - LikeToSelection
+  /likeToSelection/{id}/count:
+    get:
+      consumes:
+      - application/json
+      description: Принимает id Selection в качестве параметра пути и возвращает количество
+        лайков для соответствующего Selection
+      parameters:
+      - description: Selection ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Получает количество лайков для Selection
+      tags:
+      - LikeToSelection
   /login:
     post:
       consumes:
@@ -649,48 +981,69 @@ paths:
       summary: Creates a new gift.
       tags:
       - auth
-  /wishes/{id}/{wishlist_id}:
+  /selection:
+    get:
+      consumes:
+      - application/json
+      description: Возвращает все Selections из базы данных
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/db.Selection'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Получает все Selections
+      tags:
+      - Selection
+  /selection/{id}:
     delete:
       consumes:
       - application/json
-      description: get the status of server.
+      description: Принимает id Selection в качестве параметра пути и удаляет соответствующий
+        Selection
       parameters:
-      - description: Add wishes
+      - description: Create Selection
         in: body
-        name: Wishes
+        name: Selection
         required: true
         schema:
-          $ref: '#/definitions/db.Wishes'
+          $ref: '#/definitions/db.Selection'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            allOf:
-            - $ref: '#/definitions/server.ResponseHTTP'
-            - properties:
-                data:
-                  $ref: '#/definitions/db.Wishes'
-              type: object
+            $ref: '#/definitions/server.ResponseHTTP'
         "400":
           description: Bad Request
           schema:
             $ref: '#/definitions/server.ResponseHTTP'
-      summary: Creates a new gift.
+      summary: Удаляет существующий Selection
       tags:
-      - Wishes
+      - Selection
     get:
       consumes:
       - application/json
-      description: get the status of server.
+      description: Возвращает один Selection из базы данных по id
       parameters:
-      - description: Add wishes
-        in: body
-        name: Wishes
+      - description: Selection ID
+        in: path
+        name: id
         required: true
-        schema:
-          $ref: '#/definitions/db.Wishes'
+        type: integer
       produces:
       - application/json
       responses:
@@ -701,118 +1054,27 @@ paths:
             - $ref: '#/definitions/server.ResponseHTTP'
             - properties:
                 data:
-                  $ref: '#/definitions/db.Wishes'
+                  $ref: '#/definitions/db.Selection'
               type: object
         "400":
           description: Bad Request
           schema:
             $ref: '#/definitions/server.ResponseHTTP'
-      summary: Creates a new gift.
+      summary: Получает один Selection
       tags:
-      - Wishes
-  /wishes/{wishlist_id}:
-    post:
-      consumes:
-      - application/json
-      description: get the status of server.
-      parameters:
-      - description: Add wishes
-        in: body
-        name: Wishes
-        required: true
-        schema:
-          $ref: '#/definitions/db.Wishes'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            allOf:
-            - $ref: '#/definitions/server.ResponseHTTP'
-            - properties:
-                data:
-                  $ref: '#/definitions/db.Wishes'
-              type: object
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/server.ResponseHTTP'
-      summary: Creates a new gift.
-      tags:
-      - Wishes
-  /wishlists:
-    get:
-      consumes:
-      - application/json
-      description: get the status of server.
-      parameters:
-      - description: Create Wishlist
-        in: body
-        name: UserWishlist
-        required: true
-        schema:
-          $ref: '#/definitions/db.UserWishlist'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            allOf:
-            - $ref: '#/definitions/server.ResponseHTTP'
-            - properties:
-                data:
-                  $ref: '#/definitions/db.UserWishlist'
-              type: object
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/server.ResponseHTTP'
-      summary: Creates a new gift.
-      tags:
-      - Wishlist
-    post:
-      consumes:
-      - application/json
-      description: get the status of server.
-      parameters:
-      - description: Create Wishlist
-        in: body
-        name: UserWishlist
-        required: true
-        schema:
-          $ref: '#/definitions/db.UserWishlist'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            allOf:
-            - $ref: '#/definitions/server.ResponseHTTP'
-            - properties:
-                data:
-                  $ref: '#/definitions/db.UserWishlist'
-              type: object
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/server.ResponseHTTP'
-      summary: Creates a new gift.
-      tags:
-      - Wishlist
+      - Selection
     put:
       consumes:
       - application/json
-      description: get the status of server.
+      description: Принимает id Selection в качестве параметра пути и JSON тело запроса
+        с новыми полями Selection
       parameters:
-      - description: Create Wishlist
+      - description: Create Selection
         in: body
-        name: UserWishlist
+        name: Selection
         required: true
         schema:
-          $ref: '#/definitions/db.UserWishlist'
+          $ref: '#/definitions/db.Selection'
       produces:
       - application/json
       responses:
@@ -823,27 +1085,28 @@ paths:
             - $ref: '#/definitions/server.ResponseHTTP'
             - properties:
                 data:
-                  $ref: '#/definitions/db.UserWishlist'
+                  $ref: '#/definitions/db.Selection'
               type: object
         "400":
           description: Bad Request
           schema:
             $ref: '#/definitions/server.ResponseHTTP'
-      summary: Creates a new gift.
+      summary: Обновляет существующий Selection
       tags:
-      - Wishlist
-  /wishlists/{name}:
-    get:
+      - Selection
+  /selection/create:
+    post:
       consumes:
       - application/json
-      description: get the status of server.
+      description: Принимает JSON тело запроса с полями Selection и создает новый
+        Selection
       parameters:
-      - description: Create Wishlist
+      - description: Create Selection
         in: body
-        name: UserWishlist
+        name: Selection
         required: true
         schema:
-          $ref: '#/definitions/db.UserWishlist'
+          $ref: '#/definitions/db.Selection'
       produces:
       - application/json
       responses:
@@ -854,46 +1117,119 @@ paths:
             - $ref: '#/definitions/server.ResponseHTTP'
             - properties:
                 data:
-                  $ref: '#/definitions/db.UserWishlist'
+                  $ref: '#/definitions/db.Selection'
               type: object
         "400":
           description: Bad Request
           schema:
             $ref: '#/definitions/server.ResponseHTTP'
-      summary: Creates a new gift.
+      summary: Создает новый Selection
       tags:
-      - Wishlist
-  /wishlists/{wishlist_id}/{gift_id}:
+      - Selection
+  /selectionCategory:
+    post:
+      consumes:
+      - application/json
+      description: Принимает SelectionCategory в теле запроса и создает соответствующий
+        SelectionCategory
+      parameters:
+      - description: Create SelectionCategory
+        in: body
+        name: SelectionCategory
+        required: true
+        schema:
+          $ref: '#/definitions/db.SelectionCategory'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Создает новый SelectionCategory
+      tags:
+      - SelectionCategory
+  /selectionCategory/{id}:
     delete:
       consumes:
       - application/json
-      description: get the status of server.
+      description: Принимает id SelectionCategory в качестве параметра пути и удаляет
+        соответствующий SelectionCategory
       parameters:
-      - description: Delete Wishlist
-        in: body
-        name: Wishlist
+      - description: SelectionCategory ID
+        in: path
+        name: id
         required: true
-        schema:
-          $ref: '#/definitions/db.UserWishlist'
+        type: string
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            allOf:
-            - $ref: '#/definitions/server.ResponseHTTP'
-            - properties:
-                data:
-                  $ref: '#/definitions/db.UserWishlist'
-              type: object
+            $ref: '#/definitions/server.ResponseHTTP'
         "400":
           description: Bad Request
           schema:
             $ref: '#/definitions/server.ResponseHTTP'
-      summary: Creates a new gift.
+      summary: Удаляет существующий SelectionCategory
       tags:
-      - Wishlist
+      - SelectionCategory
+    get:
+      consumes:
+      - application/json
+      description: Принимает id SelectionCategory в качестве параметра пути и находит
+        соответствующий SelectionCategory
+      parameters:
+      - description: SelectionCategory ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Находит существующий SelectionCategory
+      tags:
+      - SelectionCategory
+    put:
+      consumes:
+      - application/json
+      description: Принимает id SelectionCategory в качестве параметра пути и обновляет
+        соответствующий SelectionCategory
+      parameters:
+      - description: Update SelectionCategory
+        in: body
+        name: SelectionCategory
+        required: true
+        schema:
+          $ref: '#/definitions/db.SelectionCategory'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Обновляет существующий SelectionCategory
+      tags:
+      - SelectionCategory
   /sellerToService:
     get:
       consumes:
@@ -1446,4 +1782,218 @@ paths:
       summary: Updates an existing service.
       tags:
       - Services
+  /wishes/{id}/{wishlist_id}:
+    delete:
+      consumes:
+      - application/json
+      description: get the status of server.
+      parameters:
+      - description: Add wishes
+        in: body
+        name: Wishes
+        required: true
+        schema:
+          $ref: '#/definitions/db.Wishes'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.Wishes'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Creates a new gift.
+      tags:
+      - Wishes
+    get:
+      consumes:
+      - application/json
+      description: get the status of server.
+      parameters:
+      - description: Add wishes
+        in: body
+        name: Wishes
+        required: true
+        schema:
+          $ref: '#/definitions/db.Wishes'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.Wishes'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Creates a new gift.
+      tags:
+      - Wishes
+  /wishes/{wishlist_id}:
+    post:
+      consumes:
+      - application/json
+      description: get the status of server.
+      parameters:
+      - description: Add wishes
+        in: body
+        name: Wishes
+        required: true
+        schema:
+          $ref: '#/definitions/db.Wishes'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.Wishes'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Creates a new gift.
+      tags:
+      - Wishes
+  /wishlists:
+    get:
+      consumes:
+      - application/json
+      description: get the status of server.
+      parameters:
+      - description: Create Wishlist
+        in: body
+        name: UserWishlist
+        required: true
+        schema:
+          $ref: '#/definitions/db.UserWishlist'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.UserWishlist'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Creates a new gift.
+      tags:
+      - Wishlist
+    post:
+      consumes:
+      - application/json
+      description: get the status of server.
+      parameters:
+      - description: Create Wishlist
+        in: body
+        name: UserWishlist
+        required: true
+        schema:
+          $ref: '#/definitions/db.UserWishlist'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.UserWishlist'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Creates a new gift.
+      tags:
+      - Wishlist
+    put:
+      consumes:
+      - application/json
+      description: get the status of server.
+      parameters:
+      - description: Create Wishlist
+        in: body
+        name: UserWishlist
+        required: true
+        schema:
+          $ref: '#/definitions/db.UserWishlist'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.UserWishlist'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Creates a new gift.
+      tags:
+      - Wishlist
+  /wishlists/{wishlist_id}/{gift_id}:
+    delete:
+      consumes:
+      - application/json
+      description: get the status of server.
+      parameters:
+      - description: Delete Wishlist
+        in: body
+        name: Wishlist
+        required: true
+        schema:
+          $ref: '#/definitions/db.UserWishlist'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.UserWishlist'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Creates a new gift.
+      tags:
+      - Wishlist
 swagger: "2.0"

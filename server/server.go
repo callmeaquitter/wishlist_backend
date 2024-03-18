@@ -7,7 +7,6 @@ import (
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
-	"github.com/gofiber/fiber/v2/middleware/cors"
 )
 
 var validate = validator.New()
@@ -16,9 +15,9 @@ var app *fiber.App
 
 // Custom validation — sees if IDs the user provides abides by the template "tag_{base32 random id}"
 func ValidateIDFormat(tag_ string) validator.Func {
-	return func (fl validator.FieldLevel) bool {
+	return func(fl validator.FieldLevel) bool {
 		text := fl.Field().String()
-		return regexp.MustCompile(tag_ + `[a-z0-9]{20}$`).MatchString(text) 
+		return regexp.MustCompile(tag_ + `[a-z0-9]{20}$`).MatchString(text)
 	}
 }
 
@@ -32,8 +31,8 @@ func Setup() {
 
 	app.Use(cors.New())
 	app.Use(cors.New(cors.Config{
-	    AllowOrigins: "*",
-	    AllowHeaders: "Origin, Content-Type, Accept",
+		AllowOrigins: "*",
+		AllowHeaders: "Origin, Content-Type, Accept",
 	}))
 
 	app.Use(cors.New(cors.Config{

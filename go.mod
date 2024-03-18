@@ -2,7 +2,6 @@ module wishlist
 
 go 1.21
 
-toolchain go1.21.6
 
 require (
 	github.com/arsmn/fiber-swagger/v2 v2.31.1

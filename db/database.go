@@ -25,15 +25,29 @@ func Setup(dsn string) {
 	}
 
 	err = db.AutoMigrate(
-		&Gift{}, &Seller{}, &Service{}, &SellerToService{}, &ServiceReview{}, &BookedGiftInWishlist{}, &GiftCategory{}, &GiftReview{}, &User{}, &Role{}, &UserWishlist{}, &Wishes{}, &Session{})
+		&Gift{},
+		&Seller{},
+		&Service{},
+		&SellerToService{},
+		&ServiceReview{},
+		&BookedGiftInWishlist{},
+		&GiftCategory{},
+		&GiftReview{},
+		&User{},
+		&Role{},
+		&UserWishlist{},
+		&Wishes{},
+		&Session{},
+		&Selection{},
+		&GiftToSelection{},
+		&SelectionCategory{},
+		&LikeToSelection{},
+		&CommentToSelection{},
+	)
 	if err != nil {
 		fmt.Println("Couldn't Automigrate Database.", err)
 	}
 
 	Database = db
-
-
-
-	
 
 }
