@@ -67,24 +67,24 @@ func CreateWishlist(wishlist UserWishlist) bool {
 	return true
 }
 
-func FindManyWishlists(userID string) bool {
-	var wishlist UserWishlist
+func FindManyWishlists(userID string) ([]UserWishlist, bool) {
+	var wishlist []UserWishlist
 	result := Database.Where(&UserWishlist{UserID: userID}).Find(&wishlist)
 	if result.Error != nil {
 		fmt.Println("Error in FindManyWishlists", result.Error)
-		return false
+		return wishlist, false
 	}
-	return true
+	return wishlist, true
 }
 
-func FindWishlistByName(name string) bool {
+func FindWishlistByName(name string) (UserWishlist, bool) {
 	var wishlist UserWishlist
-	result := Database.Where(&UserWishlist{Name: name}).Take(&wishlist)
+	result := Database.Where(&UserWishlist{Name: name}).First(&wishlist)
 	if result.Error != nil {
 		fmt.Println("Error in FindWishlistByName", result.Error)
-		return false
+		return wishlist, false
 	}
-	return true
+	return wishlist, true
 }
 
 func UpdateWishlist(wishlistID, wishlistName string) bool {
@@ -116,14 +116,14 @@ func AddWish(wishlistID, giftID string) bool {
 	return true
 }
 
-func GetManyWishesInWishlist(wishlistID string) bool {
+func GetManyWishesInWishlist(wishlistID string) ([]Wishes, bool) {
 	var wishes []Wishes
-	result := Database.Where(&wishes, wishlistID).Find(&wishes)
+	result := Database.Where(&Wishes{WishlistID: wishlistID}).Find(&wishes)
 	if result.Error != nil {
 		fmt.Println("Error in GetManyWishes", result.Error)
-		return false
+		return wishes, false
 	}
-	return true
+	return wishes, true
 }
 
 // func GetOneWish(wish Wishes) bool {

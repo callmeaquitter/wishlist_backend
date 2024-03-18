@@ -17,6 +17,25 @@ definitions:
         description: 'TODO: use decimal.Decimal instead of int'
         type: integer
     type: object
+  db.User:
+    properties:
+      birthday:
+        type: string
+      coins:
+        type: integer
+      id:
+        type: string
+      lastname:
+        type: string
+      login:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+      role_name:
+        type: string
+    type: object
   db.UserWishlist:
     properties:
       id:
@@ -24,6 +43,13 @@ definitions:
       name:
         type: string
       user_id:
+        type: string
+    type: object
+  db.Wishes:
+    properties:
+      gift_id:
+        type: string
+      wishlist_id:
         type: string
     type: object
   server.ResponseHTTP:
@@ -168,7 +194,283 @@ paths:
       summary: Creates a new gift.
       tags:
       - Gifts
-  /wishlists/wishlist_cnothhc69lbkfh15tmmg/gift_cnos0qk69lbkli6i79ug/user_cnot2oc69lbksn28kko0:
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: get the status of server.
+      parameters:
+      - description: Reg user
+        in: body
+        name: User
+        required: true
+        schema:
+          $ref: '#/definitions/db.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.User'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Creates a new gift.
+      tags:
+      - auth
+  /register:
+    post:
+      consumes:
+      - application/json
+      description: get the status of server.
+      parameters:
+      - description: Reg user
+        in: body
+        name: User
+        required: true
+        schema:
+          $ref: '#/definitions/db.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.User'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Creates a new gift.
+      tags:
+      - auth
+  /wishes/{id}/{wishlist_id}:
+    delete:
+      consumes:
+      - application/json
+      description: get the status of server.
+      parameters:
+      - description: Add wishes
+        in: body
+        name: Wishes
+        required: true
+        schema:
+          $ref: '#/definitions/db.Wishes'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.Wishes'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Creates a new gift.
+      tags:
+      - Wishes
+    get:
+      consumes:
+      - application/json
+      description: get the status of server.
+      parameters:
+      - description: Add wishes
+        in: body
+        name: Wishes
+        required: true
+        schema:
+          $ref: '#/definitions/db.Wishes'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.Wishes'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Creates a new gift.
+      tags:
+      - Wishes
+  /wishes/{wishlist_id}:
+    post:
+      consumes:
+      - application/json
+      description: get the status of server.
+      parameters:
+      - description: Add wishes
+        in: body
+        name: Wishes
+        required: true
+        schema:
+          $ref: '#/definitions/db.Wishes'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.Wishes'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Creates a new gift.
+      tags:
+      - Wishes
+  /wishlists:
+    get:
+      consumes:
+      - application/json
+      description: get the status of server.
+      parameters:
+      - description: Create Wishlist
+        in: body
+        name: UserWishlist
+        required: true
+        schema:
+          $ref: '#/definitions/db.UserWishlist'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.UserWishlist'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Creates a new gift.
+      tags:
+      - Wishlist
+    post:
+      consumes:
+      - application/json
+      description: get the status of server.
+      parameters:
+      - description: Create Wishlist
+        in: body
+        name: UserWishlist
+        required: true
+        schema:
+          $ref: '#/definitions/db.UserWishlist'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.UserWishlist'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Creates a new gift.
+      tags:
+      - Wishlist
+    put:
+      consumes:
+      - application/json
+      description: get the status of server.
+      parameters:
+      - description: Create Wishlist
+        in: body
+        name: UserWishlist
+        required: true
+        schema:
+          $ref: '#/definitions/db.UserWishlist'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.UserWishlist'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Creates a new gift.
+      tags:
+      - Wishlist
+  /wishlists/{name}:
+    get:
+      consumes:
+      - application/json
+      description: get the status of server.
+      parameters:
+      - description: Create Wishlist
+        in: body
+        name: UserWishlist
+        required: true
+        schema:
+          $ref: '#/definitions/db.UserWishlist'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.UserWishlist'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Creates a new gift.
+      tags:
+      - Wishlist
+  /wishlists/{wishlist_id}/{gift_id}:
     delete:
       consumes:
       - application/json
