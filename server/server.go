@@ -139,6 +139,56 @@ func Setup() {
 	wishes.Post("/:gift_id/:wishlist_id", AddWishHandler)
 	wishes.Delete("/:wishlist_id/:gift_id", DeleteWishHandler)
 
+	selection := app.Group("/selection")
+	selection.Post("", createSelectionHandler)
+	//Route: DELETE /selection/:id
+	//DELETE /selection/selection_cneq8k9u9g5j3m6ft0v0
+	selection.Delete("/:id", deleteSelectionHandler)
+
+	selection.Get("", getManySelectionsHandler)
+
+	selection.Get("/:id", getOneSelectionHandler)
+
+	selection.Patch("/:id", updateSelectionHandler)
+
+	//
+	giftToSelection := app.Group("/giftToSelection")
+	giftToSelection.Post("", createGiftToSelectionHandler)
+
+	giftToSelection.Delete("/:id", deleteGiftToSelectionHandler)
+
+	giftToSelection.Get("", findGiftToSelectionHandler)
+
+	giftToSelection.Patch("/:id", updateGiftToSelectionHandler)
+
+	//
+	SelectionCategory := app.Group("/SelectionCategory")
+	SelectionCategory.Post("", createSelectionCategoryHandler)
+
+	SelectionCategory.Patch("/:id", updatedSelectionCategoryHandler)
+
+	SelectionCategory.Get("", findSelectionCategoryHandler)
+
+	SelectionCategory.Delete("/:id", deleteSelectionCategoryHandler)
+
+	//
+	LikeToSelection := app.Group("/LikeToSelection")
+	LikeToSelection.Post("", createLikeToSelectionHandler)
+
+	LikeToSelection.Get("", getLikesCountToSelectionHandler)
+
+	LikeToSelection.Delete("/:id", deleteLikeToSelectionHandler)
+
+	//
+	CommentToSelection := app.Group("/CommentToSelection")
+	CommentToSelection.Post("", createCommentToSelectionHandler)
+
+	CommentToSelection.Patch("/:id", updateCommentToSelectionHandler)
+
+	CommentToSelection.Get("", getCommentsToSelectionHandler)
+
+	CommentToSelection.Delete("/:id", deleteCommentToSelectionHandler)
+
 	// user := app.Group("/users")
 	// user.Post("", CreateUserHandler)
 
