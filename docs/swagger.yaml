@@ -1,7 +1,16 @@
 basePath: /
 definitions:
+  db.BookedGiftInWishlist:
+    properties:
+      gift_id:
+        type: string
+      user_id:
+        type: string
+    type: object
   db.Gift:
     properties:
+      category:
+        type: string
       description:
         type: string
       id:
@@ -52,6 +61,26 @@ definitions:
       wishlist_id:
         type: string
     type: object
+  db.GiftCategory:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+  db.GiftReview:
+    properties:
+      comment:
+        type: string
+      date:
+        type: string
+      gift_id:
+        type: string
+      id:
+        type: string
+      mark:
+        type: number
+    type: object
   server.ResponseHTTP:
     properties:
       data: {}
@@ -73,6 +102,297 @@ info:
   title: Wishlist
   version: "1.0"
 paths:
+  /gifts:
+    get:
+      consumes:
+      - application/json
+      description: Get all books
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/db.Gift'
+                  type: array
+              type: object
+        "503":
+          description: Service Unavailable
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Get all books
+      tags:
+      - Gifts
+  /booked_gifts/{gift_id}:
+    delete:
+      consumes:
+      - application/json
+      description: Deletes a booked gift from the wishlist based on the provided gift
+        ID and user ID.
+      parameters:
+      - description: ID of the booked gift to be deleted
+        in: path
+        name: gift_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.BookedGiftInWishlist'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Deletes a booked gift from the wishlist.
+      tags:
+      - BookedGifts
+  /booked_gifts/{user_id}:
+    get:
+      consumes:
+      - application/json
+      description: Finds all booked gifts in the wishlist for a specific user based
+        on the provided user ID.
+      parameters:
+      - description: ID of the user
+        in: path
+        name: user_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/db.BookedGiftInWishlist'
+                  type: array
+              type: object
+        "503":
+          description: Service Unavailable
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Finds booked gifts for a specific user.
+      tags:
+      - BookedGifts
+  /booked_gifts/create:
+    post:
+      consumes:
+      - application/json
+      description: Creates a booked gift in the wishlist based on the provided data.
+      parameters:
+      - description: Booked Gift in Wishlist object to be created
+        in: body
+        name: BookedGiftInWishlist
+        required: true
+        schema:
+          $ref: '#/definitions/db.BookedGiftInWishlist'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.BookedGiftInWishlist'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Creates a booked gift in the wishlist.
+      tags:
+      - BookedGifts
+  /gift_category/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Deletes a gift category based on the provided category ID.
+      parameters:
+      - description: ID of the gift category to be deleted
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.GiftCategory'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Deletes a gift category.
+      tags:
+      - GiftCategory
+  /gift_category/create:
+    post:
+      consumes:
+      - application/json
+      description: Creates a new gift category based on the provided data.
+      parameters:
+      - description: Gift Category object to be created
+        in: body
+        name: GiftCategory
+        required: true
+        schema:
+          $ref: '#/definitions/db.GiftCategory'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/db.GiftCategory'
+                  type: array
+              type: object
+        "400":
+          description: Failed to create gift category
+          schema:
+            type: string
+      summary: Creates a new gift category.
+      tags:
+      - GiftCategory
+  /gift_review:
+    post:
+      consumes:
+      - application/json
+      description: Create a new review for gift.
+      parameters:
+      - description: Create GiftReview
+        in: body
+        name: Gift
+        required: true
+        schema:
+          $ref: '#/definitions/db.GiftReview'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.GiftReview'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Create a new review for gift.
+      tags:
+      - GiftReview
+  /gift_review/{gift_id}:
+    get:
+      consumes:
+      - application/json
+      description: Get all gift reviews by giftId
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/db.GiftReview'
+                  type: array
+              type: object
+        "503":
+          description: Service Unavailable
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Get all gift reviews by giftId
+      tags:
+      - GiftReview
+  /gift_review/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Deletes a giftReview from the database using the provided ID.
+      parameters:
+      - description: GiftReview ID to delete
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: GiftReview deleted successfully
+          schema:
+            type: string
+        "400":
+          description: Error in deleteGiftReview operation
+          schema:
+            type: string
+      summary: Delete a giftReview by ID.
+      tags:
+      - GiftReview
+    get:
+      consumes:
+      - application/json
+      description: Get gift review by id
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/db.GiftReview'
+                  type: array
+              type: object
+        "503":
+          description: Service Unavailable
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Get gift review by id
+      tags:
+      - GiftReview
   /gifts:
     get:
       consumes:
@@ -134,6 +454,13 @@ paths:
       consumes:
       - application/json
       description: get the status of server.
+      parameters:
+      - description: Create Gift
+        in: body
+        name: Gift
+        required: true
+        schema:
+          $ref: '#/definitions/db.Gift'
       parameters:
       - description: Create Gift
         in: body
