@@ -1,5 +1,18 @@
 basePath: /
 definitions:
+  db.CommentToSelection:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: string
+      selection_id:
+        type: string
+      text:
+        type: string
+      user_id:
+        type: string
+    type: object
   db.Gift:
     properties:
       comments:
@@ -22,6 +35,38 @@ definitions:
         description: 'TODO: use decimal.Decimal instead of int'
         type: integer
     type: object
+  db.GiftToSelection:
+    properties:
+      gift_id:
+        type: string
+      selection_id:
+        type: string
+    type: object
+  db.LikeToSelection:
+    properties:
+      selection_id:
+        type: string
+      user_id:
+        type: string
+    type: object
+  db.Selection:
+    properties:
+      description:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      user_id:
+        type: string
+    type: object
+  db.SelectionCategory:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+    type: object
   server.ResponseHTTP:
     properties:
       data: {}
@@ -43,11 +88,226 @@ info:
   title: Wishlist
   version: "1.0"
 paths:
-  /:
+  /commentToSelection:
     post:
       consumes:
-      - '*/*'
+      - application/json
+      description: Принимает CommentToSelection в теле запроса и создает соответствующий
+        CommentToSelection
+      parameters:
+      - description: Create CommentToSelection
+        in: body
+        name: CommentToSelection
+        required: true
+        schema:
+          $ref: '#/definitions/db.CommentToSelection'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Создает новый CommentToSelection
+      tags:
+      - CommentToSelection
+  /commentToSelection/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Принимает id CommentToSelection в качестве параметра пути и удаляет
+        соответствующий CommentToSelection
+      parameters:
+      - description: CommentToSelection ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Удаляет существующий CommentToSelection
+      tags:
+      - CommentToSelection
+    get:
+      consumes:
+      - application/json
+      description: Принимает id Selection в качестве параметра пути и возвращает комментарии
+        для соответствующего Selection
+      parameters:
+      - description: Selection ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Получает комментарии для Selection
+      tags:
+      - CommentToSelection
+    put:
+      consumes:
+      - application/json
+      description: Принимает id CommentToSelection в качестве параметра пути и обновляет
+        соответствующий CommentToSelection
+      parameters:
+      - description: Update CommentToSelection
+        in: body
+        name: CommentToSelection
+        required: true
+        schema:
+          $ref: '#/definitions/db.CommentToSelection'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Обновляет существующий CommentToSelection
+      tags:
+      - CommentToSelection
+  /giftToSelection:
+    post:
+      consumes:
+      - application/json
+      description: Принимает GiftToSelection в теле запроса и создает соответствующий
+        GiftToSelection
+      parameters:
+      - description: Create GiftToSelection
+        in: body
+        name: GiftToSelection
+        required: true
+        schema:
+          $ref: '#/definitions/db.GiftToSelection'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Создает новый GiftToSelection
+      tags:
+      - GiftToSelection
+  /giftToSelection/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Принимает id GiftToSelection в качестве параметра пути и удаляет
+        соответствующий GiftToSelection
+      parameters:
+      - description: GiftToSelection ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Удаляет существующий GiftToSelection
+      tags:
+      - GiftToSelection
+    get:
+      consumes:
+      - application/json
+      description: Принимает id GiftToSelection в качестве параметра пути и находит
+        соответствующий GiftToSelection
+      parameters:
+      - description: GiftToSelection ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Находит существующий GiftToSelection
+      tags:
+      - GiftToSelection
+    put:
+      consumes:
+      - application/json
+      description: Принимает id GiftToSelection в качестве параметра пути и обновляет
+        соответствующий GiftToSelection
+      parameters:
+      - description: Update GiftToSelection
+        in: body
+        name: GiftToSelection
+        required: true
+        schema:
+          $ref: '#/definitions/db.GiftToSelection'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Обновляет существующий GiftToSelection
+      tags:
+      - GiftToSelection
+  /gifts:
+    post:
+      consumes:
+      - application/json
       description: get the status of server.
+      parameters:
+      - description: Create Gift
+        in: body
+        name: Gift
+        required: true
+        schema:
+          $ref: '#/definitions/db.Gift'
       produces:
       - application/json
       responses:
@@ -67,4 +327,332 @@ paths:
       summary: Creates a new gift.
       tags:
       - Gifts
+  /likeToSelection:
+    post:
+      consumes:
+      - application/json
+      description: Принимает LikeToSelection в теле запроса и создает соответствующий
+        LikeToSelection
+      parameters:
+      - description: Create LikeToSelection
+        in: body
+        name: LikeToSelection
+        required: true
+        schema:
+          $ref: '#/definitions/db.LikeToSelection'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Создает новый LikeToSelection
+      tags:
+      - LikeToSelection
+  /likeToSelection/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Принимает id LikeToSelection в качестве параметра пути и удаляет
+        соответствующий LikeToSelection
+      parameters:
+      - description: LikeToSelection ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Удаляет существующий LikeToSelection
+      tags:
+      - LikeToSelection
+  /likeToSelection/{id}/count:
+    get:
+      consumes:
+      - application/json
+      description: Принимает id Selection в качестве параметра пути и возвращает количество
+        лайков для соответствующего Selection
+      parameters:
+      - description: Selection ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Получает количество лайков для Selection
+      tags:
+      - LikeToSelection
+  /selection:
+    get:
+      consumes:
+      - application/json
+      description: Возвращает все Selections из базы данных
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/db.Selection'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Получает все Selections
+      tags:
+      - Selection
+  /selection/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Принимает id Selection в качестве параметра пути и удаляет соответствующий
+        Selection
+      parameters:
+      - description: Create Selection
+        in: body
+        name: Selection
+        required: true
+        schema:
+          $ref: '#/definitions/db.Selection'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Удаляет существующий Selection
+      tags:
+      - Selection
+    get:
+      consumes:
+      - application/json
+      description: Возвращает один Selection из базы данных по id
+      parameters:
+      - description: Selection ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.Selection'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Получает один Selection
+      tags:
+      - Selection
+    put:
+      consumes:
+      - application/json
+      description: Принимает id Selection в качестве параметра пути и JSON тело запроса
+        с новыми полями Selection
+      parameters:
+      - description: Create Selection
+        in: body
+        name: Selection
+        required: true
+        schema:
+          $ref: '#/definitions/db.Selection'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.Selection'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Обновляет существующий Selection
+      tags:
+      - Selection
+  /selection/create:
+    post:
+      consumes:
+      - application/json
+      description: Принимает JSON тело запроса с полями Selection и создает новый
+        Selection
+      parameters:
+      - description: Create Selection
+        in: body
+        name: Selection
+        required: true
+        schema:
+          $ref: '#/definitions/db.Selection'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.Selection'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Создает новый Selection
+      tags:
+      - Selection
+  /selectionCategory:
+    post:
+      consumes:
+      - application/json
+      description: Принимает SelectionCategory в теле запроса и создает соответствующий
+        SelectionCategory
+      parameters:
+      - description: Create SelectionCategory
+        in: body
+        name: SelectionCategory
+        required: true
+        schema:
+          $ref: '#/definitions/db.SelectionCategory'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Создает новый SelectionCategory
+      tags:
+      - SelectionCategory
+  /selectionCategory/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Принимает id SelectionCategory в качестве параметра пути и удаляет
+        соответствующий SelectionCategory
+      parameters:
+      - description: SelectionCategory ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Удаляет существующий SelectionCategory
+      tags:
+      - SelectionCategory
+    get:
+      consumes:
+      - application/json
+      description: Принимает id SelectionCategory в качестве параметра пути и находит
+        соответствующий SelectionCategory
+      parameters:
+      - description: SelectionCategory ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Находит существующий SelectionCategory
+      tags:
+      - SelectionCategory
+    put:
+      consumes:
+      - application/json
+      description: Принимает id SelectionCategory в качестве параметра пути и обновляет
+        соответствующий SelectionCategory
+      parameters:
+      - description: Update SelectionCategory
+        in: body
+        name: SelectionCategory
+        required: true
+        schema:
+          $ref: '#/definitions/db.SelectionCategory'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Обновляет существующий SelectionCategory
+      tags:
+      - SelectionCategory
 swagger: "2.0"

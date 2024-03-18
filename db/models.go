@@ -1,5 +1,6 @@
 package db
 
+import "time"
 
 type Gift struct {
 	//LIFEHACK: use string id like 'gift_ajdsjanjklsnls'
@@ -15,18 +16,31 @@ type Gift struct {
 }
 
 type Selection struct {
-	ID          int    `json:"id"`
+	ID          string `json:"id"`
 	Name        string `json:"name"`
 	Description string `json:"description"`
-	UserID       int   `json:"user_id"`
+	UserID      string `json:"user_id"`
 }
 
 type GiftToSelection struct {
-	SelectionID  int   `json:"selection_id" gorm:"primaryKey"`
-	GiftID       int   `json:"gift_id" gorm:"primaryKey"`
+	SelectionID string `json:"selection_id" gorm:"primaryKey"`
+	GiftID      string `json:"gift_id" gorm:"primaryKey"`
 }
 
 type SelectionCategory struct {
-	ID   int	       `json:"id"`
-	Name string        `json:"name"`
+	ID   string `json:"id"`
+	Name string `json:"name"`
+}
+
+type LikeToSelection struct {
+	UserID      string `json:"user_id" gorm:"primaryKey"`
+	SelectionID string `json:"selection_id" gorm:"primaryKey"`
+}
+
+type CommentToSelection struct {
+	ID          string    `json:"id"`
+	UserID      string    `json:"user_id"`
+	SelectionID string    `json:"selection_id"`
+	Text        string    `json:"text"`
+	CreatedAt   time.Time `json:"created_at"`
 }
