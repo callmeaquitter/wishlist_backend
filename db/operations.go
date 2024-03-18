@@ -273,14 +273,9 @@ func FindSingleServiceReview(serviceId string) ([]ServiceReview, bool) {
 	return serviceReview, true
 }
 
+// Не работает лол
 func UpdateServiceReview(serviceReview ServiceReview) bool {
-	result := Database.Find(&serviceReview, "id = ?", serviceReview.ID)
-	if result.Error != nil {
-		fmt.Println("Error in updateServiceReview", result.Error)
-		return false
-	}
-
-	result = Database.Model(&serviceReview).
+	result := Database.Model(&serviceReview).
 		Update("service_id", serviceReview.ServiceID)
 	if result.Error != nil {
 		fmt.Println("Error in updateServiceReview", result.Error)
