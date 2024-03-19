@@ -367,19 +367,21 @@ func calculateAverageMarkByGiftIDHandler(c *fiber.Ctx) error {
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /sellers [post]
 func createSellerHandler(c *fiber.Ctx) error {
-	var seller db.Seller
-	if err := c.BodyParser(&seller); err != nil {
+	var user db.User
+	var seller db.Seller 
+	if err := c.BodyParser(&user); err != nil {
 		return c.SendString(err.Error())
 	}
 
-	err := validate.Struct(seller)
+	err := validate.Struct(user)
 	if err != nil {
 		return c.Status(fiber.StatusUnprocessableEntity).SendString(err.Error())
 	}
-
+	
+	seller.SellerID = ""
 	seller.SellerID = "seller_" + xid.New().String()
 
-	ok := db.CreateSeller(seller)
+	ok := db.CreateUser(user)
 	if !ok {
 		return c.SendString("Error in createSeller operation")
 	}

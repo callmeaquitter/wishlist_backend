@@ -46,7 +46,7 @@ func Setup() {
 	gifts.Post("", createGiftHandler, adminMiddleware)
 	//Route: DELETE /gifts/:id
 	//DELETE /gifts/gift_cneq8k9u9g5j3m6ft0v0
-	gifts.Delete("/:id", deleteGiftHandler, authMiddleware)
+	gifts.Delete("/:id", adminMiddleware, deleteGiftHandler)
 
 	gifts.Get("", getManyGiftsHandler)
 
@@ -55,11 +55,11 @@ func Setup() {
 	gifts.Patch("/:id", updateGiftHandler, authMiddleware)
 
 	// ??
-	bookedGift := app.Group("/booked_gifts")
-	bookedGift.Post("", createBookedGiftInWishlist, authMiddleware)
+	bookedGift := app.Group("/booked_gifts", authMiddleware)
+	bookedGift.Post("", createBookedGiftInWishlist)
 
 	//!!!!
-	bookedGift.Delete("/:gift_id", deleteBookedGiftInWishlist, authMiddleware)
+	bookedGift.Delete("/:gift_id", deleteBookedGiftInWishlist)
 
 	//http://localhost:7777/booked_gifts/:user_id
 	bookedGift.Get("/:user_id", findUserBookedGifts)
@@ -91,9 +91,9 @@ func Setup() {
 	serviceReviews.Get("/:id", getOneServiceReviewHandler)
 	serviceReviews.Get("/service/:service_id", getSingleServiceReviewHandler)
 	serviceReviews.Get("", getManyServiceReviewsHandler)
-	serviceReviews.Post("", createServiceReviewHandler)
-	serviceReviews.Patch("/:id", updateServiceReviewHandler)
-	serviceReviews.Delete("/:id", deleteServiceReviewHandler)
+	serviceReviews.Post("", authMiddleware, createServiceReviewHandler)
+	serviceReviews.Patch("/:id", authMiddleware, updateServiceReviewHandler)
+	serviceReviews.Delete("/:id", authMiddleware, deleteServiceReviewHandler)
 
 	sellersServices := app.Group("/sellerToService")
 	sellersServices.Get("/:id", getOneSellerToServiceHandler)
@@ -104,23 +104,23 @@ func Setup() {
 	services := app.Group("/services")
 	services.Get("/:id", getOneServiceHandler)
 	services.Get("", getManyServicesHandler)
-	services.Post("", createServiceHandler)
-	services.Patch("/:id", updateServiceHandler)
-	services.Delete("/:id", deleteServiceHandler)
+	services.Post("", shopAuthMiddleware, createServiceHandler)
+	services.Patch("/:id", shopAuthMiddleware, updateServiceHandler)
+	services.Delete("/:id", shopAuthMiddleware, deleteServiceHandler)
 
 	//Route: POST /quest
 	quest := app.Group("/quest")
-	quest.Post("", createQuestHandler)
+	quest.Post("", adminMiddleware, createQuestHandler)
 
-	quest.Delete("/:id", deleteQuestHandler)
+	quest.Delete("/:id", adminMiddleware, deleteQuestHandler)
 
-	gifts.Patch("/:id", updateQuestHandler)
+	gifts.Patch("/:id", adminMiddleware, updateQuestHandler)
 
 	//Route: POST /subquest
 	subquest := app.Group("/subquest")
-	subquest.Post("", createSubquestHandler)
+	subquest.Post("", adminMiddleware, createSubquestHandler)
 
-	subquest.Delete("/:id", deleteSubquestHandler)
+	subquest.Delete("/:id", adminMiddleware, deleteSubquestHandler)
 
 	subquest.Get("", getManySubquestHandler)
 
@@ -128,24 +128,24 @@ func Setup() {
 
 	//Route: POST /tasks
 	tasks := app.Group("/tasks")
-	tasks.Post("", createTasksHandler)
+	tasks.Post("", adminMiddleware, createTasksHandler)
 
-	tasks.Delete("/:id", deleteTasksHandler)
+	tasks.Delete("/:id", adminMiddleware, deleteTasksHandler)
 
 	tasks.Get("", getManyTasksHandler)
 
 	tasks.Get("/:id", getOneTasksHandler)
 
-	tasks.Patch("/:id", updateTasksHandler)
+	tasks.Patch("/:id", adminMiddleware, updateTasksHandler)
 
 	//Route: POST /offlineshops
 	offlineshops := app.Group("/offlineshops")
 
-	offlineshops.Post("", createOfflineShopsHandler)
+	offlineshops.Post("", adminMiddleware, createOfflineShopsHandler)
 
-	offlineshops.Delete("/:id", deleteOfflineShopsHandler)
+	offlineshops.Delete("/:id", adminMiddleware, deleteOfflineShopsHandler)
 
-	offlineshops.Patch("/:id", updateOfflineShopsHandler)
+	offlineshops.Patch("/:id", adminMiddleware, updateOfflineShopsHandler)
 
 	//
 	//request -> middleware -> handler -> response
@@ -170,19 +170,19 @@ func Setup() {
 	wishes.Delete("/:wishlist_id/:gift_id", DeleteWishHandler)
 
 	selection := app.Group("/selection")
-	selection.Post("", createSelectionHandler)
+	selection.Post("", authMiddleware, createSelectionHandler)
 	//Route: DELETE /selection/:id
 	//DELETE /selection/selection_cneq8k9u9g5j3m6ft0v0
-	selection.Delete("/:id", deleteSelectionHandler)
+	selection.Delete("/:id", adminMiddleware, deleteSelectionHandler)
 
 	selection.Get("", getManySelectionsHandler)
 
 	selection.Get("/:id", getOneSelectionHandler)
 
-	selection.Patch("/:id", updateSelectionHandler)
+	selection.Patch("/:id", adminMiddleware, updateSelectionHandler)
 
 	//
-	giftToSelection := app.Group("/giftToSelection")
+	giftToSelection := app.Group("/giftToSelection", authMiddleware)
 	giftToSelection.Post("", createGiftToSelectionHandler)
 
 	giftToSelection.Delete("/:id", deleteGiftToSelectionHandler)
@@ -210,7 +210,7 @@ func Setup() {
 	LikeToSelection.Delete("/:id", deleteLikeToSelectionHandler)
 
 	//
-	CommentToSelection := app.Group("/CommentToSelection")
+	CommentToSelection := app.Group("/CommentToSelection", authMiddleware)
 	CommentToSelection.Post("", createCommentToSelectionHandler)
 
 	CommentToSelection.Patch("/:id", updateCommentToSelectionHandler)

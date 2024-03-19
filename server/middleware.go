@@ -39,3 +39,11 @@ func adminMiddleware(c *fiber.Ctx) error {
 	}
 	return c.Next()
 }
+
+func sellerAuthMiddleware(c *fiber.Ctx) error{
+	sellerSessionID := c.Get("seller_Authorization")
+	if sellerSessionID == ""{
+		return c.SendString("Unauthorized")
+	}
+	return c.Next()
+}

@@ -108,6 +108,7 @@ type Seller struct {
 	Name     string `json:"name" validate:"required,min=5,max=50"`
 	Email    string `json:"email" validate:"required,min=5,email"`
 	Photo    string `json:"photo"`
+	
 }
 
 type SellerToService struct {
