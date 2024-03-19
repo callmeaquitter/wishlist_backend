@@ -24,34 +24,22 @@ func ValidateIDFormat(tag_ string) validator.Func {
 func Setup() {
 	// Default config
 	app = fiber.New()
-	app.Use(cors.New(cors.Config{
-		AllowOrigins: "*",
-		AllowHeaders: "Origin, Content-Type, Accept"}))
-
-	validate.RegisterValidation("seller_", ValidateIDFormat("seller_"))
-	validate.RegisterValidation("service_", ValidateIDFormat("service_"))
-	validate.RegisterValidation("user_", ValidateIDFormat("user_"))
-
-	app.Use(cors.New())
-	app.Use(cors.New(cors.Config{
-		AllowOrigins: "*",
-		AllowHeaders: "Origin, Content-Type, Accept",
-	}))
-
-	app.Use(cors.New(cors.Config{
-		AllowOrigins: "*",
-		AllowHeaders: "Origin, Content-Type, Accept"}))
-
 	validate.RegisterValidation("seller_", ValidateIDFormat("seller_"))
 	validate.RegisterValidation("service_", ValidateIDFormat("service_"))
 	validate.RegisterValidation("user_", ValidateIDFormat("user_"))
 	app.Use(cors.New(cors.Config{
 		AllowOrigins: "*",
 		AllowHeaders: "Origin, Content-Type, Accept"}))
-	validate.RegisterValidation("task_", ValidateIDFormat("task_"))
-	validate.RegisterValidation("subquest_", ValidateIDFormat("subquest_"))
 
 	app.Get("/docs/*", swagger.HandlerDefault)
+	//https://docs.stripe.com/api/charges
+	//LIFEHACK: Good artist copy, great artist steal
+
+	// common - http - db (code)
+	// Create - POST - Insert (Create)
+	// Read - GET - Select (Retrieve)
+	// Update - PUT - Update (Update)
+	// Delete - DELETE - Delete (Delete)
 
 	//Route: POST /gifts
 	gifts := app.Group("/gifts")
