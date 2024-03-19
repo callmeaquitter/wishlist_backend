@@ -35,17 +35,10 @@ func createGiftHandler(c *fiber.Ctx) error {
 		return c.SendString(err.Error())
 	}
 
-	if gift.Name == "" {
-		return c.SendString("Name is required")
-	}
-	if gift.Price == 0 {
-		return c.SendString("Price is required")
-	}
-	if gift.Link == "" {
-		return c.SendString("Link is required")
-	}
-	if gift.Photo == "" {
-		return c.SendString("Photo is required")
+	err := validate.Struct(gift)
+	if err != nil {
+		return c.Status(fiber.StatusUnprocessableEntity).
+			SendString(err.Error())
 	}
 
 	gift.ID = "gift_" + xid.New().String()
@@ -135,6 +128,12 @@ func updateGiftHandler(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusBadRequest).SendString("Error parsing request body")
 	}
 
+	err := validate.Struct(updatedGift)
+	if err != nil {
+		return c.Status(fiber.StatusUnprocessableEntity).
+			SendString(err.Error())
+	}
+
 	ok := db.UpdateGift(giftID, updatedGift)
 	if !ok {
 		return c.SendString("Error in updateGift operation")
@@ -158,6 +157,13 @@ func createBookedGiftInWishlist(c *fiber.Ctx) error {
 	if err := c.BodyParser(&bookedGiftInWishlist); err != nil {
 		return c.SendString(err.Error())
 	}
+
+	err := validate.Struct(bookedGiftInWishlist)
+	if err != nil {
+		return c.Status(fiber.StatusUnprocessableEntity).
+			SendString(err.Error())
+	}
+
 	ok := db.CreateBookedGift(bookedGiftInWishlist)
 	if !ok {
 		return c.SendString("Error in CreateBookedGift operation")
@@ -220,9 +226,13 @@ func createGiftCategory(c *fiber.Ctx) error {
 	if err := c.BodyParser(&giftCategory); err != nil {
 		return c.SendString(err.Error())
 	}
-	if giftCategory.Name == "" {
-		return c.SendString("CategoryName is required")
+
+	err := validate.Struct(giftCategory)
+	if err != nil {
+		return c.Status(fiber.StatusUnprocessableEntity).
+			SendString(err.Error())
 	}
+
 	giftCategory.ID = "category_" + xid.New().String()
 
 	ok := db.CreateGiftCategory(giftCategory)
@@ -267,11 +277,13 @@ func createGiftReviwHandler(c *fiber.Ctx) error {
 	if err := c.BodyParser(&giftReview); err != nil {
 		return c.SendString(err.Error())
 	}
-	giftReview.ID = "review_" + xid.New().String()
-
-	if giftReview.Mark == 0.0 {
-		return c.SendString("Mark is required")
+	err := validate.Struct(giftReview)
+	if err != nil {
+		return c.Status(fiber.StatusUnprocessableEntity).
+			SendString(err.Error())
 	}
+
+	giftReview.ID = "review_" + xid.New().String()
 
 	ok := db.CreateGiftReview(giftReview)
 	if !ok {
@@ -920,6 +932,13 @@ func AddWishHandler(c *fiber.Ctx) error {
 	if err := c.BodyParser(&wish); err != nil {
 		return c.SendString(err.Error())
 	}
+
+	err := validate.Struct(wish)
+	if err != nil {
+		return c.Status(fiber.StatusUnprocessableEntity).
+			SendString(err.Error())
+	}
+
 	ok := db.AddWish(wishlist_id, gift_id)
 	if !ok {
 		return c.SendString("Error in Create operation")
@@ -963,8 +982,10 @@ func CreateWishlistHandler(c *fiber.Ctx) error {
 	if err := c.BodyParser(&wishlist); err != nil {
 		return c.SendString(err.Error())
 	}
-	if wishlist.Name == "" {
-		return c.SendString("Name is required")
+	err := validate.Struct(wishlist)
+	if err != nil {
+		return c.Status(fiber.StatusUnprocessableEntity).
+			SendString(err.Error())
 	}
 
 	wishlist.ID = "wishlist_" + xid.New().String()
@@ -1034,12 +1055,12 @@ func createSelectionHandler(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusBadRequest).SendString(err.Error())
 	}
 
-	if selection.Name == "" {
-		return c.Status(fiber.StatusBadRequest).SendString("Name is required")
+	err := validate.Struct(selection)
+	if err != nil {
+		return c.Status(fiber.StatusUnprocessableEntity).
+			SendString(err.Error())
 	}
-	if selection.Description == "" {
-		return c.Status(fiber.StatusBadRequest).SendString("Description is required")
-	}
+
 
 	selection.ID = "selection_" + xid.New().String()
 	if selection.ID == "" {
@@ -1152,6 +1173,12 @@ func createGiftToSelectionHandler(c *fiber.Ctx) error {
 		return c.SendString(err.Error())
 	}
 
+	err := validate.Struct(giftToSelection)
+	if err != nil {
+		return c.Status(fiber.StatusUnprocessableEntity).
+			SendString(err.Error())
+	}
+
 	giftToSelection.SelectionID = "giftToSelection_" + xid.New().String()
 
 	ok := db.CreateGiftToSelection(giftToSelection)
@@ -1176,6 +1203,12 @@ func updateGiftToSelectionHandler(c *fiber.Ctx) error {
 	var giftToSelection db.GiftToSelection
 	if err := c.BodyParser(&giftToSelection); err != nil {
 		return c.SendString(err.Error())
+	}
+
+	err := validate.Struct(giftToSelection)
+	if err != nil {
+		return c.Status(fiber.StatusUnprocessableEntity).
+			SendString(err.Error())
 	}
 
 	ok := db.UpdateGiftToSelection(giftToSelection)
@@ -1245,6 +1278,12 @@ func createSelectionCategoryHandler(c *fiber.Ctx) error {
 		return c.SendString(err.Error())
 	}
 
+	err := validate.Struct(selectionCategory)
+	if err != nil {
+		return c.Status(fiber.StatusUnprocessableEntity).
+			SendString(err.Error())
+	}
+
 	selectionCategory.ID = "selectionCategory_" + xid.New().String()
 
 	ok := db.CreateSelectionCategory(selectionCategory)
@@ -1269,6 +1308,12 @@ func updatedSelectionCategoryHandler(c *fiber.Ctx) error {
 	var selectionCategory db.SelectionCategory
 	if err := c.BodyParser(&selectionCategory); err != nil {
 		return c.SendString(err.Error())
+	}
+
+	err := validate.Struct(selectionCategory)
+	if err != nil {
+		return c.Status(fiber.StatusUnprocessableEntity).
+			SendString(err.Error())
 	}
 
 	ok := db.UpdatedSelectionCategory(selectionCategory)
@@ -1335,6 +1380,12 @@ func createLikeToSelectionHandler(c *fiber.Ctx) error {
 	var likeToSelection db.LikeToSelection
 	if err := c.BodyParser(&likeToSelection); err != nil {
 		return c.SendString(err.Error())
+	}
+
+	err := validate.Struct(likeToSelection)
+	if err != nil {
+		return c.Status(fiber.StatusUnprocessableEntity).
+			SendString(err.Error())
 	}
 
 	likeToSelection.SelectionID = "likeToSelection_" + xid.New().String()
@@ -1404,6 +1455,12 @@ func createCommentToSelectionHandler(c *fiber.Ctx) error {
 		return c.SendString(err.Error())
 	}
 
+	err := validate.Struct(commentToSelection)
+	if err != nil {
+		return c.Status(fiber.StatusUnprocessableEntity).
+			SendString(err.Error())
+	}
+
 	commentToSelection.ID = "commentToSelection_" + xid.New().String()
 
 	ok := db.CreateCommentToSelection(commentToSelection)
@@ -1448,6 +1505,12 @@ func updateCommentToSelectionHandler(c *fiber.Ctx) error {
 	var commentToSelection db.CommentToSelection
 	if err := c.BodyParser(&commentToSelection); err != nil {
 		return c.SendString(err.Error())
+	}
+
+	err := validate.Struct(commentToSelection)
+	if err != nil {
+		return c.Status(fiber.StatusUnprocessableEntity).
+			SendString(err.Error())
 	}
 
 	ok := db.UpdateCommentToSelection(commentToSelection)
@@ -1562,6 +1625,12 @@ func createQuestHandler(c *fiber.Ctx) error {
 		return c.SendString(err.Error())
 	}
 
+	err := validate.Struct(quest)
+	if err != nil {
+		return c.Status(fiber.StatusUnprocessableEntity).
+			SendString(err.Error())
+	}
+
 	quest.ID = "quest_" + xid.New().String()
 
 	ok := db.CreateQuest(quest)
@@ -1585,6 +1654,7 @@ func createQuestHandler(c *fiber.Ctx) error {
 func updateQuestHandler(c *fiber.Ctx) error {
 	var quest db.Quest
 	ok := db.UpdateQuest(quest)
+	//TODO: А где здесь парсер? 
 	if !ok {
 		return c.SendString("Error in updateQuest operation")
 	}
@@ -1625,6 +1695,12 @@ func createSubquestHandler(c *fiber.Ctx) error {
 	var subquest db.Subquest
 	if err := c.BodyParser(&subquest); err != nil {
 		return c.SendString(err.Error())
+	}
+
+	err := validate.Struct(subquest)
+	if err != nil {
+		return c.Status(fiber.StatusUnprocessableEntity).
+			SendString(err.Error())
 	}
 
 	subquest.ID = "subquest_" + xid.New().String()
@@ -1707,8 +1783,10 @@ func createTasksHandler(c *fiber.Ctx) error {
 		return c.SendString(err.Error())
 	}
 
-	if tasks.Name == "" {
-		return c.SendString("Name is required")
+	err := validate.Struct(tasks)
+	if err != nil {
+		return c.Status(fiber.StatusUnprocessableEntity).
+			SendString(err.Error())
 	}
 
 	tasks.ID = "tasks_" + xid.New().String()
@@ -1810,11 +1888,10 @@ func createOfflineShopsHandler(c *fiber.Ctx) error {
 		return c.SendString(err.Error())
 	}
 
-	if offlineshops.Name == "" {
-		return c.SendString("Name is required")
-	}
-	if offlineshops.Location == "" {
-		return c.SendString("Location is required")
+	err := validate.Struct(offlineshops)
+	if err != nil {
+		return c.Status(fiber.StatusUnprocessableEntity).
+			SendString(err.Error())
 	}
 
 	offlineshops.ID = "offlineshops_" + xid.New().String()

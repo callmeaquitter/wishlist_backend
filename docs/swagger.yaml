@@ -6,6 +6,9 @@ definitions:
         type: string
       user_id:
         type: string
+    required:
+    - gift_id
+    - user_id
     type: object
   db.CommentToSelection:
     properties:
@@ -19,6 +22,10 @@ definitions:
         type: string
       user_id:
         type: string
+    required:
+    - selection_id
+    - text
+    - user_id
     type: object
   db.Gift:
     properties:
@@ -38,14 +45,20 @@ definitions:
       price:
         description: 'TODO: use decimal.Decimal instead of int'
         type: integer
+    required:
+    - link
+    - name
+    - price
     type: object
-<<<<<<< HEAD
   db.GiftCategory:
     properties:
       id:
         type: string
       name:
         type: string
+    required:
+    - id
+    - name
     type: object
   db.GiftReview:
     properties:
@@ -59,6 +72,10 @@ definitions:
         type: string
       mark:
         type: number
+    required:
+    - comment
+    - gift_id
+    - mark
     type: object
   db.GiftToSelection:
     properties:
@@ -66,11 +83,20 @@ definitions:
         type: string
       selection_id:
         type: string
+    required:
+    - gift_id
+    - selection_id
     type: object
   db.LikeToSelection:
     properties:
       selection_id:
-=======
+        type: string
+      user_id:
+        type: string
+    required:
+    - selection_id
+    - user_id
+    type: object
   db.OfflineShops:
     properties:
       id:
@@ -79,6 +105,9 @@ definitions:
         type: string
       name:
         type: string
+    required:
+    - location
+    - name
     type: object
   db.Quest:
     properties:
@@ -87,39 +116,29 @@ definitions:
       is_done:
         type: boolean
       subquest_id:
->>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
         type: string
       user_id:
         type: string
+    required:
+    - is_done
+    - subquest_id
+    - user_id
     type: object
-<<<<<<< HEAD
   db.Selection:
-=======
-  db.Subquest:
-    properties:
-      id:
-        type: string
-      is_done:
-        type: integer
-      reward:
-        type: integer
-      task_id:
-        type: string
-    type: object
-  db.Tasks:
->>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
     properties:
       description:
         type: string
       id:
         type: string
-<<<<<<< HEAD
       is_generated:
         type: boolean
       name:
         type: string
       user_id:
         type: string
+    required:
+    - name
+    - user_id
     type: object
   db.SelectionCategory:
     properties:
@@ -127,6 +146,9 @@ definitions:
         type: string
       name:
         type: string
+    required:
+    - id
+    - name
     type: object
   db.Seller:
     properties:
@@ -188,6 +210,32 @@ definitions:
     - service_id
     - user_id
     type: object
+  db.Subquest:
+    properties:
+      id:
+        type: string
+      is_done:
+        type: integer
+      reward:
+        type: integer
+      task_id:
+        type: string
+    required:
+    - reward
+    - task_id
+    type: object
+  db.Tasks:
+    properties:
+      description:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+    required:
+    - description
+    - name
+    type: object
   db.User:
     properties:
       birthday:
@@ -206,6 +254,12 @@ definitions:
         type: string
       role_name:
         type: string
+    required:
+    - birthday
+    - lastname
+    - login
+    - name
+    - password
     type: object
   db.UserWishlist:
     properties:
@@ -215,6 +269,9 @@ definitions:
         type: string
       user_id:
         type: string
+    required:
+    - name
+    - user_id
     type: object
   db.Wishes:
     properties:
@@ -222,12 +279,10 @@ definitions:
         type: string
       wishlist_id:
         type: string
+    required:
+    - gift_id
+    - wishlist_id
     type: object
-=======
-      name:
-        type: string
-    type: object
->>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
   server.ResponseHTTP:
     properties:
       data: {}
@@ -790,7 +845,6 @@ paths:
       summary: Creates a new gift.
       tags:
       - Gifts
-<<<<<<< HEAD
   /gifts/{id}:
     delete:
       consumes:
@@ -802,26 +856,10 @@ paths:
         name: id
         required: true
         type: string
-=======
-  /offline-shop/create:
-    post:
-      consumes:
-      - application/json
-      description: Принимает JSON тело запроса с полями Offline Shop и создает новый
-        Offline Shop
-      parameters:
-      - description: Create Offline Shop
-        in: body
-        name: OfflineShop
-        required: true
-        schema:
-          $ref: '#/definitions/db.OfflineShops'
->>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
       produces:
       - application/json
       responses:
         "200":
-<<<<<<< HEAD
           description: Gift deleted successfully
           schema:
             type: string
@@ -838,7 +876,192 @@ paths:
       description: Get one gift
       parameters:
       - description: Gift ID
-=======
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/db.Gift'
+                  type: array
+              type: object
+        "503":
+          description: Service Unavailable
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Get one gift
+      tags:
+      - Gifts
+    patch:
+      consumes:
+      - application/json
+      description: get the status of server.
+      parameters:
+      - description: Update Gift
+        in: body
+        name: Gift
+        required: true
+        schema:
+          $ref: '#/definitions/db.Gift'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.Gift'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: update gift by ID
+      tags:
+      - Gifts
+  /likeToSelection:
+    post:
+      consumes:
+      - application/json
+      description: Принимает LikeToSelection в теле запроса и создает соответствующий
+        LikeToSelection
+      parameters:
+      - description: Create LikeToSelection
+        in: body
+        name: LikeToSelection
+        required: true
+        schema:
+          $ref: '#/definitions/db.LikeToSelection'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Создает новый LikeToSelection
+      tags:
+      - LikeToSelection
+  /likeToSelection/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Принимает id LikeToSelection в качестве параметра пути и удаляет
+        соответствующий LikeToSelection
+      parameters:
+      - description: LikeToSelection ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Удаляет существующий LikeToSelection
+      tags:
+      - LikeToSelection
+  /likeToSelection/{id}/count:
+    get:
+      consumes:
+      - application/json
+      description: Принимает id Selection в качестве параметра пути и возвращает количество
+        лайков для соответствующего Selection
+      parameters:
+      - description: Selection ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Получает количество лайков для Selection
+      tags:
+      - LikeToSelection
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: get the status of server.
+      parameters:
+      - description: Reg user
+        in: body
+        name: User
+        required: true
+        schema:
+          $ref: '#/definitions/db.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.User'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Creates a new gift.
+      tags:
+      - auth
+  /offline-shop/create:
+    post:
+      consumes:
+      - application/json
+      description: Принимает JSON тело запроса с полями Offline Shop и создает новый
+        Offline Shop
+      parameters:
+      - description: Create Offline Shop
+        in: body
+        name: OfflineShop
+        required: true
+        schema:
+          $ref: '#/definitions/db.OfflineShops'
+      produces:
+      - application/json
+      responses:
+        "200":
           description: OK
           schema:
             allOf:
@@ -884,52 +1107,16 @@ paths:
         и обновляет существующий Offline Shop по его ID
       parameters:
       - description: Offline Shop ID
->>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
         in: path
         name: id
         required: true
         type: string
-<<<<<<< HEAD
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            allOf:
-            - $ref: '#/definitions/server.ResponseHTTP'
-            - properties:
-                data:
-                  items:
-                    $ref: '#/definitions/db.Gift'
-                  type: array
-              type: object
-        "503":
-          description: Service Unavailable
-          schema:
-            $ref: '#/definitions/server.ResponseHTTP'
-      summary: Get one gift
-      tags:
-      - Gifts
-    patch:
-      consumes:
-      - application/json
-      description: get the status of server.
-      parameters:
-      - description: Update Gift
-        in: body
-        name: Gift
-        required: true
-        schema:
-          $ref: '#/definitions/db.Gift'
-=======
       - description: Update Offline Shop
         in: body
         name: OfflineShop
         required: true
         schema:
           $ref: '#/definitions/db.OfflineShops'
->>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
       produces:
       - application/json
       responses:
@@ -940,38 +1127,12 @@ paths:
             - $ref: '#/definitions/server.ResponseHTTP'
             - properties:
                 data:
-<<<<<<< HEAD
-                  $ref: '#/definitions/db.Gift'
-=======
                   $ref: '#/definitions/db.OfflineShops'
->>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
               type: object
         "400":
           description: Bad Request
           schema:
             $ref: '#/definitions/server.ResponseHTTP'
-<<<<<<< HEAD
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/server.ResponseHTTP'
-      summary: update gift by ID
-      tags:
-      - Gifts
-  /likeToSelection:
-    post:
-      consumes:
-      - application/json
-      description: Принимает LikeToSelection в теле запроса и создает соответствующий
-        LikeToSelection
-      parameters:
-      - description: Create LikeToSelection
-        in: body
-        name: LikeToSelection
-        required: true
-        schema:
-          $ref: '#/definitions/db.LikeToSelection'
-=======
       summary: Обновляет существующий Offline Shop по ID
       tags:
       - Offline Shops
@@ -987,70 +1148,22 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/db.Quest'
->>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-<<<<<<< HEAD
-            $ref: '#/definitions/server.ResponseHTTP'
-=======
             allOf:
             - $ref: '#/definitions/server.ResponseHTTP'
             - properties:
                 data:
                   $ref: '#/definitions/db.Quest'
               type: object
->>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
         "400":
           description: Bad Request
           schema:
             $ref: '#/definitions/server.ResponseHTTP'
-<<<<<<< HEAD
-      summary: Создает новый LikeToSelection
-      tags:
-      - LikeToSelection
-  /likeToSelection/{id}:
-    delete:
-      consumes:
-      - application/json
-      description: Принимает id LikeToSelection в качестве параметра пути и удаляет
-        соответствующий LikeToSelection
-      parameters:
-      - description: LikeToSelection ID
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/server.ResponseHTTP'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/server.ResponseHTTP'
-      summary: Удаляет существующий LikeToSelection
-      tags:
-      - LikeToSelection
-  /likeToSelection/{id}/count:
-    get:
-      consumes:
-      - application/json
-      description: Принимает id Selection в качестве параметра пути и возвращает количество
-        лайков для соответствующего Selection
-      parameters:
-      - description: Selection ID
-        in: path
-        name: id
-        required: true
-        type: string
-=======
       summary: Создает новый Quest
       tags:
       - Quest
@@ -1088,84 +1201,25 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/db.Quest'
->>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-<<<<<<< HEAD
-            $ref: '#/definitions/server.ResponseHTTP'
-=======
             allOf:
             - $ref: '#/definitions/server.ResponseHTTP'
             - properties:
                 data:
                   $ref: '#/definitions/db.Quest'
               type: object
->>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
         "400":
           description: Bad Request
           schema:
             $ref: '#/definitions/server.ResponseHTTP'
-<<<<<<< HEAD
-      summary: Получает количество лайков для Selection
-      tags:
-      - LikeToSelection
-  /login:
-    post:
-      consumes:
-      - application/json
-      description: get the status of server.
-      parameters:
-      - description: Reg user
-        in: body
-        name: User
-        required: true
-        schema:
-          $ref: '#/definitions/db.User'
-=======
       summary: Обновляет существующий Quest
       tags:
       - Quest
-  /subquest/create:
-    post:
-      consumes:
-      - application/json
-      description: Принимает JSON тело запроса с полями Subquest и создает новый Subquest
-      parameters:
-      - description: Create Subquest
-        in: body
-        name: Subquest
-        required: true
-        schema:
-          $ref: '#/definitions/db.Subquest'
->>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            allOf:
-            - $ref: '#/definitions/server.ResponseHTTP'
-            - properties:
-                data:
-<<<<<<< HEAD
-                  $ref: '#/definitions/db.User'
-=======
-                  $ref: '#/definitions/db.Subquest'
->>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
-              type: object
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/server.ResponseHTTP'
-<<<<<<< HEAD
-      summary: Creates a new gift.
-      tags:
-      - auth
   /register:
     post:
       consumes:
@@ -1236,42 +1290,12 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/db.Selection'
-=======
-      summary: Создает новый Subquest
-      tags:
-      - Subquest
-  /subquest/delete/{id}:
-    delete:
-      description: Принимает ID подзадания в URL и удаляет соответствующее подзадание
-      parameters:
-      - description: Subquest ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      responses:
-        "200":
-          description: Subquest deleted successfully
-          schema:
-            type: string
-        "404":
-          description: Subquest not found
-          schema:
-            type: string
-      summary: Удаляет существующий Subquest по ID
-      tags:
-      - Subquest
-  /subquest/getmany:
-    get:
-      description: Возвращает список всех подзаданий (Subquest)
->>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-<<<<<<< HEAD
             $ref: '#/definitions/server.ResponseHTTP'
         "400":
           description: Bad Request
@@ -1286,23 +1310,6 @@ paths:
       description: Возвращает один Selection из базы данных по id
       parameters:
       - description: Selection ID
-=======
-            allOf:
-            - $ref: '#/definitions/server.ResponseHTTP'
-            - properties:
-                data:
-                  $ref: '#/definitions/db.Subquest'
-              type: object
-      summary: Получает список Subquest
-      tags:
-      - Subquest
-  /subquest/getone/{id}:
-    get:
-      description: Возвращает информацию о конкретном подзадании (Subquest) по его
-        ID
-      parameters:
-      - description: Subquest ID
->>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
         in: path
         name: id
         required: true
@@ -1317,48 +1324,12 @@ paths:
             - $ref: '#/definitions/server.ResponseHTTP'
             - properties:
                 data:
-<<<<<<< HEAD
                   $ref: '#/definitions/db.Selection'
-=======
-                  $ref: '#/definitions/db.Subquest'
-              type: object
-        "404":
-          description: Subquest not found
-          schema:
-            type: string
-      summary: Получает одно Subquest по ID
-      tags:
-      - Subquest
-  /tasks/create:
-    post:
-      consumes:
-      - application/json
-      description: Принимает JSON тело запроса с полями Tasks и создает новое задание
-      parameters:
-      - description: Create Tasks
-        in: body
-        name: Tasks
-        required: true
-        schema:
-          $ref: '#/definitions/db.Tasks'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            allOf:
-            - $ref: '#/definitions/server.ResponseHTTP'
-            - properties:
-                data:
-                  $ref: '#/definitions/db.Tasks'
->>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
               type: object
         "400":
           description: Bad Request
           schema:
             $ref: '#/definitions/server.ResponseHTTP'
-<<<<<<< HEAD
       summary: Получает один Selection
       tags:
       - Selection
@@ -1374,34 +1345,6 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/db.Selection'
-=======
-      summary: Создает новое задание Tasks
-      tags:
-      - Tasks
-  /tasks/delete/{id}:
-    delete:
-      description: Принимает ID задания в URL и удаляет соответствующее задание
-      parameters:
-      - description: Tasks ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      responses:
-        "200":
-          description: Tasks deleted successfully
-          schema:
-            type: string
-        "404":
-          description: Tasks not found
-          schema:
-            type: string
-      summary: Удаляет существующее задание Tasks по ID
-      tags:
-      - Tasks
-  /tasks/getmany:
-    get:
-      description: Возвращает список всех заданий Tasks
       produces:
       - application/json
       responses:
@@ -1412,74 +1355,12 @@ paths:
             - $ref: '#/definitions/server.ResponseHTTP'
             - properties:
                 data:
-                  $ref: '#/definitions/db.Tasks'
-              type: object
-      summary: Получает список заданий Tasks
-      tags:
-      - Tasks
-  /tasks/getone/{id}:
-    get:
-      description: Возвращает информацию о конкретном задании Tasks по его ID
-      parameters:
-      - description: Tasks ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            allOf:
-            - $ref: '#/definitions/server.ResponseHTTP'
-            - properties:
-                data:
-                  $ref: '#/definitions/db.Tasks'
-              type: object
-        "404":
-          description: Tasks not found
-          schema:
-            type: string
-      summary: Получает одно задание Tasks по ID
-      tags:
-      - Tasks
-  /tasks/update:
-    put:
-      consumes:
-      - application/json
-      description: Принимает JSON тело запроса с обновленными полями Tasks и обновляет
-        существующее задание
-      parameters:
-      - description: Update Tasks
-        in: body
-        name: Tasks
-        required: true
-        schema:
-          $ref: '#/definitions/db.Tasks'
->>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            allOf:
-            - $ref: '#/definitions/server.ResponseHTTP'
-            - properties:
-                data:
-<<<<<<< HEAD
                   $ref: '#/definitions/db.Selection'
-=======
-                  $ref: '#/definitions/db.Tasks'
->>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
               type: object
         "400":
           description: Bad Request
           schema:
             $ref: '#/definitions/server.ResponseHTTP'
-<<<<<<< HEAD
       summary: Обновляет существующий Selection
       tags:
       - Selection
@@ -2171,6 +2052,235 @@ paths:
       summary: Updates an existing service.
       tags:
       - Services
+  /subquest/create:
+    post:
+      consumes:
+      - application/json
+      description: Принимает JSON тело запроса с полями Subquest и создает новый Subquest
+      parameters:
+      - description: Create Subquest
+        in: body
+        name: Subquest
+        required: true
+        schema:
+          $ref: '#/definitions/db.Subquest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.Subquest'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Создает новый Subquest
+      tags:
+      - Subquest
+  /subquest/delete/{id}:
+    delete:
+      description: Принимает ID подзадания в URL и удаляет соответствующее подзадание
+      parameters:
+      - description: Subquest ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: Subquest deleted successfully
+          schema:
+            type: string
+        "404":
+          description: Subquest not found
+          schema:
+            type: string
+      summary: Удаляет существующий Subquest по ID
+      tags:
+      - Subquest
+  /subquest/getmany:
+    get:
+      description: Возвращает список всех подзаданий (Subquest)
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.Subquest'
+              type: object
+      summary: Получает список Subquest
+      tags:
+      - Subquest
+  /subquest/getone/{id}:
+    get:
+      description: Возвращает информацию о конкретном подзадании (Subquest) по его
+        ID
+      parameters:
+      - description: Subquest ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.Subquest'
+              type: object
+        "404":
+          description: Subquest not found
+          schema:
+            type: string
+      summary: Получает одно Subquest по ID
+      tags:
+      - Subquest
+  /tasks/create:
+    post:
+      consumes:
+      - application/json
+      description: Принимает JSON тело запроса с полями Tasks и создает новое задание
+      parameters:
+      - description: Create Tasks
+        in: body
+        name: Tasks
+        required: true
+        schema:
+          $ref: '#/definitions/db.Tasks'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.Tasks'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Создает новое задание Tasks
+      tags:
+      - Tasks
+  /tasks/delete/{id}:
+    delete:
+      description: Принимает ID задания в URL и удаляет соответствующее задание
+      parameters:
+      - description: Tasks ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: Tasks deleted successfully
+          schema:
+            type: string
+        "404":
+          description: Tasks not found
+          schema:
+            type: string
+      summary: Удаляет существующее задание Tasks по ID
+      tags:
+      - Tasks
+  /tasks/getmany:
+    get:
+      description: Возвращает список всех заданий Tasks
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.Tasks'
+              type: object
+      summary: Получает список заданий Tasks
+      tags:
+      - Tasks
+  /tasks/getone/{id}:
+    get:
+      description: Возвращает информацию о конкретном задании Tasks по его ID
+      parameters:
+      - description: Tasks ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.Tasks'
+              type: object
+        "404":
+          description: Tasks not found
+          schema:
+            type: string
+      summary: Получает одно задание Tasks по ID
+      tags:
+      - Tasks
+  /tasks/update:
+    put:
+      consumes:
+      - application/json
+      description: Принимает JSON тело запроса с обновленными полями Tasks и обновляет
+        существующее задание
+      parameters:
+      - description: Update Tasks
+        in: body
+        name: Tasks
+        required: true
+        schema:
+          $ref: '#/definitions/db.Tasks'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.Tasks'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Обновляет существующее задание Tasks
+      tags:
+      - Tasks
   /wishes/{id}/{wishlist_id}:
     delete:
       consumes:
@@ -2385,9 +2495,4 @@ paths:
       summary: Creates a new gift.
       tags:
       - Wishlist
-=======
-      summary: Обновляет существующее задание Tasks
-      tags:
-      - Tasks
->>>>>>> 0466743563a026dcd69d2fd1df4b8fcfbdcf65e2
 swagger: "2.0"

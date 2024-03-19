@@ -358,12 +358,6 @@ func FindOneSeller(sellerId string) (Seller, bool) {
 }
 
 func UpdateSeller(seller Seller) bool {
-	result := Database.Find(&seller, "id = ?", seller.SellerID)
-	if result.Error != nil {
-		fmt.Println("Error in updateSeller", result.Error)
-		return false
-	}
-
 	if seller.Name != "string" {
 		result := Database.Model(&seller).Update("name", seller.Name)
 		if result.Error != nil {
@@ -371,7 +365,7 @@ func UpdateSeller(seller Seller) bool {
 			return false
 		}
 	}
-	result = Database.Model(&seller).Update("email", seller.Email)
+	result := Database.Model(&seller).Update("email", seller.Email)
 	if result.Error != nil {
 		fmt.Println("Error in updateSeller", result.Error)
 		return false
@@ -426,12 +420,6 @@ func FindOneService(serviceId string) (Service, bool) {
 }
 
 func UpdateService(service Service) bool {
-	result := Database.Find(&service, "id = ?", service.ServiceID)
-	if result.Error != nil {
-		fmt.Println("Error in updateservice", result.Error)
-		return false
-	}
-
 	if service.Name != "string" {
 		result := Database.Model(&service).Update("name", service.Name)
 		if result.Error != nil {
@@ -439,7 +427,7 @@ func UpdateService(service Service) bool {
 			return false
 		}
 	}
-	result = Database.Model(&service).Update("price", service.Price)
+	result := Database.Model(&service).Update("price", service.Price)
 	if result.Error != nil {
 		fmt.Println("Error in updateservice", result.Error)
 		return false
