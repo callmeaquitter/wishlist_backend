@@ -24,34 +24,9 @@ func ValidateIDFormat(tag_ string) validator.Func {
 func Setup() {
 	// Default config
 	app = fiber.New()
-	app.Use(cors.New(cors.Config{
-		AllowOrigins: "*",
-		AllowHeaders: "Origin, Content-Type, Accept"}))
-
 	validate.RegisterValidation("seller_", ValidateIDFormat("seller_"))
 	validate.RegisterValidation("service_", ValidateIDFormat("service_"))
 	validate.RegisterValidation("user_", ValidateIDFormat("user_"))
-
-	app.Use(cors.New())
-	app.Use(cors.New(cors.Config{
-		AllowOrigins: "*",
-		AllowHeaders: "Origin, Content-Type, Accept",
-	}))
-
-	app.Use(cors.New(cors.Config{
-		AllowOrigins: "*",
-		AllowHeaders: "Origin, Content-Type, Accept"}))
-
-	validate.RegisterValidation("seller_", ValidateIDFormat("seller_"))
-	validate.RegisterValidation("service_", ValidateIDFormat("service_"))
-	validate.RegisterValidation("user_", ValidateIDFormat("user_"))
-
-	app.Use(cors.New())
-	app.Use(cors.New(cors.Config{
-		AllowOrigins: "*",
-		AllowHeaders: "Origin, Content-Type, Accept",
-	}))
-
 	app.Use(cors.New(cors.Config{
 		AllowOrigins: "*",
 		AllowHeaders: "Origin, Content-Type, Accept"}))
@@ -68,7 +43,7 @@ func Setup() {
 
 	//Route: POST /gifts
 	gifts := app.Group("/gifts")
-	gifts.Post("", createGiftHandler, authMiddleware)
+	gifts.Post("", createGiftHandler, adminMiddleware)
 	//Route: DELETE /gifts/:id
 	//DELETE /gifts/gift_cneq8k9u9g5j3m6ft0v0
 	gifts.Delete("/:id", deleteGiftHandler, authMiddleware)
@@ -105,7 +80,7 @@ func Setup() {
 
 	giftReview.Get("/mark/:gift_id", calculateAverageMarkByGiftIDHandler)
 
-	sellers := app.Group("/sellers")
+	sellers := app.Group("/sellers", authMiddleware)
 	sellers.Get("/:id", getOneSellerHandler)
 	sellers.Get("", getManySellersHandler)
 	sellers.Post("", createSellerHandler)
