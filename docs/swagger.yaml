@@ -6,6 +6,9 @@ definitions:
         type: string
       user_id:
         type: string
+    required:
+    - gift_id
+    - user_id
     type: object
   db.CommentToSelection:
     properties:
@@ -19,6 +22,10 @@ definitions:
         type: string
       user_id:
         type: string
+    required:
+    - selection_id
+    - text
+    - user_id
     type: object
   db.Gift:
     properties:
@@ -38,6 +45,10 @@ definitions:
       price:
         description: 'TODO: use decimal.Decimal instead of int'
         type: integer
+    required:
+    - link
+    - name
+    - price
     type: object
   db.GiftCategory:
     properties:
@@ -45,6 +56,9 @@ definitions:
         type: string
       name:
         type: string
+    required:
+    - id
+    - name
     type: object
   db.GiftReview:
     properties:
@@ -58,6 +72,10 @@ definitions:
         type: string
       mark:
         type: number
+    required:
+    - comment
+    - gift_id
+    - mark
     type: object
   db.GiftToSelection:
     properties:
@@ -65,6 +83,9 @@ definitions:
         type: string
       selection_id:
         type: string
+    required:
+    - gift_id
+    - selection_id
     type: object
   db.LikeToSelection:
     properties:
@@ -72,6 +93,12 @@ definitions:
         type: string
       user_id:
         type: string
+<<<<<<< HEAD
+=======
+    required:
+    - selection_id
+    - user_id
+>>>>>>> 75df2d2389ce17572768044cc9395270b3efab40
     type: object
   db.OfflineShops:
     properties:
@@ -81,6 +108,9 @@ definitions:
         type: string
       name:
         type: string
+    required:
+    - location
+    - name
     type: object
   db.Quest:
     properties:
@@ -92,6 +122,10 @@ definitions:
         type: string
       user_id:
         type: string
+    required:
+    - is_done
+    - subquest_id
+    - user_id
     type: object
   db.Selection:
     properties:
@@ -105,6 +139,9 @@ definitions:
         type: string
       user_id:
         type: string
+    required:
+    - name
+    - user_id
     type: object
   db.SelectionCategory:
     properties:
@@ -112,6 +149,9 @@ definitions:
         type: string
       name:
         type: string
+    required:
+    - id
+    - name
     type: object
   db.Seller:
     properties:
@@ -183,6 +223,12 @@ definitions:
         type: integer
       task_id:
         type: string
+<<<<<<< HEAD
+=======
+    required:
+    - reward
+    - task_id
+>>>>>>> 75df2d2389ce17572768044cc9395270b3efab40
     type: object
   db.Tasks:
     properties:
@@ -192,6 +238,12 @@ definitions:
         type: string
       name:
         type: string
+<<<<<<< HEAD
+=======
+    required:
+    - description
+    - name
+>>>>>>> 75df2d2389ce17572768044cc9395270b3efab40
     type: object
   db.User:
     properties:
@@ -211,6 +263,12 @@ definitions:
         type: string
       role_name:
         type: string
+    required:
+    - birthday
+    - lastname
+    - login
+    - name
+    - password
     type: object
   db.UserWishlist:
     properties:
@@ -220,6 +278,9 @@ definitions:
         type: string
       user_id:
         type: string
+    required:
+    - name
+    - user_id
     type: object
   db.Wishes:
     properties:
@@ -227,6 +288,9 @@ definitions:
         type: string
       wishlist_id:
         type: string
+    required:
+    - gift_id
+    - wishlist_id
     type: object
   server.ResponseHTTP:
     properties:

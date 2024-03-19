@@ -3577,6 +3577,10 @@ const docTemplate = `{
     "definitions": {
         "db.BookedGiftInWishlist": {
             "type": "object",
+            "required": [
+                "gift_id",
+                "user_id"
+            ],
             "properties": {
                 "gift_id": {
                     "type": "string"
@@ -3588,6 +3592,11 @@ const docTemplate = `{
         },
         "db.CommentToSelection": {
             "type": "object",
+            "required": [
+                "selection_id",
+                "text",
+                "user_id"
+            ],
             "properties": {
                 "created_at": {
                     "type": "string"
@@ -3608,6 +3617,11 @@ const docTemplate = `{
         },
         "db.Gift": {
             "type": "object",
+            "required": [
+                "link",
+                "name",
+                "price"
+            ],
             "properties": {
                 "category": {
                     "type": "string"
@@ -3636,6 +3650,13 @@ const docTemplate = `{
         },
         "db.GiftCategory": {
             "type": "object",
+<<<<<<< HEAD
+=======
+            "required": [
+                "id",
+                "name"
+            ],
+>>>>>>> 75df2d2389ce17572768044cc9395270b3efab40
             "properties": {
                 "id": {
                     "type": "string"
@@ -3647,6 +3668,14 @@ const docTemplate = `{
         },
         "db.GiftReview": {
             "type": "object",
+<<<<<<< HEAD
+=======
+            "required": [
+                "comment",
+                "gift_id",
+                "mark"
+            ],
+>>>>>>> 75df2d2389ce17572768044cc9395270b3efab40
             "properties": {
                 "comment": {
                     "type": "string"
@@ -3667,6 +3696,13 @@ const docTemplate = `{
         },
         "db.GiftToSelection": {
             "type": "object",
+<<<<<<< HEAD
+=======
+            "required": [
+                "gift_id",
+                "selection_id"
+            ],
+>>>>>>> 75df2d2389ce17572768044cc9395270b3efab40
             "properties": {
                 "gift_id": {
                     "type": "string"
@@ -3678,6 +3714,13 @@ const docTemplate = `{
         },
         "db.LikeToSelection": {
             "type": "object",
+<<<<<<< HEAD
+=======
+            "required": [
+                "selection_id",
+                "user_id"
+            ],
+>>>>>>> 75df2d2389ce17572768044cc9395270b3efab40
             "properties": {
                 "selection_id": {
                     "type": "string"
@@ -3689,6 +3732,13 @@ const docTemplate = `{
         },
         "db.OfflineShops": {
             "type": "object",
+<<<<<<< HEAD
+=======
+            "required": [
+                "location",
+                "name"
+            ],
+>>>>>>> 75df2d2389ce17572768044cc9395270b3efab40
             "properties": {
                 "id": {
                     "type": "string"
@@ -3703,6 +3753,14 @@ const docTemplate = `{
         },
         "db.Quest": {
             "type": "object",
+<<<<<<< HEAD
+=======
+            "required": [
+                "is_done",
+                "subquest_id",
+                "user_id"
+            ],
+>>>>>>> 75df2d2389ce17572768044cc9395270b3efab40
             "properties": {
                 "id": {
                     "type": "string"
@@ -3720,6 +3778,13 @@ const docTemplate = `{
         },
         "db.Selection": {
             "type": "object",
+<<<<<<< HEAD
+=======
+            "required": [
+                "name",
+                "user_id"
+            ],
+>>>>>>> 75df2d2389ce17572768044cc9395270b3efab40
             "properties": {
                 "description": {
                     "type": "string"
@@ -3740,6 +3805,13 @@ const docTemplate = `{
         },
         "db.SelectionCategory": {
             "type": "object",
+<<<<<<< HEAD
+=======
+            "required": [
+                "id",
+                "name"
+            ],
+>>>>>>> 75df2d2389ce17572768044cc9395270b3efab40
             "properties": {
                 "id": {
                     "type": "string"
@@ -3836,6 +3908,13 @@ const docTemplate = `{
         },
         "db.Subquest": {
             "type": "object",
+<<<<<<< HEAD
+=======
+            "required": [
+                "reward",
+                "task_id"
+            ],
+>>>>>>> 75df2d2389ce17572768044cc9395270b3efab40
             "properties": {
                 "id": {
                     "type": "string"
@@ -3853,6 +3932,13 @@ const docTemplate = `{
         },
         "db.Tasks": {
             "type": "object",
+<<<<<<< HEAD
+=======
+            "required": [
+                "description",
+                "name"
+            ],
+>>>>>>> 75df2d2389ce17572768044cc9395270b3efab40
             "properties": {
                 "description": {
                     "type": "string"
@@ -3867,6 +3953,16 @@ const docTemplate = `{
         },
         "db.User": {
             "type": "object",
+<<<<<<< HEAD
+=======
+            "required": [
+                "birthday",
+                "lastname",
+                "login",
+                "name",
+                "password"
+            ],
+>>>>>>> 75df2d2389ce17572768044cc9395270b3efab40
             "properties": {
                 "birthday": {
                     "type": "string"
@@ -3896,6 +3992,13 @@ const docTemplate = `{
         },
         "db.UserWishlist": {
             "type": "object",
+<<<<<<< HEAD
+=======
+            "required": [
+                "name",
+                "user_id"
+            ],
+>>>>>>> 75df2d2389ce17572768044cc9395270b3efab40
             "properties": {
                 "id": {
                     "type": "string"
@@ -3910,6 +4013,13 @@ const docTemplate = `{
         },
         "db.Wishes": {
             "type": "object",
+<<<<<<< HEAD
+=======
+            "required": [
+                "gift_id",
+                "wishlist_id"
+            ],
+>>>>>>> 75df2d2389ce17572768044cc9395270b3efab40
             "properties": {
                 "gift_id": {
                     "type": "string"

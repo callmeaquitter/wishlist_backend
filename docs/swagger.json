@@ -3571,6 +3571,13 @@
     "definitions": {
         "db.BookedGiftInWishlist": {
             "type": "object",
+<<<<<<< HEAD
+=======
+            "required": [
+                "gift_id",
+                "user_id"
+            ],
+>>>>>>> 75df2d2389ce17572768044cc9395270b3efab40
             "properties": {
                 "gift_id": {
                     "type": "string"
@@ -3582,6 +3589,14 @@
         },
         "db.CommentToSelection": {
             "type": "object",
+<<<<<<< HEAD
+=======
+            "required": [
+                "selection_id",
+                "text",
+                "user_id"
+            ],
+>>>>>>> 75df2d2389ce17572768044cc9395270b3efab40
             "properties": {
                 "created_at": {
                     "type": "string"
@@ -3602,6 +3617,11 @@
         },
         "db.Gift": {
             "type": "object",
+            "required": [
+                "link",
+                "name",
+                "price"
+            ],
             "properties": {
                 "category": {
                     "type": "string"
@@ -3630,6 +3650,13 @@
         },
         "db.GiftCategory": {
             "type": "object",
+<<<<<<< HEAD
+=======
+            "required": [
+                "id",
+                "name"
+            ],
+>>>>>>> 75df2d2389ce17572768044cc9395270b3efab40
             "properties": {
                 "id": {
                     "type": "string"
@@ -3641,6 +3668,14 @@
         },
         "db.GiftReview": {
             "type": "object",
+<<<<<<< HEAD
+=======
+            "required": [
+                "comment",
+                "gift_id",
+                "mark"
+            ],
+>>>>>>> 75df2d2389ce17572768044cc9395270b3efab40
             "properties": {
                 "comment": {
                     "type": "string"
@@ -3661,6 +3696,13 @@
         },
         "db.GiftToSelection": {
             "type": "object",
+<<<<<<< HEAD
+=======
+            "required": [
+                "gift_id",
+                "selection_id"
+            ],
+>>>>>>> 75df2d2389ce17572768044cc9395270b3efab40
             "properties": {
                 "gift_id": {
                     "type": "string"
@@ -3672,6 +3714,13 @@
         },
         "db.LikeToSelection": {
             "type": "object",
+<<<<<<< HEAD
+=======
+            "required": [
+                "selection_id",
+                "user_id"
+            ],
+>>>>>>> 75df2d2389ce17572768044cc9395270b3efab40
             "properties": {
                 "selection_id": {
                     "type": "string"
@@ -3683,6 +3732,10 @@
         },
         "db.OfflineShops": {
             "type": "object",
+            "required": [
+                "location",
+                "name"
+            ],
             "properties": {
                 "id": {
                     "type": "string"
@@ -3697,6 +3750,11 @@
         },
         "db.Quest": {
             "type": "object",
+            "required": [
+                "is_done",
+                "subquest_id",
+                "user_id"
+            ],
             "properties": {
                 "id": {
                     "type": "string"
@@ -3714,6 +3772,13 @@
         },
         "db.Selection": {
             "type": "object",
+<<<<<<< HEAD
+=======
+            "required": [
+                "name",
+                "user_id"
+            ],
+>>>>>>> 75df2d2389ce17572768044cc9395270b3efab40
             "properties": {
                 "description": {
                     "type": "string"
@@ -3734,6 +3799,13 @@
         },
         "db.SelectionCategory": {
             "type": "object",
+<<<<<<< HEAD
+=======
+            "required": [
+                "id",
+                "name"
+            ],
+>>>>>>> 75df2d2389ce17572768044cc9395270b3efab40
             "properties": {
                 "id": {
                     "type": "string"
@@ -3830,6 +3902,10 @@
         },
         "db.Subquest": {
             "type": "object",
+            "required": [
+                "reward",
+                "task_id"
+            ],
             "properties": {
                 "id": {
                     "type": "string"
@@ -3847,6 +3923,10 @@
         },
         "db.Tasks": {
             "type": "object",
+            "required": [
+                "description",
+                "name"
+            ],
             "properties": {
                 "description": {
                     "type": "string"
@@ -3861,6 +3941,16 @@
         },
         "db.User": {
             "type": "object",
+<<<<<<< HEAD
+=======
+            "required": [
+                "birthday",
+                "lastname",
+                "login",
+                "name",
+                "password"
+            ],
+>>>>>>> 75df2d2389ce17572768044cc9395270b3efab40
             "properties": {
                 "birthday": {
                     "type": "string"
@@ -3890,6 +3980,13 @@
         },
         "db.UserWishlist": {
             "type": "object",
+<<<<<<< HEAD
+=======
+            "required": [
+                "name",
+                "user_id"
+            ],
+>>>>>>> 75df2d2389ce17572768044cc9395270b3efab40
             "properties": {
                 "id": {
                     "type": "string"
@@ -3904,6 +4001,13 @@
         },
         "db.Wishes": {
             "type": "object",
+<<<<<<< HEAD
+=======
+            "required": [
+                "gift_id",
+                "wishlist_id"
+            ],
+>>>>>>> 75df2d2389ce17572768044cc9395270b3efab40
             "properties": {
                 "gift_id": {
                     "type": "string"
