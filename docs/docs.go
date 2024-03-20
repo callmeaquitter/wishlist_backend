@@ -33,7 +33,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Gifts"
+                    "Gift"
                 ],
                 "summary": "Creates a new gift.",
                 "responses": {
@@ -64,7 +64,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/offline-shop/create": {
+        "/offlineshop/create": {
             "post": {
                 "description": "Принимает JSON тело запроса с полями Offline Shop и создает новый Offline Shop",
                 "consumes": [
@@ -74,7 +74,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Offline Shops"
+                    "OfflineShops"
                 ],
                 "summary": "Создает новый Offline Shop",
                 "parameters": [
@@ -116,11 +116,11 @@ const docTemplate = `{
                 }
             }
         },
-        "/offline-shop/delete/{id}": {
+        "/offlineshop/delete/{id}": {
             "delete": {
                 "description": "Принимает ID офлайн магазина в URL и удаляет соответствующий офлайн магазин",
                 "tags": [
-                    "Offline Shops"
+                    "OfflineShops"
                 ],
                 "summary": "Удаляет существующий Offline Shop по ID",
                 "parameters": [
@@ -148,7 +148,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/offline-shop/update/{id}": {
+        "/offlineshop/update/{id}": {
             "put": {
                 "description": "Принимает JSON тело запроса с обновленными полями Offline Shop и обновляет существующий Offline Shop по его ID",
                 "consumes": [
@@ -158,7 +158,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Offline Shops"
+                    "OfflineShops"
                 ],
                 "summary": "Обновляет существующий Offline Shop по ID",
                 "parameters": [
@@ -202,6 +202,85 @@ const docTemplate = `{
                         "description": "Bad Request",
                         "schema": {
                             "$ref": "#/definitions/server.ResponseHTTP"
+                        }
+                    }
+                }
+            }
+        },
+        "/offlineshops/getmany": {
+            "get": {
+                "description": "Возвращает список всех офлайн магазинов OfflineShops",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "OfflineShops"
+                ],
+                "summary": "Получает список офлайн магазинов OfflineShops",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/server.ResponseHTTP"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/db.OfflineShops"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/offlineshops/getone/{id}": {
+            "get": {
+                "description": "Возвращает информацию о конкретном офлайн магазине OfflineShops по его ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "OfflineShops"
+                ],
+                "summary": "Получает один офлайн магазин OfflineShops по ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "OfflineShops ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/server.ResponseHTTP"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/db.OfflineShops"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "404": {
+                        "description": "OfflineShops not found",
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 }
@@ -280,6 +359,85 @@ const docTemplate = `{
                         "description": "Quest deleted successfully",
                         "schema": {
                             "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Quest not found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/quest/getmany": {
+            "get": {
+                "description": "Возвращает список всех квестов Quest",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Quest"
+                ],
+                "summary": "Получает список квестов Quest",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/server.ResponseHTTP"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/db.Quest"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/quest/getone/{id}": {
+            "get": {
+                "description": "Возвращает информацию о конкретном квесте Quest по его ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Quest"
+                ],
+                "summary": "Получает один квест Quest по ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Quest ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/server.ResponseHTTP"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/db.Quest"
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     },
                     "404": {

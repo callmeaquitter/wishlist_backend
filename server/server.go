@@ -25,26 +25,30 @@ func Setup() {
 	// Update - PUT - Update (Update)
 	// Delete - DELETE - Delete (Delete)
 
-	//Route: POST /gifts
-	gifts := app.Group("/gifts")
-	gifts.Post("", createGiftHandler)
-	//Route: DELETE /gifts/:id
-	//DELETE /gifts/gift_cneq8k9u9g5j3m6ft0v0
-	gifts.Delete("/:id", deleteGiftHandler)
+	//Route: POST /gift
+	gift := app.Group("/gift")
+	gift.Post("", createGiftHandler)
+	//Route: DELETE /gift/:id
+	//DELETE /gift/gift_cneq8k9u9g5j3m6ft0v0
+	gift.Delete("/:id", deleteGiftHandler)
 
-	gifts.Get("", getManyGiftsHandler)
+	gift.Get("", getManyGiftsHandler)
 
-	gifts.Get("/:id", getOneGiftHandler)
+	gift.Get("/:id", getOneGiftHandler)
 
-	gifts.Patch("/:id", updateGiftHandler)
+	gift.Patch("/:id", updateGiftHandler)
 
 	//Route: POST /quest
 	quest := app.Group("/quest")
 	quest.Post("", createQuestHandler)
 
+	quest.Get("", getManyQuestHandler)
+
+	quest.Get("/:id", getOneQuestHandler)
+
 	quest.Delete("/:id", deleteQuestHandler)
 
-	gifts.Patch("/:id", updateQuestHandler)
+	quest.Patch("/:id", updateQuestHandler)
 
 	//Route: POST /subquest
 	subquest := app.Group("/subquest")
@@ -72,6 +76,10 @@ func Setup() {
 	offlineshops := app.Group("/offlineshops")
 
 	offlineshops.Post("", createOfflineShopsHandler)
+
+	offlineshops.Get("", getManyOfflineShopsHandler)
+
+	offlineshops.Get("/:id", getOneOfflineShopsHandler)
 
 	offlineshops.Delete("/:id", deleteOfflineShopsHandler)
 

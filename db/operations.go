@@ -62,6 +62,24 @@ func CreateQuest(quest Quest) bool {
 	return true
 }
 
+func FindManyQuest(quest Quest) bool {
+	result := Database.Find(&quest)
+	if result.Error != nil {
+		fmt.Println("Error in findManyQuest", result.Error)
+		return false
+	}
+	return true
+}
+
+func FindOneQuest(quest Quest) bool {
+	result := Database.Take(&quest)
+	if result.Error != nil {
+		fmt.Println("Error in findOneQuest", result.Error)
+		return false
+	}
+	return true
+}
+
 func DeleteQuest(id string) bool {
 	result := Database.Delete(Quest{ID: id})
 	if result.Error != nil {
@@ -180,6 +198,24 @@ func UpdateOfflineShops(offlineshops OfflineShops) bool {
 	result := Database.Model(&offlineshops).Updates(map[string]interface{}{"name": offlineshops.Name, "location": offlineshops.Location})
 	if result.Error != nil {
 		fmt.Println("Error in updateOfflineShops", result.Error)
+		return false
+	}
+	return true
+}
+
+func FindManyOfflineShops(offlineshops OfflineShops) bool {
+	result := Database.Find(&offlineshops)
+	if result.Error != nil {
+		fmt.Println("Error in findManyOfflineShops", result.Error)
+		return false
+	}
+	return true
+}
+
+func FindOneOfflineShops(offlineshops OfflineShops) bool {
+	result := Database.Take(&offlineshops)
+	if result.Error != nil {
+		fmt.Println("Error in findOneOfflineShops", result.Error)
 		return false
 	}
 	return true

@@ -106,8 +106,8 @@ paths:
             $ref: '#/definitions/server.ResponseHTTP'
       summary: Creates a new gift.
       tags:
-      - Gifts
-  /offline-shop/create:
+      - Gift
+  /offlineshop/create:
     post:
       consumes:
       - application/json
@@ -138,8 +138,8 @@ paths:
             $ref: '#/definitions/server.ResponseHTTP'
       summary: Создает новый Offline Shop
       tags:
-      - Offline Shops
-  /offline-shop/delete/{id}:
+      - OfflineShops
+  /offlineshop/delete/{id}:
     delete:
       description: Принимает ID офлайн магазина в URL и удаляет соответствующий офлайн
         магазин
@@ -160,8 +160,8 @@ paths:
             type: string
       summary: Удаляет существующий Offline Shop по ID
       tags:
-      - Offline Shops
-  /offline-shop/update/{id}:
+      - OfflineShops
+  /offlineshop/update/{id}:
     put:
       consumes:
       - application/json
@@ -197,7 +197,54 @@ paths:
             $ref: '#/definitions/server.ResponseHTTP'
       summary: Обновляет существующий Offline Shop по ID
       tags:
-      - Offline Shops
+      - OfflineShops
+  /offlineshops/getmany:
+    get:
+      description: Возвращает список всех офлайн магазинов OfflineShops
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.OfflineShops'
+              type: object
+      summary: Получает список офлайн магазинов OfflineShops
+      tags:
+      - OfflineShops
+  /offlineshops/getone/{id}:
+    get:
+      description: Возвращает информацию о конкретном офлайн магазине OfflineShops
+        по его ID
+      parameters:
+      - description: OfflineShops ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.OfflineShops'
+              type: object
+        "404":
+          description: OfflineShops not found
+          schema:
+            type: string
+      summary: Получает один офлайн магазин OfflineShops по ID
+      tags:
+      - OfflineShops
   /quest/create:
     post:
       consumes:
@@ -248,6 +295,52 @@ paths:
           schema:
             type: string
       summary: Удаляет существующий Quest по ID
+      tags:
+      - Quest
+  /quest/getmany:
+    get:
+      description: Возвращает список всех квестов Quest
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.Quest'
+              type: object
+      summary: Получает список квестов Quest
+      tags:
+      - Quest
+  /quest/getone/{id}:
+    get:
+      description: Возвращает информацию о конкретном квесте Quest по его ID
+      parameters:
+      - description: Quest ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.Quest'
+              type: object
+        "404":
+          description: Quest not found
+          schema:
+            type: string
+      summary: Получает один квест Quest по ID
       tags:
       - Quest
   /quest/update:
