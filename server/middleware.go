@@ -42,8 +42,18 @@ func adminMiddleware(c *fiber.Ctx) error {
 
 func sellerAuthMiddleware(c *fiber.Ctx) error{
 	sellerSessionID := c.Get("seller_Authorization")
-	if sellerSessionID == ""{
+	if sellerSessionID == "" {
 		return c.SendString("Unauthorized")
 	}
+
+	sellerSessionID = strings.TrimPrefix(sellerSessionID, "Bearer ")
+	sellerSession, ok := db.FindSellerSession(sellerSessionID)
+	if !ok {
+		return c.SendString("Unauthorized")
+	}
+
+	fmt.Println(sellerSessionID)
+	fmt.Println(sellerSession)
+	c.Locals("seller", sellerSession.SellerID)
 	return c.Next()
 }

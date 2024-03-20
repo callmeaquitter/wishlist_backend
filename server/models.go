@@ -7,6 +7,11 @@ type AuthCredentials struct {
 	Password string `json:"password"`
 }
 
+type SellerAuthCredentials struct {
+	Login    string `json:"login"`
+	Password string `json:"password"`
+}
+
 type AuthResponse struct {
 	Session string `json:"session"`
 }

@@ -80,13 +80,6 @@ func Setup() {
 
 	giftReview.Get("/mark/:gift_id", calculateAverageMarkByGiftIDHandler)
 
-	sellers := app.Group("/sellers", authMiddleware)
-	sellers.Get("/:id", getOneSellerHandler)
-	sellers.Get("", getManySellersHandler)
-	sellers.Post("", createSellerHandler)
-	sellers.Patch("/:id", updateSellerHandler)
-	sellers.Delete("/:id", deleteSellerHandler)
-
 	serviceReviews := app.Group("/serviceReviews")
 	serviceReviews.Get("/:id", getOneServiceReviewHandler)
 	serviceReviews.Get("/service/:service_id", getSingleServiceReviewHandler)
@@ -104,9 +97,9 @@ func Setup() {
 	services := app.Group("/services")
 	services.Get("/:id", getOneServiceHandler)
 	services.Get("", getManyServicesHandler)
-	services.Post("", shopAuthMiddleware, createServiceHandler)
-	services.Patch("/:id", shopAuthMiddleware, updateServiceHandler)
-	services.Delete("/:id", shopAuthMiddleware, deleteServiceHandler)
+	services.Post("", createServiceHandler, sellerAuthMiddleware)
+	services.Patch("/:id", updateServiceHandler, sellerAuthMiddleware)
+	services.Delete("/:id", deleteServiceHandler, sellerAuthMiddleware)
 
 	//Route: POST /quest
 	quest := app.Group("/quest")
@@ -224,6 +217,9 @@ func Setup() {
 
 	app.Post("/register", registerHandler)
 	app.Post("/login", loginHandler)
+
+	app.Post("/registerSeller", registerSellerHandler)
+	app.Post("/loginSeller", loginSellerHandler)
 }
 
 func Start() {

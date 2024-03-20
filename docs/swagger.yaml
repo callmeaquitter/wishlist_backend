@@ -93,12 +93,9 @@ definitions:
         type: string
       user_id:
         type: string
-<<<<<<< HEAD
-=======
     required:
     - selection_id
     - user_id
->>>>>>> 75df2d2389ce17572768044cc9395270b3efab40
     type: object
   db.OfflineShops:
     properties:
@@ -158,15 +155,23 @@ definitions:
       email:
         minLength: 5
         type: string
+      login:
+        type: string
       name:
         maxLength: 50
         minLength: 5
         type: string
+      password:
+        type: string
       photo:
+        type: string
+      role_name:
         type: string
     required:
     - email
+    - login
     - name
+    - password
     type: object
   db.SellerToService:
     properties:
@@ -223,12 +228,9 @@ definitions:
         type: integer
       task_id:
         type: string
-<<<<<<< HEAD
-=======
     required:
     - reward
     - task_id
->>>>>>> 75df2d2389ce17572768044cc9395270b3efab40
     type: object
   db.Tasks:
     properties:
@@ -238,12 +240,9 @@ definitions:
         type: string
       name:
         type: string
-<<<<<<< HEAD
-=======
     required:
     - description
     - name
->>>>>>> 75df2d2389ce17572768044cc9395270b3efab40
     type: object
   db.User:
     properties:
@@ -1054,6 +1053,36 @@ paths:
       summary: Creates a new gift.
       tags:
       - auth
+  /loginSeller:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Reg seller
+        in: body
+        name: Seller
+        required: true
+        schema:
+          $ref: '#/definitions/db.Seller'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.Seller'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Logs a Seller in.
+      tags:
+      - auth
   /offline-shop/create:
     post:
       consumes:
@@ -1258,6 +1287,36 @@ paths:
           schema:
             $ref: '#/definitions/server.ResponseHTTP'
       summary: Creates a new gift.
+      tags:
+      - auth
+  /registerSeller:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Register seller
+        in: body
+        name: Seller
+        required: true
+        schema:
+          $ref: '#/definitions/db.Seller'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.Seller'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Creates a new seller.
       tags:
       - auth
   /selection:
@@ -1618,144 +1677,6 @@ paths:
       summary: Fetches all Services that belong to the speicfied Seller.
       tags:
       - SellerToService
-  /sellers:
-    get:
-      consumes:
-      - application/json
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            allOf:
-            - $ref: '#/definitions/server.ResponseHTTP'
-            - properties:
-                data:
-                  $ref: '#/definitions/db.Seller'
-              type: object
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/server.ResponseHTTP'
-      summary: Fetches all sellers.
-      tags:
-      - Sellers
-    post:
-      consumes:
-      - application/json
-      parameters:
-      - description: Create Seller
-        in: body
-        name: Seller
-        required: true
-        schema:
-          $ref: '#/definitions/db.Seller'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            allOf:
-            - $ref: '#/definitions/server.ResponseHTTP'
-            - properties:
-                data:
-                  $ref: '#/definitions/db.Seller'
-              type: object
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/server.ResponseHTTP'
-      summary: Creates a new seller.
-      tags:
-      - Sellers
-  /sellers/{id}:
-    delete:
-      consumes:
-      - application/json
-      parameters:
-      - description: Delete Seller
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            allOf:
-            - $ref: '#/definitions/server.ResponseHTTP'
-            - properties:
-                data:
-                  $ref: '#/definitions/db.Seller'
-              type: object
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/server.ResponseHTTP'
-      summary: Deletes a specified seller.
-      tags:
-      - Sellers
-    get:
-      consumes:
-      - application/json
-      parameters:
-      - description: Seller ID
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            allOf:
-            - $ref: '#/definitions/server.ResponseHTTP'
-            - properties:
-                data:
-                  $ref: '#/definitions/db.Seller'
-              type: object
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/server.ResponseHTTP'
-      summary: Fetches a specific seller.
-      tags:
-      - Sellers
-    patch:
-      consumes:
-      - application/json
-      parameters:
-      - description: Update Seller
-        in: body
-        name: Seller
-        required: true
-        schema:
-          $ref: '#/definitions/db.Seller'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            allOf:
-            - $ref: '#/definitions/server.ResponseHTTP'
-            - properties:
-                data:
-                  $ref: '#/definitions/db.Seller'
-              type: object
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/server.ResponseHTTP'
-      summary: Updates an existing seller.
-      tags:
-      - Sellers
   /serviceReviews:
     get:
       consumes:

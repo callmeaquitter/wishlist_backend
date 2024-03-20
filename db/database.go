@@ -31,6 +31,7 @@ func Setup(dsn string) {
 		&Tasks{}, 
 		&OfflineShops{},
 		&Seller{},
+		&SellerSession{},
 		&Service{},
 		&SellerToService{},
 		&ServiceReview{},

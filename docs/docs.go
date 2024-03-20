@@ -1184,6 +1184,57 @@ const docTemplate = `{
                 }
             }
         },
+        "/loginSeller": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Logs a Seller in.",
+                "parameters": [
+                    {
+                        "description": "Reg seller",
+                        "name": "Seller",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/db.Seller"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/server.ResponseHTTP"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/db.Seller"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseHTTP"
+                        }
+                    }
+                }
+            }
+        },
         "/offline-shop/create": {
             "post": {
                 "description": "Принимает JSON тело запроса с полями Offline Shop и создает новый Offline Shop",
@@ -1500,6 +1551,57 @@ const docTemplate = `{
                                     "properties": {
                                         "data": {
                                             "$ref": "#/definitions/db.User"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseHTTP"
+                        }
+                    }
+                }
+            }
+        },
+        "/registerSeller": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Creates a new seller.",
+                "parameters": [
+                    {
+                        "description": "Register seller",
+                        "name": "Seller",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/db.Seller"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/server.ResponseHTTP"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/db.Seller"
                                         }
                                     }
                                 }
@@ -2071,240 +2173,6 @@ const docTemplate = `{
                                     "properties": {
                                         "data": {
                                             "$ref": "#/definitions/db.SellerToService"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    }
-                }
-            }
-        },
-        "/sellers": {
-            "get": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Sellers"
-                ],
-                "summary": "Fetches all sellers.",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/server.ResponseHTTP"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/db.Seller"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Sellers"
-                ],
-                "summary": "Creates a new seller.",
-                "parameters": [
-                    {
-                        "description": "Create Seller",
-                        "name": "Seller",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/db.Seller"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/server.ResponseHTTP"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/db.Seller"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    }
-                }
-            }
-        },
-        "/sellers/{id}": {
-            "get": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Sellers"
-                ],
-                "summary": "Fetches a specific seller.",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Seller ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/server.ResponseHTTP"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/db.Seller"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Sellers"
-                ],
-                "summary": "Deletes a specified seller.",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Delete Seller",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/server.ResponseHTTP"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/db.Seller"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    }
-                }
-            },
-            "patch": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Sellers"
-                ],
-                "summary": "Updates an existing seller.",
-                "parameters": [
-                    {
-                        "description": "Update Seller",
-                        "name": "Seller",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/db.Seller"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/server.ResponseHTTP"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/db.Seller"
                                         }
                                     }
                                 }
@@ -3650,13 +3518,10 @@ const docTemplate = `{
         },
         "db.GiftCategory": {
             "type": "object",
-<<<<<<< HEAD
-=======
             "required": [
                 "id",
                 "name"
             ],
->>>>>>> 75df2d2389ce17572768044cc9395270b3efab40
             "properties": {
                 "id": {
                     "type": "string"
@@ -3668,14 +3533,11 @@ const docTemplate = `{
         },
         "db.GiftReview": {
             "type": "object",
-<<<<<<< HEAD
-=======
             "required": [
                 "comment",
                 "gift_id",
                 "mark"
             ],
->>>>>>> 75df2d2389ce17572768044cc9395270b3efab40
             "properties": {
                 "comment": {
                     "type": "string"
@@ -3696,13 +3558,10 @@ const docTemplate = `{
         },
         "db.GiftToSelection": {
             "type": "object",
-<<<<<<< HEAD
-=======
             "required": [
                 "gift_id",
                 "selection_id"
             ],
->>>>>>> 75df2d2389ce17572768044cc9395270b3efab40
             "properties": {
                 "gift_id": {
                     "type": "string"
@@ -3714,13 +3573,10 @@ const docTemplate = `{
         },
         "db.LikeToSelection": {
             "type": "object",
-<<<<<<< HEAD
-=======
             "required": [
                 "selection_id",
                 "user_id"
             ],
->>>>>>> 75df2d2389ce17572768044cc9395270b3efab40
             "properties": {
                 "selection_id": {
                     "type": "string"
@@ -3732,13 +3588,10 @@ const docTemplate = `{
         },
         "db.OfflineShops": {
             "type": "object",
-<<<<<<< HEAD
-=======
             "required": [
                 "location",
                 "name"
             ],
->>>>>>> 75df2d2389ce17572768044cc9395270b3efab40
             "properties": {
                 "id": {
                     "type": "string"
@@ -3753,14 +3606,11 @@ const docTemplate = `{
         },
         "db.Quest": {
             "type": "object",
-<<<<<<< HEAD
-=======
             "required": [
                 "is_done",
                 "subquest_id",
                 "user_id"
             ],
->>>>>>> 75df2d2389ce17572768044cc9395270b3efab40
             "properties": {
                 "id": {
                     "type": "string"
@@ -3778,13 +3628,10 @@ const docTemplate = `{
         },
         "db.Selection": {
             "type": "object",
-<<<<<<< HEAD
-=======
             "required": [
                 "name",
                 "user_id"
             ],
->>>>>>> 75df2d2389ce17572768044cc9395270b3efab40
             "properties": {
                 "description": {
                     "type": "string"
@@ -3805,13 +3652,10 @@ const docTemplate = `{
         },
         "db.SelectionCategory": {
             "type": "object",
-<<<<<<< HEAD
-=======
             "required": [
                 "id",
                 "name"
             ],
->>>>>>> 75df2d2389ce17572768044cc9395270b3efab40
             "properties": {
                 "id": {
                     "type": "string"
@@ -3825,19 +3669,30 @@ const docTemplate = `{
             "type": "object",
             "required": [
                 "email",
-                "name"
+                "login",
+                "name",
+                "password"
             ],
             "properties": {
                 "email": {
                     "type": "string",
                     "minLength": 5
                 },
+                "login": {
+                    "type": "string"
+                },
                 "name": {
                     "type": "string",
                     "maxLength": 50,
                     "minLength": 5
                 },
+                "password": {
+                    "type": "string"
+                },
                 "photo": {
+                    "type": "string"
+                },
+                "role_name": {
                     "type": "string"
                 }
             }
@@ -3908,13 +3763,10 @@ const docTemplate = `{
         },
         "db.Subquest": {
             "type": "object",
-<<<<<<< HEAD
-=======
             "required": [
                 "reward",
                 "task_id"
             ],
->>>>>>> 75df2d2389ce17572768044cc9395270b3efab40
             "properties": {
                 "id": {
                     "type": "string"
@@ -3932,13 +3784,10 @@ const docTemplate = `{
         },
         "db.Tasks": {
             "type": "object",
-<<<<<<< HEAD
-=======
             "required": [
                 "description",
                 "name"
             ],
->>>>>>> 75df2d2389ce17572768044cc9395270b3efab40
             "properties": {
                 "description": {
                     "type": "string"
@@ -3953,8 +3802,6 @@ const docTemplate = `{
         },
         "db.User": {
             "type": "object",
-<<<<<<< HEAD
-=======
             "required": [
                 "birthday",
                 "lastname",
@@ -3962,7 +3809,6 @@ const docTemplate = `{
                 "name",
                 "password"
             ],
->>>>>>> 75df2d2389ce17572768044cc9395270b3efab40
             "properties": {
                 "birthday": {
                     "type": "string"
@@ -3992,13 +3838,10 @@ const docTemplate = `{
         },
         "db.UserWishlist": {
             "type": "object",
-<<<<<<< HEAD
-=======
             "required": [
                 "name",
                 "user_id"
             ],
->>>>>>> 75df2d2389ce17572768044cc9395270b3efab40
             "properties": {
                 "id": {
                     "type": "string"
@@ -4013,13 +3856,10 @@ const docTemplate = `{
         },
         "db.Wishes": {
             "type": "object",
-<<<<<<< HEAD
-=======
             "required": [
                 "gift_id",
                 "wishlist_id"
             ],
->>>>>>> 75df2d2389ce17572768044cc9395270b3efab40
             "properties": {
                 "gift_id": {
                     "type": "string"

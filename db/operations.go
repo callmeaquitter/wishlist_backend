@@ -337,19 +337,9 @@ func CreateSeller(seller Seller) bool {
 	return true
 }
 
-func FindManySeller() ([]Seller, bool) {
-	var seller []Seller
-	result := Database.Find(&seller)
-	if result.Error != nil {
-		fmt.Println("Error in findManySeller", result.Error)
-		return seller, false
-	}
-	return seller, true
-}
-
-func FindOneSeller(sellerId string) (Seller, bool) {
+func FindSeller(login, password string) (Seller, bool) {
 	var seller Seller
-	result := Database.Take(&seller, "id = ?", sellerId)
+	result := Database.Where(&Seller{Login: login, Password: password}).First(&seller)
 	if result.Error != nil {
 		fmt.Println("Error in findOneSeller", result.Error)
 		return seller, false
@@ -357,37 +347,23 @@ func FindOneSeller(sellerId string) (Seller, bool) {
 	return seller, true
 }
 
-func UpdateSeller(seller Seller) bool {
-	if seller.Name != "string" {
-		result := Database.Model(&seller).Update("name", seller.Name)
-		if result.Error != nil {
-			fmt.Println("Error in updateSeller", result.Error)
-			return false
-		}
-	}
-	result := Database.Model(&seller).Update("email", seller.Email)
+func CreateSellerSession(sellerSession SellerSession) bool {
+	result := Database.Create(&sellerSession)
 	if result.Error != nil {
-		fmt.Println("Error in updateSeller", result.Error)
+		fmt.Println("Error in CreateSellerSession", result.Error)
 		return false
 	}
-	if seller.Photo != "string" {
-		result := Database.Model(&seller).Update("photo", seller.Photo)
-		if result.Error != nil {
-			fmt.Println("Error in updateSeller", result.Error)
-			return false
-		}
-	}
-	
 	return true
 }
 
-func DeleteSeller(id string) bool {
-	result := Database.Delete(&Seller{}, "id = ?", id)
+func FindSellerSession(sellerSessionID string) (SellerSession, bool) {
+	var sellerSession SellerSession
+	result := Database.Where(&SellerSession{ID: sellerSessionID}).First(&sellerSession)
 	if result.Error != nil {
-		fmt.Println("Error in deleteSeller", result.Error)
-		return false
+		fmt.Println("Error in FindSellerSession", result.Error)
+		return sellerSession, false
 	}
-	return true
+	return sellerSession, true
 }
 
 func CreateService(service Service) bool {

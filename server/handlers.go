@@ -369,122 +369,6 @@ func calculateAverageMarkByGiftIDHandler(c *fiber.Ctx) error {
 	return c.JSON(averageMark)
 }
 
-// createSeller godoc
-// @Summary Creates a new seller.
-// @Tags Sellers
-// @Accept json
-// @Produce json
-// @Param Seller body db.Seller true "Create Seller"
-// @Success 200 {object} ResponseHTTP{data=db.Seller}
-// @Failure 400 {object} ResponseHTTP{}
-// @Router /sellers [post]
-func createSellerHandler(c *fiber.Ctx) error {
-	var user db.User
-	var seller db.Seller 
-	if err := c.BodyParser(&user); err != nil {
-		return c.SendString(err.Error())
-	}
-
-	err := validate.Struct(user)
-	if err != nil {
-		return c.Status(fiber.StatusUnprocessableEntity).SendString(err.Error())
-	}
-	
-	seller.SellerID = ""
-	seller.SellerID = "seller_" + xid.New().String()
-
-	ok := db.CreateUser(user)
-	if !ok {
-		return c.SendString("Error in createSeller operation")
-	}
-
-	return c.JSON(seller)
-}
-
-// deleteSeller godoc
-// @Summary Deletes a specified seller.
-// @Tags Sellers
-// @Accept json
-// @Produce json
-// @Param id path string true "Delete Seller"
-// @Success 200 {object} ResponseHTTP{data=db.Seller}
-// @Failure 400 {object} ResponseHTTP{}
-// @Router /sellers/{id} [delete]
-func deleteSellerHandler(c *fiber.Ctx) error {
-	id := c.Params("id")
-
-	ok := db.DeleteSeller(id)
-	if !ok {
-		return c.SendString("Error in deleteSeller operation")
-	}
-	return c.SendString("Seller deleted successfully")
-}
-
-// getManySellers godoc
-// @Summary Fetches all sellers.
-// @Tags Sellers
-// @Accept json
-// @Produce json
-// @Success 200 {object} ResponseHTTP{data=db.Seller}
-// @Failure 400 {object} ResponseHTTP{}
-// @Router /sellers [get]
-func getManySellersHandler(c *fiber.Ctx) error {
-	result, ok := db.FindManySeller()
-	if !ok {
-		return c.SendString("Error in findManySellers operation")
-	}
-	return c.JSON(result)
-}
-
-// getOneSeller godoc
-// @Summary Fetches a specific seller.
-// @Tags Sellers
-// @Accept json
-// @Produce json
-// @Param id path string true "Seller ID"
-// @Success 200 {object} ResponseHTTP{data=db.Seller}
-// @Failure 400 {object} ResponseHTTP{}
-// @Router /sellers/{id} [get]
-func getOneSellerHandler(c *fiber.Ctx) error {
-	sellerId := c.Params("id")
-	result, ok := db.FindOneSeller(sellerId)
-	if !ok {
-		return c.SendString("Error in findOneSeller operation")
-	}
-	return c.JSON(result)
-}
-
-// updateSeller godoc
-// @Summary Updates an existing seller.
-// @Tags Sellers
-// @Accept json
-// @Produce json
-// @Param Seller body db.Seller true "Update Seller"
-// @Success 200 {object} ResponseHTTP{data=db.Seller}
-// @Failure 400 {object} ResponseHTTP{}
-// @Router /sellers/{id} [patch]
-func updateSellerHandler(c *fiber.Ctx) error {
-	var seller db.Seller
-	if err := c.BodyParser(&seller); err != nil {
-		return c.SendString(err.Error())
-	}
-
-	err := validate.Struct(seller)
-	if err != nil {
-		return c.Status(fiber.StatusUnprocessableEntity).SendString(err.Error())
-	}
-
-	ok := db.UpdateSeller(seller)
-	if !ok {
-		return c.SendString("Error in updateSeller operation")
-	}
-	return c.JSON(ResponseHTTP{
-		Success: true,
-		Message: "Successfully updated the Seller.",
-		Data:    &seller,
-	})
-}
-
 // createService godoc
 // @Summary Creates a new service.
 // @Tags Services
@@ -915,6 +799,71 @@ func loginHandler(c *fiber.Ctx) error {
 
 	// return c.JSON(AuthResponse{Session: session})
 }
+
+// RegisterSeller Handler godoc
+// @Summary Creates a new seller.
+// @Tags auth
+// @Accept  json
+// @Produce json
+// @Param Seller body db.Seller true "Register seller"
+// @Success 200 {object} ResponseHTTP{data=db.Seller}
+// @Failure 400 {object} ResponseHTTP{}
+// @Router /registerSeller [post]
+func registerSellerHandler(c *fiber.Ctx) error {
+	var seller db.Seller
+	if err := c.BodyParser(&seller); err != nil {
+		return c.SendString(err.Error())
+	}
+
+	if seller.Login == "" {
+		return c.SendString("Login is required") //TODO: Check unique sellername
+	}
+
+	if seller.Password == "" {
+		return c.SendString("Password is required")
+	}
+
+	seller.SellerID = ""
+	seller.SellerID = "seller_" + xid.New().String()
+	ok := db.CreateSeller(seller)
+	if !ok {
+		return c.SendString("Error in CreateSeller operation")
+	}
+
+	return c.SendString("Registered successfully!")
+}
+
+// LoginSeller Handler godoc
+// @Summary Logs a Seller in.
+// @Tags auth
+// @Accept  json
+// @Produce json
+// @Param Seller body db.Seller true "Reg seller"
+// @Success 200 {object} ResponseHTTP{data=db.Seller}
+// @Failure 400 {object} ResponseHTTP{}
+// @Router /loginSeller [post]
+func loginSellerHandler(c *fiber.Ctx) error {
+	var authCredentials SellerAuthCredentials
+	if err := c.BodyParser(&authCredentials); err != nil {
+		return c.SendString(err.Error())
+	}
+
+	seller, ok := db.FindSeller(authCredentials.Login, authCredentials.Password)
+	if !ok {
+		return c.SendString("Invalid creditials")
+	}
+	sellerSession := db.SellerSession{
+		ID:     "session_" + xid.New().String(),
+		SellerID: seller.SellerID,
+	}
+	ok = db.CreateSellerSession(sellerSession)
+	if !ok {
+		return c.SendString("Cannot create session")
+	}
+
+	return c.JSON(sellerSession)
+}
+
 
 // AddWishHandler godoc
 // @Summary Creates a new gift.

@@ -48,7 +48,7 @@ type User struct {
 
 type Session struct {
 	ID     string `json:"id"`
-	UserID string `json:"user_id" validate:"required,user_"`
+	UserID string `json:"user_id"`
 }
 
 type UserWishlist struct {
@@ -108,7 +108,14 @@ type Seller struct {
 	Name     string `json:"name" validate:"required,min=5,max=50"`
 	Email    string `json:"email" validate:"required,min=5,email"`
 	Photo    string `json:"photo"`
-	
+	RoleName string `json:"role_name"`
+	Login    string `json:"login" validate:"required"`
+	Password string `json:"password" validate:"required"`
+}
+
+type SellerSession struct {
+	ID		string	`json:"id"`
+	SellerID	string	`json:"seller_id"`
 }
 
 type SellerToService struct {
