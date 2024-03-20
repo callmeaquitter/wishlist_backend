@@ -199,7 +199,7 @@ func getManySelectionsHandler(c *fiber.Ctx) error {
 	var selection db.Selection
 	ok, result := db.FindManySelection(selection)
 	if !ok {
-		return c.SendString("Ошибка в операции FindManySelection")
+		return c.SendString("Error in FindManySelection")
 	}
 	return c.JSON(result)
 }
@@ -218,9 +218,9 @@ func getOneSelectionHandler(c *fiber.Ctx) error {
 	var selection db.Selection
 	ok := db.FindOneSelection(selection)
 	if !ok {
-		return c.SendString("Ошибка в операции FindOneSelection")
+		return c.SendString("Error in FindOneSelection")
 	}
-	return c.SendString("Selection найден успешно")
+	return c.SendString("Selection find successfully")
 }
 
 // deleteSelectionHandler обрабатывает HTTP DELETE запросы на /selection/{id}.
@@ -259,9 +259,8 @@ func createGiftToSelectionHandler(c *fiber.Ctx) error {
 		return c.SendString(err.Error())
 	}
 
-	giftToSelection.SelectionID = "giftToSelection_" + xid.New().String()
-
 	ok := db.CreateGiftToSelection(giftToSelection)
+
 	if !ok {
 		return c.SendString("Error in createGiftToSelection operation")
 	}
@@ -326,12 +325,12 @@ func findGiftToSelectionHandler(c *fiber.Ctx) error {
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /giftToSelection/{id} [delete]
 func deleteGiftToSelectionHandler(c *fiber.Ctx) error {
-	GiftID := c.Params("gift_id")
-	SelectionID := c.Locals("selection_id").(string)
-
+	GiftID := c.Params("id")
+	SelectionID := ""
+	fmt.Println(GiftID, SelectionID)
 	ok := db.DeleteGiftToSelection(SelectionID, GiftID)
 	if !ok {
-		return c.SendString("Error in deleteGiftToSelection operation")
+		return c.Status(fiber.StatusInternalServerError).SendString("Error in deleteGiftToSelection operation")
 	}
 	return c.SendString("GiftToSelection deleted successfully")
 }
@@ -486,9 +485,13 @@ func getLikesCountToSelectionHandler(c *fiber.Ctx) error {
 // @Router /likeToSelection/{id} [delete]
 func deleteLikeToSelectionHandler(c *fiber.Ctx) error {
 	UserID := c.Params("user_id")
-	SelectionID := c.Locals("selection_id").(string)
+	SelectionID, ok := c.Locals("selection_id").(string)
 
-	ok := db.DeleteLikeToSelection(UserID, SelectionID)
+	if !ok {
+		return c.SendString("Error: selection_id is not a string or is missing")
+	}
+
+	ok = db.DeleteLikeToSelection(UserID, SelectionID)
 	if !ok {
 		return c.SendString("Error in deleteLikeToSelection operation")
 	}

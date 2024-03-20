@@ -87,9 +87,8 @@ func FindOneSelection(selection Selection) bool {
 	return true
 }
 
-func DeleteSelection(id string) bool {
-	var selection Selection
-	result := Database.Delete(&selection, id)
+func DeleteSelection(selectionID string) bool {
+	result := Database.Where("id = ?", selectionID).Delete(&Selection{})
 	if result.Error != nil {
 		fmt.Println("Error in DeleteSelection", result.Error)
 		return false
