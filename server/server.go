@@ -21,12 +21,28 @@ func ValidateIDFormat(tag_ string) validator.Func {
 	}
 }
 
+// Custom password format validation
+func ValidatePasswordFormat(fl validator.FieldLevel) bool {
+	password := fl.Field().String()
+	if len(password) < 6 {
+		return false
+	}
+	if !regexp.MustCompile(`[A-z0-9]`).MatchString(password) {
+		return false
+	}
+	if !regexp.MustCompile(`[!@#$%^*()_+{}\[\]:;<>,.?~\-\\]`).MatchString(password) {
+		return false
+	}
+	return regexp.MustCompile(`[A-Z]`).MatchString(password) 
+}
+
 func Setup() {
 	// Default config
 	app = fiber.New()
 	validate.RegisterValidation("seller_", ValidateIDFormat("seller_"))
 	validate.RegisterValidation("service_", ValidateIDFormat("service_"))
 	validate.RegisterValidation("user_", ValidateIDFormat("user_"))
+	validate.RegisterValidation("password", ValidatePasswordFormat)
 	app.Use(cors.New(cors.Config{
 		AllowOrigins: "*",
 		AllowHeaders: "Origin, Content-Type, Accept"}))

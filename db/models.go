@@ -42,8 +42,8 @@ type User struct {
 	Birthday string `json:"birthday" validate:"required"`
 	Coins    int    `json:"coins"`
 	RoleName string `json:"role_name"`
-	Login    string `json:"login" validate:"required"`
-	Password string `json:"password" validate:"required"`
+	Login    string `json:"login" validate:"required,email"`
+	Password string `json:"password" validate:"required,password"`
 }
 
 type Session struct {
@@ -105,12 +105,12 @@ type CommentToSelection struct {
 
 type Seller struct {
 	SellerID string `json:"id" gorm:"primaryKey" swaggerignore:"true"`
-	Name     string `json:"name" validate:"required,min=5,max=50"`
+	Name     string `json:"name" validate:"required,max=50"`
 	Email    string `json:"email" validate:"required,min=5,email"`
 	Photo    string `json:"photo"`
 	RoleName string `json:"role_name"`
-	Login    string `json:"login" validate:"required"`
-	Password string `json:"password" validate:"required"`
+	Login    string `json:"login" validate:"required,email"`
+	Password string `json:"password" validate:"required,password"`
 }
 
 type SellerSession struct {
