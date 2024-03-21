@@ -3,7 +3,6 @@ package db
 import (
 	"fmt"
 	_ "wishlist/docs"
-
 	// "github.com/shopspring/decimal"
 )
 
@@ -422,7 +421,7 @@ func UpdateService(service Service) bool {
 			return false
 		}
 	}
-	
+
 	return true
 }
 
@@ -464,7 +463,7 @@ func FindOneSellerToService(sellerId string) ([]SellerToService, bool) {
 	return sellerToService, true
 }
 
-func DeleteSellerToService(serviceId string) bool {	// Связь удаляется по услуге, т.к. оная удаляется чаще
+func DeleteSellerToService(serviceId string) bool { // Связь удаляется по услуге, т.к. оная удаляется чаще
 	result := Database.Delete(SellerToService{}, "service_id = ?", serviceId)
 	if result.Error != nil {
 		fmt.Println("Error in deleteSellerToService", result.Error)
@@ -546,7 +545,7 @@ func UpdateServiceReview(serviceReview ServiceReview) bool {
 		fmt.Println("Error in updateServiceReview", result.Error)
 		return false
 	}
-	
+
 	return true
 }
 
@@ -558,7 +557,6 @@ func DeleteServiceReview(id string) bool {
 	}
 	return true
 }
-
 
 // получение review по его id
 func GetGiftReviewByID(id string) (GiftReview, bool) {
@@ -593,7 +591,6 @@ func CalculateAverageMarkByGiftID(giftID string) (float32, bool) {
 	averageMark := totalMarks / float32(len(giftReviews))
 	return averageMark, true
 }
-
 
 func CreateSelection(selection Selection) bool {
 	result := Database.Create(&selection)

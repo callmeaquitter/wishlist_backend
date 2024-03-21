@@ -33,7 +33,7 @@ func ValidatePasswordFormat(fl validator.FieldLevel) bool {
 	if !regexp.MustCompile(`[!@#$%^*()_+{}\[\]:;<>,.?~\-\\]`).MatchString(password) {
 		return false
 	}
-	return regexp.MustCompile(`[A-Z]`).MatchString(password) 
+	return regexp.MustCompile(`[A-Z]`).MatchString(password)
 }
 
 func Setup() {
@@ -64,9 +64,9 @@ func Setup() {
 	//DELETE /gifts/gift_cneq8k9u9g5j3m6ft0v0
 	gifts.Delete("/:id", adminMiddleware, deleteGiftHandler)
 
-	gift.Get("", getManyGiftsHandler)
+	gifts.Get("", getManyGiftsHandler)
 
-	gift.Get("/:id", getOneGiftHandler)
+	gifts.Get("/:id", getOneGiftHandler)
 
 	gifts.Patch("/:id", updateGiftHandler, authMiddleware)
 
@@ -156,14 +156,11 @@ func Setup() {
 
 	offlineshops.Post("", adminMiddleware, createOfflineShopsHandler)
 
-
 	offlineshops.Get("", getManyOfflineShopsHandler)
 
 	offlineshops.Get("/:id", getOneOfflineShopsHandler)
 
-
 	offlineshops.Delete("/:id", adminMiddleware, deleteOfflineShopsHandler)
-
 
 	offlineshops.Patch("/:id", adminMiddleware, updateOfflineShopsHandler)
 
@@ -241,56 +238,6 @@ func Setup() {
 	wishes.Get("/:wishlist_id", FindManyWishlistsHandler)
 	wishes.Post("/:gift_id/:wishlist_id", AddWishHandler)
 	wishes.Delete("/:wishlist_id/:gift_id", DeleteWishHandler)
-
-	selection := app.Group("/selection")
-	selection.Post("", authMiddleware, createSelectionHandler)
-	//Route: DELETE /selection/:id
-	//DELETE /selection/selection_cneq8k9u9g5j3m6ft0v0
-	selection.Delete("/:id", adminMiddleware, deleteSelectionHandler)
-
-	selection.Get("", getManySelectionsHandler)
-
-	selection.Get("/:id", getOneSelectionHandler)
-
-	selection.Patch("/:id", adminMiddleware, updateSelectionHandler)
-
-	//
-	giftToSelection := app.Group("/giftToSelection", authMiddleware)
-	giftToSelection.Post("", createGiftToSelectionHandler)
-
-	giftToSelection.Delete("/:id", deleteGiftToSelectionHandler)
-
-	giftToSelection.Get("", findGiftToSelectionHandler)
-
-	giftToSelection.Patch("/:id", updateGiftToSelectionHandler)
-
-	//
-	SelectionCategory := app.Group("/SelectionCategory")
-	SelectionCategory.Post("", createSelectionCategoryHandler)
-
-	SelectionCategory.Patch("/:id", updatedSelectionCategoryHandler)
-
-	SelectionCategory.Get("", findSelectionCategoryHandler)
-
-	SelectionCategory.Delete("/:id", deleteSelectionCategoryHandler)
-
-	//
-	LikeToSelection := app.Group("/LikeToSelection")
-	LikeToSelection.Post("", createLikeToSelectionHandler)
-
-	LikeToSelection.Get("", getLikesCountToSelectionHandler)
-
-	LikeToSelection.Delete("/:id", deleteLikeToSelectionHandler)
-
-	//
-	CommentToSelection := app.Group("/CommentToSelection", authMiddleware)
-	CommentToSelection.Post("", createCommentToSelectionHandler)
-
-	CommentToSelection.Patch("/:id", updateCommentToSelectionHandler)
-
-	CommentToSelection.Get("", getCommentsToSelectionHandler)
-
-	CommentToSelection.Delete("/:id", deleteCommentToSelectionHandler)
 
 	// user := app.Group("/users")
 	// user.Post("", CreateUserHandler)
