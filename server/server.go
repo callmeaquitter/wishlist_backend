@@ -64,9 +64,9 @@ func Setup() {
 	//DELETE /gifts/gift_cneq8k9u9g5j3m6ft0v0
 	gifts.Delete("/:id", adminMiddleware, deleteGiftHandler)
 
-	gifts.Get("", getManyGiftsHandler)
+	gift.Get("", getManyGiftsHandler)
 
-	gifts.Get("/:id", getOneGiftHandler)
+	gift.Get("/:id", getOneGiftHandler)
 
 	gifts.Patch("/:id", updateGiftHandler, authMiddleware)
 
@@ -121,9 +121,13 @@ func Setup() {
 	quest := app.Group("/quest")
 	quest.Post("", adminMiddleware, createQuestHandler)
 
+	quest.Get("", getManyQuestHandler)
+
+	quest.Get("/:id", getOneQuestHandler)
+
 	quest.Delete("/:id", adminMiddleware, deleteQuestHandler)
 
-	gifts.Patch("/:id", adminMiddleware, updateQuestHandler)
+	quest.Patch("/:id", adminMiddleware, updateQuestHandler)
 
 	//Route: POST /subquest
 	subquest := app.Group("/subquest")
@@ -152,7 +156,14 @@ func Setup() {
 
 	offlineshops.Post("", adminMiddleware, createOfflineShopsHandler)
 
+
+	offlineshops.Get("", getManyOfflineShopsHandler)
+
+	offlineshops.Get("/:id", getOneOfflineShopsHandler)
+
+
 	offlineshops.Delete("/:id", adminMiddleware, deleteOfflineShopsHandler)
+
 
 	offlineshops.Patch("/:id", adminMiddleware, updateOfflineShopsHandler)
 

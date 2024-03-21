@@ -1612,6 +1612,40 @@ func updateQuestHandler(c *fiber.Ctx) error {
 	return c.SendString("Quest updated Succesfully")
 }
 
+// getOneQuestHandler обрабатывает HTTP GET запросы на /quest/getone/{id}.
+// @Summary Получает один квест Quest по ID
+// @Description Возвращает информацию о конкретном квесте Quest по его ID
+// @Tags Quest
+// @Param id path int true "Quest ID"
+// @Produce json
+// @Success 200 {object} ResponseHTTP{data=db.Quest}
+// @Failure 404 {string} string "Quest not found"
+// @Router /quest/getone/{id} [get]
+func getOneQuestHandler(c *fiber.Ctx) error {
+	var quest db.Quest
+	ok := db.FindOneQuest(quest)
+	if !ok {
+		return c.SendString("Error in findOneQuest operation")
+	}
+	return c.SendString("Quest Found Succesfully")
+}
+
+// getManyQuestHandler обрабатывает HTTP GET запросы на /quest/getmany.
+// @Summary Получает список квестов Quest
+// @Description Возвращает список всех квестов Quest
+// @Tags Quest
+// @Produce json
+// @Success 200 {object} ResponseHTTP{data=db.Quest}
+// @Router /quest/getmany [get]
+func getManyQuestHandler(c *fiber.Ctx) error {
+	var quest db.Quest
+	ok := db.FindManyQuest(quest)
+	if !ok {
+		return c.SendString("Error in findManyQuest operation")
+	}
+	return c.SendString("Quest Found Succesfully")
+}
+
 // deleteQuestHandler обрабатывает HTTP DELETE запросы на /quest/delete/{id}.
 // @Summary Удаляет существующий Quest по ID
 // @Description Принимает ID квеста в URL и удаляет соответствующий квест
@@ -1823,16 +1857,16 @@ func deleteTasksHandler(c *fiber.Ctx) error {
 
 //OfflineShops
 
-// createOfflineShopHandler обрабатывает HTTP POST запросы на /offline-shop/create.
+// createOfflineShopHandler обрабатывает HTTP POST запросы на /offlineshop/create.
 // @Summary Создает новый Offline Shop
 // @Description Принимает JSON тело запроса с полями Offline Shop и создает новый Offline Shop
-// @Tags Offline Shops
+// @Tags OfflineShops
 // @Accept json
 // @Produce json
 // @Param OfflineShop body db.OfflineShops true "Create Offline Shop"
 // @Success 200 {object} ResponseHTTP{data=db.OfflineShops}
 // @Failure 400 {object} ResponseHTTP{}
-// @Router /offline-shop/create [post]
+// @Router /offlineshop/create [post]
 func createOfflineShopsHandler(c *fiber.Ctx) error {
 	var offlineshops db.OfflineShops
 	if err := c.BodyParser(&offlineshops); err != nil {
@@ -1855,17 +1889,17 @@ func createOfflineShopsHandler(c *fiber.Ctx) error {
 	return c.JSON(offlineshops)
 }
 
-// updateOfflineShopHandler обрабатывает HTTP PUT запросы на /offline-shop/update/{id}.
+// updateOfflineShopHandler обрабатывает HTTP PUT запросы на /offlineshop/update/{id}.
 // @Summary Обновляет существующий Offline Shop по ID
 // @Description Принимает JSON тело запроса с обновленными полями Offline Shop и обновляет существующий Offline Shop по его ID
-// @Tags Offline Shops
+// @Tags OfflineShops
 // @Accept json
 // @Produce json
 // @Param id path string true "Offline Shop ID"
 // @Param OfflineShop body db.OfflineShops true "Update Offline Shop"
 // @Success 200 {object} ResponseHTTP{data=db.OfflineShops}
 // @Failure 400 {object} ResponseHTTP{}
-// @Router /offline-shop/update/{id} [put]
+// @Router /offlineshop/update/{id} [put]
 func updateOfflineShopsHandler(c *fiber.Ctx) error {
 	var offlineshops db.OfflineShops
 	ok := db.UpdateOfflineShops(offlineshops)
@@ -1875,14 +1909,48 @@ func updateOfflineShopsHandler(c *fiber.Ctx) error {
 	return c.SendString("OfflineShops updated Succesfully")
 }
 
-// deleteOfflineShopHandler обрабатывает HTTP DELETE запросы на /offline-shop/delete/{id}.
+// getOneOfflineShopsHandler обрабатывает HTTP GET запросы на /offlineshops/getone/{id}.
+// @Summary Получает один офлайн магазин OfflineShops по ID
+// @Description Возвращает информацию о конкретном офлайн магазине OfflineShops по его ID
+// @Tags OfflineShops
+// @Param id path int true "OfflineShops ID"
+// @Produce json
+// @Success 200 {object} ResponseHTTP{data=db.OfflineShops}
+// @Failure 404 {string} string "OfflineShops not found"
+// @Router /offlineshops/getone/{id} [get]
+func getOneOfflineShopsHandler(c *fiber.Ctx) error {
+	var offlineshops db.OfflineShops
+	ok := db.FindOneOfflineShops(offlineshops)
+	if !ok {
+		return c.SendString("Error in findOneOfflineShops operation")
+	}
+	return c.SendString("OfflineShops Found Succesfully")
+}
+
+// getManyOfflineShopsHandler обрабатывает HTTP GET запросы на /offlineshops/getmany.
+// @Summary Получает список офлайн магазинов OfflineShops
+// @Description Возвращает список всех офлайн магазинов OfflineShops
+// @Tags OfflineShops
+// @Produce json
+// @Success 200 {object} ResponseHTTP{data=db.OfflineShops}
+// @Router /offlineshops/getmany [get]
+func getManyOfflineShopsHandler(c *fiber.Ctx) error {
+	var offlineshops db.OfflineShops
+	ok := db.FindManyOfflineShops(offlineshops)
+	if !ok {
+		return c.SendString("Error in findManyOfflineShops operation")
+	}
+	return c.SendString("OfflineShops Found Succesfully")
+}
+
+// deleteOfflineShopHandler обрабатывает HTTP DELETE запросы на /offlineshop/delete/{id}.
 // @Summary Удаляет существующий Offline Shop по ID
 // @Description Принимает ID офлайн магазина в URL и удаляет соответствующий офлайн магазин
-// @Tags Offline Shops
+// @Tags OfflineShops
 // @Param id path string true "Offline Shop ID"
 // @Success 200 {string} string "Offline Shop deleted successfully"
 // @Failure 404 {string} string "Offline Shop not found"
-// @Router /offline-shop/delete/{id} [delete]
+// @Router /offlineshop/delete/{id} [delete]
 func deleteOfflineShopsHandler(c *fiber.Ctx) error {
 	id := c.Params("id")
 

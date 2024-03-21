@@ -119,6 +119,7 @@
                 }
             }
         },
+
         "/booked_gifts/{user_id}": {
             "get": {
                 "description": "Finds all booked gifts in the wishlist for a specific user based on the provided user ID.",
