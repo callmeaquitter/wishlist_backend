@@ -24,9 +24,35 @@ func Setup(dsn string) {
 		fmt.Println("Error in New | Establishing a connection", err)
 	}
 
-	err = db.AutoMigrate(&Gift{}, &Selection{}, &GiftToSelection{}, &SelectionCategory{}, &LikeToSelection{}, &CommentToSelection{})
+	err = db.AutoMigrate(
+		&Gift{}, 
+		&Quest{}, 
+		&Subquest{}, 
+		&Tasks{}, 
+		&OfflineShops{},
+		&Seller{},
+		&SellerSession{},
+		&Service{},
+		&SellerToService{},
+		&ServiceReview{},
+		&BookedGiftInWishlist{},
+		&GiftCategory{},
+		&GiftReview{},
+		&User{},
+		&Role{},
+		&UserWishlist{},
+		&Wishes{},
+		&Session{},
+		&Selection{},
+		&GiftToSelection{},
+		&SelectionCategory{},
+		&LikeToSelection{},
+		&CommentToSelection{},
+	)
 	if err != nil {
 		fmt.Println("Couldn't Automigrate Database.", err)
 	}
+
 	Database = db
+
 }
