@@ -2,6 +2,7 @@ package server
 
 import (
 	"fmt"
+	"time"
 	"wishlist/db"
 	_ "wishlist/docs"
 
@@ -196,12 +197,11 @@ func updateSelectionHandler(c *fiber.Ctx) error {
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /selection [get]
 func getManySelectionsHandler(c *fiber.Ctx) error {
-	var selection db.Selection
-	ok, result := db.FindManySelection(selection)
+	ok, selections := db.FindManySelection()
 	if !ok {
 		return c.SendString("Error in FindManySelection")
 	}
-	return c.JSON(result)
+	return c.JSON(selections)
 }
 
 // getOneSelectionHandler обрабатывает HTTP GET запросы на /selection/{id}.
@@ -214,13 +214,30 @@ func getManySelectionsHandler(c *fiber.Ctx) error {
 // @Success 200 {object} ResponseHTTP{data=db.Selection}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /selection/{id} [get]
+
+// func getOneSelectionHandler(c *fiber.Ctx) error {
+// 	selectionID := c.Params("id")
+// 	session := c.Locals("session")
+// 	if session == nil {
+// 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "session not found"})
+// 	}
+// 	userID := session.(string)
+// 	result, ok := db.FindOneSelection(selectionID, userID)
+// 	if !ok {
+// 		return c.JSON(result)
+// 	}
+// 	return c.JSON(result)
+// }
+
 func getOneSelectionHandler(c *fiber.Ctx) error {
-	var selection db.Selection
-	ok := db.FindOneSelection(selection)
+	selectionID := c.Params("selection_id")
+	// Захардкодим userID для тестирования
+	userID := "111"
+	result, ok := db.FindOneSelection(selectionID, userID)
 	if !ok {
-		return c.SendString("Error in FindOneSelection")
+		return c.SendString("Failed to get Selection")
 	}
-	return c.SendString("Selection find successfully")
+	return c.JSON(result)
 }
 
 // deleteSelectionHandler обрабатывает HTTP DELETE запросы на /selection/{id}.
@@ -325,8 +342,8 @@ func findGiftToSelectionHandler(c *fiber.Ctx) error {
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /giftToSelection/{id} [delete]
 func deleteGiftToSelectionHandler(c *fiber.Ctx) error {
-	GiftID := c.Params("id")
-	SelectionID := ""
+	GiftID := c.Params("gift_id")
+	SelectionID := c.Params("selection_id")
 	fmt.Println(GiftID, SelectionID)
 	ok := db.DeleteGiftToSelection(SelectionID, GiftID)
 	if !ok {
@@ -376,7 +393,7 @@ func updatedSelectionCategoryHandler(c *fiber.Ctx) error {
 	if err := c.BodyParser(&selectionCategory); err != nil {
 		return c.SendString(err.Error())
 	}
-
+	selectionCategory.ID = c.Params("id")
 	ok := db.UpdatedSelectionCategory(selectionCategory)
 	if !ok {
 		return c.SendString("Error in updateSelectionCategory operation")
@@ -384,7 +401,7 @@ func updatedSelectionCategoryHandler(c *fiber.Ctx) error {
 	return c.SendString("SelectionCategory updated successfully")
 }
 
-// findSelectionCategoryHandler обрабатывает HTTP GET запросы на /selectionCategory/{id}.
+// findManySelectionCategoryHandler обрабатывает HTTP GET запросы на /selectionCategory/{id}.
 // @Summary Находит существующий SelectionCategory
 // @Description Принимает id SelectionCategory в качестве параметра пути и находит соответствующий SelectionCategory
 // @Tags SelectionCategory
@@ -394,17 +411,31 @@ func updatedSelectionCategoryHandler(c *fiber.Ctx) error {
 // @Success 200 {object} ResponseHTTP{}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /selectionCategory/{id} [get]
-func findSelectionCategoryHandler(c *fiber.Ctx) error {
-	var selectionCategory db.SelectionCategory
-	if err := c.BodyParser(&selectionCategory); err != nil {
-		return c.SendString(err.Error())
-	}
-
-	ok := db.FindSelectionCategory(selectionCategory)
+func findManySelectionCategoryHandler(c *fiber.Ctx) error {
+	result, ok := db.FindManySelectionCategory()
 	if !ok {
 		return c.SendString("Error in findSelectionCategory operation")
 	}
-	return c.JSON(selectionCategory)
+	return c.JSON(result)
+}
+
+// findOneSelectionCategoryHandler обрабатывает HTTP GET запросы на /selectionCategory/{id}.
+// @Summary Находит существующий SelectionCategory
+// @Description Принимает id SelectionCategory в качестве параметра пути и находит соответствующий SelectionCategory
+// @Tags SelectionCategory
+// @Accept json
+// @Produce json
+// @Param id path string true "SelectionCategory ID"
+// @Success 200 {object} ResponseHTTP{}
+// @Failure 400 {object} ResponseHTTP{}
+// @Router /selectionCategory/{id} [get]
+func findOneSelectionCategoryHandler(c *fiber.Ctx) error {
+	selectionCategoryID := c.Params("id")
+	result, ok := db.FindOneSelectionCategory(selectionCategoryID)
+	if !ok {
+		return c.SendString("Error in findSelectionCategory operation")
+	}
+	return c.JSON(result)
 }
 
 // deleteSelectionCategoryHandler обрабатывает HTTP DELETE запросы на /selectionCategory/{id}.
@@ -442,9 +473,7 @@ func createLikeToSelectionHandler(c *fiber.Ctx) error {
 	if err := c.BodyParser(&likeToSelection); err != nil {
 		return c.SendString(err.Error())
 	}
-
-	likeToSelection.SelectionID = "likeToSelection_" + xid.New().String()
-
+	// likeToSelection.UserID = c.Locals("user_id").(string)
 	ok := db.CreateLikeToSelection(likeToSelection)
 	if !ok {
 		return c.SendString("Error in createLikeToSelection operation")
@@ -484,14 +513,10 @@ func getLikesCountToSelectionHandler(c *fiber.Ctx) error {
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /likeToSelection/{id} [delete]
 func deleteLikeToSelectionHandler(c *fiber.Ctx) error {
-	UserID := c.Params("user_id")
-	SelectionID, ok := c.Locals("selection_id").(string)
+	UserID := "" // c.Locals("user_id").(string)
+	SelectionID := c.Params("selection_id")
 
-	if !ok {
-		return c.SendString("Error: selection_id is not a string or is missing")
-	}
-
-	ok = db.DeleteLikeToSelection(UserID, SelectionID)
+	ok := db.DeleteLikeToSelection(UserID, SelectionID)
 	if !ok {
 		return c.SendString("Error in deleteLikeToSelection operation")
 	}
@@ -515,7 +540,7 @@ func createCommentToSelectionHandler(c *fiber.Ctx) error {
 	}
 
 	commentToSelection.ID = "commentToSelection_" + xid.New().String()
-
+	commentToSelection.CreatedAt = time.Now()
 	ok := db.CreateCommentToSelection(commentToSelection)
 	if !ok {
 		return c.SendString("Error in createCommentToSelection operation")
@@ -535,7 +560,7 @@ func createCommentToSelectionHandler(c *fiber.Ctx) error {
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /commentToSelection/{id} [get]
 func getCommentsToSelectionHandler(c *fiber.Ctx) error {
-	id := c.Params("id")
+	id := c.Params("selection_id")
 
 	comments, ok := db.GetCommentsToSelection(id)
 	if !ok {

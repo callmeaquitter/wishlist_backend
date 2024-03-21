@@ -48,7 +48,7 @@ func Setup() {
 
 	selection.Get("", getManySelectionsHandler)
 
-	selection.Get("/:id", getOneSelectionHandler)
+	selection.Get("/:selection_id", getOneSelectionHandler)
 
 	selection.Patch("/:id", updateSelectionHandler)
 
@@ -56,7 +56,7 @@ func Setup() {
 	giftToSelection := app.Group("/giftToSelection")
 	giftToSelection.Post("", createGiftToSelectionHandler)
 
-	giftToSelection.Delete("/:id", deleteGiftToSelectionHandler)
+	giftToSelection.Delete("/:gift_id/:selection_id", deleteGiftToSelectionHandler)
 
 	giftToSelection.Get("", findGiftToSelectionHandler)
 
@@ -68,7 +68,8 @@ func Setup() {
 
 	SelectionCategory.Patch("/:id", updatedSelectionCategoryHandler)
 
-	SelectionCategory.Get("", findSelectionCategoryHandler)
+	SelectionCategory.Get("", findManySelectionCategoryHandler)
+	SelectionCategory.Get("/:id", findOneSelectionCategoryHandler)
 
 	SelectionCategory.Delete("/:id", deleteSelectionCategoryHandler)
 
@@ -76,9 +77,9 @@ func Setup() {
 	LikeToSelection := app.Group("/LikeToSelection")
 	LikeToSelection.Post("", createLikeToSelectionHandler)
 
-	LikeToSelection.Get("", getLikesCountToSelectionHandler)
+	LikeToSelection.Get("/:selection_id", getLikesCountToSelectionHandler)
 
-	LikeToSelection.Delete("/:id", deleteLikeToSelectionHandler)
+	LikeToSelection.Delete("/:selection_id", deleteLikeToSelectionHandler)
 
 	//
 	CommentToSelection := app.Group("/CommentToSelection")
@@ -86,7 +87,7 @@ func Setup() {
 
 	CommentToSelection.Patch("/:id", updateCommentToSelectionHandler)
 
-	CommentToSelection.Get("", getCommentsToSelectionHandler)
+	CommentToSelection.Get("/:selection_id", getCommentsToSelectionHandler)
 
 	CommentToSelection.Delete("/:id", deleteCommentToSelectionHandler)
 

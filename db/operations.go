@@ -69,22 +69,24 @@ func UpdateSelection(selection Selection) bool {
 	return true
 }
 
-func FindManySelection(selection Selection) (bool, Selection) {
-	result := Database.Find(&selection)
+func FindManySelection() (bool, []Selection) {
+	var selections []Selection
+	result := Database.Find(&selections)
 	if result.Error != nil {
 		fmt.Println("Error in FindManySelection", result.Error)
-		return false, selection
+		return false, selections
 	}
-	return true, selection
+	return true, selections
 }
 
-func FindOneSelection(selection Selection) bool {
-	result := Database.Take(&selection)
+func FindOneSelection(selectionID, userID string) (Selection, bool) {
+	var selection Selection
+	result := Database.Where(&Selection{ID: selectionID, UserID: userID}).Take(&selection)
 	if result.Error != nil {
 		fmt.Println("Error in FindOneSelection", result.Error)
-		return false
+		return selection, false
 	}
-	return true
+	return selection, true
 }
 
 func DeleteSelection(selectionID string) bool {
@@ -150,13 +152,24 @@ func UpdatedSelectionCategory(selectionCategory SelectionCategory) bool {
 	return true
 }
 
-func FindSelectionCategory(selectionCategory SelectionCategory) bool {
+func FindManySelectionCategory() ([]SelectionCategory, bool) {
+	var selectionCategory []SelectionCategory
 	result := Database.Find(&selectionCategory)
 	if result.Error != nil {
 		fmt.Println("Error in findSelection", result.Error)
-		return false
+		return selectionCategory, false
 	}
-	return true
+	return selectionCategory, true
+}
+
+func FindOneSelectionCategory(selectionCategoryID string) (SelectionCategory, bool) {
+	var selectionCategory SelectionCategory
+	result := Database.Where("id = ?", selectionCategoryID).Take(&selectionCategory)
+	if result.Error != nil {
+		fmt.Println("Error in findSelection", result.Error)
+		return selectionCategory, false
+	}
+	return selectionCategory, true
 }
 
 func DeleteSelectionCategory(id string) bool {
@@ -207,7 +220,7 @@ func CreateCommentToSelection(commentToSelection CommentToSelection) bool {
 
 func GetCommentsToSelection(id string) ([]CommentToSelection, bool) {
 	var comments []CommentToSelection
-	result := Database.Where("id = ?", id).Find(&comments)
+	result := Database.Where("selection_id = ?", id).Find(&comments)
 	if result.Error != nil {
 		fmt.Println("Error in GetCommentsToSelection", result.Error)
 		return nil, false
