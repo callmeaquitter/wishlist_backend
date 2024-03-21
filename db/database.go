@@ -52,6 +52,7 @@ func Setup(dsn string) {
 		fmt.Println("Couldn't Automigrate Database.", err)
 	}
 
+
 	Database = db
 
 }

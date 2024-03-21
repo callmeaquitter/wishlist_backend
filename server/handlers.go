@@ -82,13 +82,17 @@ func deleteGiftHandler(c *fiber.Ctx) error {
 // @Failure 503 {object} ResponseHTTP{}
 // @Router /gifts [get]
 func getManyGiftsHandler(c *fiber.Ctx) error {
-	var gift db.Gift
-	ok := db.FindManyGift(gift)
+	gifts, ok := db.FindManyGift(db.Gift{}) 
+	// fmt.Println("Gifts:", gifts)
 	if !ok {
 		return c.SendString("Error in findManyGifts operation")
 	}
-	return c.SendString("Gifts Found Succesfully")
+	if len(gifts) == 0 {
+		return c.SendString("No gifts found")
+	}
+	return c.JSON(gifts)
 }
+
 
 // GetOneGifts is a function to get all books data from database
 // @Summary Get one gift
@@ -101,12 +105,12 @@ func getManyGiftsHandler(c *fiber.Ctx) error {
 // @Failure 503 {object} ResponseHTTP{}
 // @Router /gifts/{id} [get]
 func getOneGiftHandler(c *fiber.Ctx) error {
-	var gift db.Gift
-	ok := db.FindOneGift(gift)
-	if !ok {
-		return c.SendString("Error in findOneGift operation")
-	}
-	return c.SendString("Gift Found Succesfully")
+    id := c.Params("id")
+    gift, ok := db.FindOneGift(id)
+    if !ok {
+        return c.SendString("Error in findOneGift operation")
+    }
+    return c.JSON(gift)
 }
 
 // Update Gift godoc
@@ -1179,7 +1183,7 @@ func createGiftToSelectionHandler(c *fiber.Ctx) error {
 			SendString(err.Error())
 	}
 
-	giftToSelection.SelectionID = "giftToSelection_" + xid.New().String()
+	// giftToSelection.SelectionID = "giftToSelection_" + xid.New().String()
 
 	ok := db.CreateGiftToSelection(giftToSelection)
 	if !ok {

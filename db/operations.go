@@ -3,7 +3,6 @@ package db
 import (
 	"fmt"
 	_ "wishlist/docs"
-
 	// "github.com/shopspring/decimal"
 )
 
@@ -25,22 +24,24 @@ func DeleteGift(id string) bool {
 	return true
 }
 
-func FindManyGift(gift Gift) bool {
-	result := Database.Find(&gift)
+func FindManyGift(searchParams Gift) ([]Gift, bool) {
+	var gifts []Gift
+	result := Database.Find(&gifts, &searchParams)
 	if result.Error != nil {
-		fmt.Println("Error in findManyGift", result.Error)
-		return false
+		fmt.Println("Error in findManyGift:", result.Error)
+		return nil, false
 	}
-	return true
+	return gifts, true
 }
 
-func FindOneGift(gift Gift) bool {
-	result := Database.Take(&gift)
-	if result.Error != nil {
-		fmt.Println("Error in findOneGift", result.Error)
-		return false
-	}
-	return true
+func FindOneGift(id string) (*Gift, bool) {
+    var gift Gift
+    result := Database.First(&gift, "id = ?", id) 
+    if result.Error != nil {
+        fmt.Println("Error in findOneGift:", result.Error)
+        return nil, false
+    }
+    return &gift, true
 }
 
 func UpdateGift(id string, updatedGift Gift) bool {
@@ -377,7 +378,7 @@ func UpdateSeller(seller Seller) bool {
 			return false
 		}
 	}
-	
+
 	return true
 }
 
@@ -446,7 +447,7 @@ func UpdateService(service Service) bool {
 			return false
 		}
 	}
-	
+
 	return true
 }
 
@@ -488,7 +489,7 @@ func FindOneSellerToService(sellerId string) ([]SellerToService, bool) {
 	return sellerToService, true
 }
 
-func DeleteSellerToService(serviceId string) bool {	// Связь удаляется по услуге, т.к. оная удаляется чаще
+func DeleteSellerToService(serviceId string) bool { // Связь удаляется по услуге, т.к. оная удаляется чаще
 	result := Database.Delete(SellerToService{}, "service_id = ?", serviceId)
 	if result.Error != nil {
 		fmt.Println("Error in deleteSellerToService", result.Error)
@@ -570,7 +571,7 @@ func UpdateServiceReview(serviceReview ServiceReview) bool {
 		fmt.Println("Error in updateServiceReview", result.Error)
 		return false
 	}
-	
+
 	return true
 }
 
@@ -616,7 +617,6 @@ func CalculateAverageMarkByGiftID(giftID string) (float32, bool) {
 	averageMark := totalMarks / float32(len(giftReviews))
 	return averageMark, true
 }
-
 
 func CreateSelection(selection Selection) bool {
 	result := Database.Create(&selection)
