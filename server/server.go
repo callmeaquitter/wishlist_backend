@@ -168,6 +168,59 @@ func Setup() {
 	offlineshops.Patch("/:id", adminMiddleware, updateOfflineShopsHandler)
 
 	//
+
+	selection := app.Group("/selection")
+	selection.Post("", createSelectionHandler)
+	//Route: DELETE /selection/:id
+	//DELETE /selection/selection_cneq8k9u9g5j3m6ft0v0
+	selection.Delete("/:id", deleteSelectionHandler)
+
+	selection.Get("", getManySelectionsHandler)
+
+	selection.Get("/:selection_id", getOneSelectionHandler)
+
+	selection.Patch("/:id", updateSelectionHandler)
+
+	//
+	giftToSelection := app.Group("/giftToSelection")
+	giftToSelection.Post("", createGiftToSelectionHandler)
+
+	giftToSelection.Delete("/:gift_id/:selection_id", deleteGiftToSelectionHandler)
+
+	giftToSelection.Get("", findGiftToSelectionHandler)
+
+	giftToSelection.Patch("/:id", updateGiftToSelectionHandler)
+
+	//
+	SelectionCategory := app.Group("/SelectionCategory")
+	SelectionCategory.Post("", createSelectionCategoryHandler)
+
+	SelectionCategory.Patch("/:id", updatedSelectionCategoryHandler)
+
+	SelectionCategory.Get("", findManySelectionCategoryHandler)
+	SelectionCategory.Get("/:id", findOneSelectionCategoryHandler)
+
+	SelectionCategory.Delete("/:id", deleteSelectionCategoryHandler)
+
+	//
+	LikeToSelection := app.Group("/LikeToSelection")
+	LikeToSelection.Post("", createLikeToSelectionHandler)
+
+	LikeToSelection.Get("/:selection_id", getLikesCountToSelectionHandler)
+
+	LikeToSelection.Delete("/:selection_id", deleteLikeToSelectionHandler)
+
+	//
+	CommentToSelection := app.Group("/CommentToSelection")
+	CommentToSelection.Post("", createCommentToSelectionHandler)
+
+	CommentToSelection.Patch("/:id", updateCommentToSelectionHandler)
+
+	CommentToSelection.Get("/:selection_id", getCommentsToSelectionHandler)
+
+	CommentToSelection.Delete("/:id", deleteCommentToSelectionHandler)
+
+	//
 	//request -> middleware -> handler -> response
 	supersecret := app.Group("/supersecret", authMiddleware)
 	supersecret.Get("", superSecretHandler)
