@@ -1,26 +1,16 @@
 package server
 
-var sessions = map[string]string{
-	"loveyou":         "Axtem",
-	"callmeback":      "Asya",
-	"cheatcode":       "Misha",
-	"totellthetruth":  "Tolya",
-	"prostopelmeshki": "Zlata",
-}
+import "wishlist/db"
 
-func getUserID(session string) (string, bool) {
-	user, ok := sessions[session] //TODO: change to db operation
-	return user, ok
-}
+// var sessions = map[string]string{
+// 	"loveyou":         "Axtem",
+// 	"callmeback":      "Asya",
+// 	"cheatcode":       "Misha",
+// 	"totellthetruth":  "Tolya",
+// 	"prostopelmeshki": "Zlata",
+// }
 
-func getUser(login, password string) (string, bool) {
-	for session, user := range sessions { //TODO: change to db operation
-		if user == login {
-			return session, true
-		}
-	}
-	return "", false
-}
+
 
 //Step by step guide to add a new feature:
 //1. Create a model (if doesn't exist)
@@ -42,3 +32,12 @@ func getUser(login, password string) (string, bool) {
 //3. Create a register & login handlers
 // - Register: add user to db, return session/jwt token
 // - Login: check user in db, return session/jwt token
+
+func test(wishlists []db.UserWishlist) []string {
+	var WishlistID []string
+	for _, wishlist := range wishlists {
+		WishlistID = append(WishlistID, wishlist.ID)
+	}
+	return WishlistID
+}
+
