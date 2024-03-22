@@ -115,6 +115,7 @@ func Setup() {
 	sellersServices.Delete("/:id", deleteSellerToServiceHandler)
 
 	services := app.Group("/services")
+	services.Get("/seller/:seller_id", getSingleServiceHandler)
 	services.Get("/:id", getOneServiceHandler)
 	services.Get("", getManyServicesHandler)
 	services.Post("", createServiceHandler, sellerAuthMiddleware)

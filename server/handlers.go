@@ -433,6 +433,24 @@ func getManyServicesHandler(c *fiber.Ctx) error {
 	return c.JSON(result)
 }
 
+// getSingleService godoc
+// @Summary Fetches all services of a specified seller.
+// @Tags Services
+// @Accept json
+// @Produce json
+// @Param id path string true "Seller ID"
+// @Success 200 {object} ResponseHTTP{data=db.Service}
+// @Failure 400 {object} ResponseHTTP{}
+// @Router /services/seller/{id} [get]
+func getSingleServiceHandler(c *fiber.Ctx) error {
+	sellerId := c.Params("seller_id")
+	result, ok := db.FindSingleService(sellerId)
+	if !ok {
+		return c.SendString("Error in findOneService operation")
+	}
+	return c.JSON(result)
+}
+
 // getOneService godoc
 // @Summary Fetches a specific service.
 // @Tags Services

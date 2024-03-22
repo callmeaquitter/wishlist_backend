@@ -106,7 +106,6 @@ type CommentToSelection struct {
 type Seller struct {
 	SellerID string `json:"id" gorm:"primaryKey" swaggerignore:"true"`
 	Name     string `json:"name" validate:"required,max=50"`
-	Email    string `json:"email" validate:"required,min=5,email"`
 	Photo    string `json:"photo"`
 	RoleName string `json:"role_name"`
 	Login    string `json:"login" validate:"required,email"`
