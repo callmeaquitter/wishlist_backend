@@ -756,12 +756,10 @@ func registerHandler(c *fiber.Ctx) error {
 		return c.SendString(err.Error())
 	}
 
-	if user.Login == "" {
-		return c.SendString("Login is required") //TODO: Check unique username
-	}
-
-	if user.Password == "" {
-		return c.SendString("Password is required")
+	err := validate.Struct(user)
+	if err != nil {
+		return c.Status(fiber.StatusUnprocessableEntity).
+			SendString(err.Error())
 	}
 
 	user.ID = ""
@@ -789,6 +787,12 @@ func loginHandler(c *fiber.Ctx) error {
 	var authCredentials AuthCredentials
 	if err := c.BodyParser(&authCredentials); err != nil {
 		return c.SendString(err.Error())
+	}
+
+	err := validate.Struct(authCredentials)
+	if err != nil {
+		return c.Status(fiber.StatusUnprocessableEntity).
+			SendString(err.Error())
 	}
 
 	user, ok := db.FindUser(authCredentials.Login, authCredentials.Password)
@@ -829,12 +833,10 @@ func registerSellerHandler(c *fiber.Ctx) error {
 		return c.SendString(err.Error())
 	}
 
-	if seller.Login == "" {
-		return c.SendString("Login is required") //TODO: Check unique sellername
-	}
-
-	if seller.Password == "" {
-		return c.SendString("Password is required")
+	err := validate.Struct(seller)
+	if err != nil {
+		return c.Status(fiber.StatusUnprocessableEntity).
+			SendString(err.Error())
 	}
 
 	seller.SellerID = ""
@@ -860,6 +862,12 @@ func loginSellerHandler(c *fiber.Ctx) error {
 	var authCredentials SellerAuthCredentials
 	if err := c.BodyParser(&authCredentials); err != nil {
 		return c.SendString(err.Error())
+	}
+
+	err := validate.Struct(authCredentials)
+	if err != nil {
+		return c.Status(fiber.StatusUnprocessableEntity).
+			SendString(err.Error())
 	}
 
 	seller, ok := db.FindSeller(authCredentials.Login, authCredentials.Password)
