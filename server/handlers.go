@@ -24,6 +24,7 @@ type ResponseHTTP struct {
 // @Accept json
 // @Produce json
 // @Param Gift body db.Gift true "Create Gift"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.Gift}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /gifts [post]
@@ -114,6 +115,7 @@ func getOneGiftHandler(c *fiber.Ctx) error {
 // @Accept  json
 // @Produce json
 // @Param Gift body db.Gift true "Update Gift"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.Gift}
 // @Failure 400 {object} ResponseHTTP{}
 // @Failure 500 {object} ResponseHTTP{}
@@ -147,6 +149,7 @@ func updateGiftHandler(c *fiber.Ctx) error {
 // @Accept json
 // @Produce json
 // @Param BookedGiftInWishlist body db.BookedGiftInWishlist true "Booked Gift in Wishlist object to be created"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.BookedGiftInWishlist}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /booked_gifts/create [post]
@@ -175,6 +178,7 @@ func createBookedGiftInWishlist(c *fiber.Ctx) error {
 // @Tags BookedGifts
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer токен"
 // @Param gift_id path string true "ID of the booked gift to be deleted"
 // @Success 200 {object} ResponseHTTP{data=db.BookedGiftInWishlist}
 // @Failure 400 {object} ResponseHTTP{}
@@ -195,6 +199,7 @@ func deleteBookedGiftInWishlist(c *fiber.Ctx) error {
 // @Tags BookedGifts
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer токен"
 // @Param user_id path string true "ID of the user"
 // @Success 200 {object} ResponseHTTP{data=[]db.BookedGiftInWishlist}
 // @Failure 503 {object} ResponseHTTP{}
@@ -214,6 +219,7 @@ func findUserBookedGifts(c *fiber.Ctx) error {
 // @Tags GiftCategory
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer токен"
 // @Param GiftCategory body db.GiftCategory true "Gift Category object to be created"
 // @Success 200 {object} ResponseHTTP{data=[]db.GiftCategory}
 // @Failure 400 {string} string "CategoryName is required"
@@ -246,6 +252,7 @@ func createGiftCategory(c *fiber.Ctx) error {
 // @Tags GiftCategory
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer токен"
 // @Param id path string true "ID of the gift category to be deleted"
 // @Success 200 {object} ResponseHTTP{data=db.GiftCategory}
 // @Failure 400 {object} ResponseHTTP{}
@@ -267,6 +274,7 @@ func deleteGiftCategory(c *fiber.Ctx) error {
 // @Accept  json
 // @Produce json
 // @Param Gift body db.GiftReview true "Create GiftReview"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.GiftReview}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /gift_review [post]
@@ -297,6 +305,7 @@ func createGiftReviwHandler(c *fiber.Ctx) error {
 // @Accept  json
 // @Produce json
 // @Param id path string true "GiftReview ID to delete"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {string} string "GiftReview deleted successfully"
 // @Failure 400 {string} string "Error in deleteGiftReview operation"
 // @Router /gift_review/{id} [delete]
@@ -373,6 +382,7 @@ func calculateAverageMarkByGiftIDHandler(c *fiber.Ctx) error {
 // @Accept json
 // @Produce json
 // @Param Service body db.Service true "Create Service"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.Service}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /services [post]
@@ -447,6 +457,7 @@ func getOneServiceHandler(c *fiber.Ctx) error {
 // @Accept json
 // @Produce json
 // @Param Service body db.Service true "Update Service"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.Service}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /services/{id} [patch]
@@ -482,6 +493,7 @@ func updateServiceHandler(c *fiber.Ctx) error {
 // @Accept json
 // @Produce json
 // @Param id path string true "Delete Service"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.Service}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /services/{id} [delete]
@@ -501,6 +513,7 @@ func deleteServiceHandler(c *fiber.Ctx) error {
 // @Accept json
 // @Produce json
 // @Param SellerToService body db.SellerToService true "Create Selllers-Services"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.SellerToService}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /sellerToService [post]
@@ -563,6 +576,7 @@ func getOneSellerToServiceHandler(c *fiber.Ctx) error {
 // @Accept json
 // @Produce json
 // @Param id path string true "Service ID"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.SellerToService}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /sellerToService/{id} [delete]
@@ -582,6 +596,7 @@ func deleteSellerToServiceHandler(c *fiber.Ctx) error {
 // @Accept json
 // @Produce json
 // @Param ServiceReview body db.ServiceReview true "Create ServiceReview"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.ServiceReview}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /serviceReviews [post]
@@ -676,6 +691,7 @@ func getSingleServiceReviewHandler(c *fiber.Ctx) error {
 // @Accept json
 // @Produce json
 // @Param ServiceReview body db.ServiceReview true "Update ServiceReview"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.ServiceReview}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /serviceReviews/{id} [patch]
@@ -851,7 +867,7 @@ func loginSellerHandler(c *fiber.Ctx) error {
 		return c.SendString("Invalid creditials")
 	}
 	sellerSession := db.SellerSession{
-		ID:     "session_" + xid.New().String(),
+		ID:       "session_" + xid.New().String(),
 		SellerID: seller.SellerID,
 	}
 	ok = db.CreateSellerSession(sellerSession)
@@ -862,7 +878,6 @@ func loginSellerHandler(c *fiber.Ctx) error {
 	return c.JSON(sellerSession)
 }
 
-
 // AddWishHandler godoc
 // @Summary Creates a new gift.
 // @Description get the status of server.
@@ -870,6 +885,7 @@ func loginSellerHandler(c *fiber.Ctx) error {
 // @Accept  json
 // @Produce json
 // @Param Wishes body db.Wishes true "Add wishes"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.Wishes}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /wishes/{wishlist_id} [post]
@@ -902,6 +918,7 @@ func AddWishHandler(c *fiber.Ctx) error {
 // @Accept  json
 // @Produce json
 // @Param Wishes body db.Wishes true "Add wishes"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.Wishes}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /wishes/{id}/{wishlist_id} [delete]
@@ -923,6 +940,7 @@ func DeleteWishHandler(c *fiber.Ctx) error {
 // @Accept  json
 // @Produce json
 // @Param UserWishlist body db.UserWishlist true "Create Wishlist"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.UserWishlist}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /wishlists [post]
@@ -956,6 +974,7 @@ func CreateWishlistHandler(c *fiber.Ctx) error {
 // @Accept  json
 // @Produce json
 // @Param UserWishlist body db.UserWishlist true "Create Wishlist"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.UserWishlist}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /wishlists [get]
@@ -975,6 +994,7 @@ func FindManyWishlistsHandler(c *fiber.Ctx) error {
 // @Accept  json
 // @Produce json
 // @Param Wishes body db.Wishes true "Add wishes"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.Wishes}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /wishes/{id}/{wishlist_id} [get]
@@ -988,9 +1008,6 @@ func FindAllWishesInWishlistHandler(c *fiber.Ctx) error {
 	return c.JSON(wishes)
 }
 
-
-
-
 // deleteServiceReview godoc
 // @Summary Deletes a specified serviceReview.
 // @Tags ServiceReviews
@@ -998,6 +1015,7 @@ func FindAllWishesInWishlistHandler(c *fiber.Ctx) error {
 // @Produce json
 // @Param id path string true "Delete ServiceReview"
 // @Success 200 {object} ResponseHTTP{data=db.ServiceReview}
+// @Param Authorization header string true "Bearer токен"
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /serviceReviews/{id} [delete]
 func deleteServiceReviewHandler(c *fiber.Ctx) error {
@@ -1017,6 +1035,7 @@ func deleteServiceReviewHandler(c *fiber.Ctx) error {
 // @Accept  json
 // @Produce json
 // @Param UserWishlist body db.UserWishlist true "Create Wishlist"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.UserWishlist}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /wishlists [put]
@@ -1044,6 +1063,7 @@ func UpdateWishlist(c *fiber.Ctx) error {
 // @Accept  json
 // @Produce json
 // @Param Wishlist body db.UserWishlist true "Delete Wishlist"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.UserWishlist}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /wishlists/{wishlist_id}/{gift_id} [delete]
@@ -1067,6 +1087,7 @@ func DeleteWishlistHandler(c *fiber.Ctx) error {
 // @Accept json
 // @Produce json
 // @Param Quest body db.Quest true "Create Quest"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.Quest}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /quest/create [post]
@@ -1099,13 +1120,14 @@ func createQuestHandler(c *fiber.Ctx) error {
 // @Accept json
 // @Produce json
 // @Param Quest body db.Quest true "Update Quest"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.Quest}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /quest/update [put]
 func updateQuestHandler(c *fiber.Ctx) error {
 	var quest db.Quest
 	ok := db.UpdateQuest(quest)
-	//TODO: А где здесь парсер? 
+	//TODO: А где здесь парсер?
 	if !ok {
 		return c.SendString("Error in updateQuest operation")
 	}
@@ -1151,6 +1173,7 @@ func getManyQuestHandler(c *fiber.Ctx) error {
 // @Description Принимает ID квеста в URL и удаляет соответствующий квест
 // @Tags Quest
 // @Param id path int true "Quest ID"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {string} string "Quest deleted successfully"
 // @Failure 404 {string} string "Quest not found"
 // @Router /quest/delete/{id} [delete]
@@ -1173,6 +1196,7 @@ func deleteQuestHandler(c *fiber.Ctx) error {
 // @Accept json
 // @Produce json
 // @Param Subquest body db.Subquest true "Create Subquest"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.Subquest}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /subquest/create [post]
@@ -1237,6 +1261,7 @@ func getOneSubquestHandler(c *fiber.Ctx) error {
 // @Description Принимает ID подзадания в URL и удаляет соответствующее подзадание
 // @Tags Subquest
 // @Param id path int true "Subquest ID"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {string} string "Subquest deleted successfully"
 // @Failure 404 {string} string "Subquest not found"
 // @Router /subquest/delete/{id} [delete]
@@ -1259,6 +1284,7 @@ func deleteSubquestHandler(c *fiber.Ctx) error {
 // @Accept json
 // @Produce json
 // @Param Tasks body db.Tasks true "Create Tasks"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.Tasks}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /tasks/create [post]
@@ -1291,6 +1317,7 @@ func createTasksHandler(c *fiber.Ctx) error {
 // @Accept json
 // @Produce json
 // @Param Tasks body db.Tasks true "Update Tasks"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.Tasks}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /tasks/update [put]
@@ -1342,6 +1369,7 @@ func getManyTasksHandler(c *fiber.Ctx) error {
 // @Description Принимает ID задания в URL и удаляет соответствующее задание
 // @Tags Tasks
 // @Param id path int true "Tasks ID"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {string} string "Tasks deleted successfully"
 // @Failure 404 {string} string "Tasks not found"
 // @Router /tasks/delete/{id} [delete]
@@ -1364,6 +1392,7 @@ func deleteTasksHandler(c *fiber.Ctx) error {
 // @Accept json
 // @Produce json
 // @Param OfflineShop body db.OfflineShops true "Create Offline Shop"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.OfflineShops}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /offlineshop/create [post]
@@ -1397,6 +1426,7 @@ func createOfflineShopsHandler(c *fiber.Ctx) error {
 // @Produce json
 // @Param id path string true "Offline Shop ID"
 // @Param OfflineShop body db.OfflineShops true "Update Offline Shop"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.OfflineShops}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /offlineshop/update/{id} [put]
@@ -1448,6 +1478,7 @@ func getManyOfflineShopsHandler(c *fiber.Ctx) error {
 // @Description Принимает ID офлайн магазина в URL и удаляет соответствующий офлайн магазин
 // @Tags OfflineShops
 // @Param id path string true "Offline Shop ID"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {string} string "Offline Shop deleted successfully"
 // @Failure 404 {string} string "Offline Shop not found"
 // @Router /offlineshop/delete/{id} [delete]
@@ -1468,6 +1499,7 @@ func deleteOfflineShopsHandler(c *fiber.Ctx) error {
 // @Accept json
 // @Produce json
 // @Param Selection body db.Selection true "Create Selection"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.Selection}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /selection/create [post]
@@ -1506,6 +1538,7 @@ func createSelectionHandler(c *fiber.Ctx) error {
 // @Accept json
 // @Produce json
 // @Param Selection body db.Selection true "Create Selection"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.Selection}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /selection/{id} [put]
@@ -1582,6 +1615,7 @@ func getOneSelectionHandler(c *fiber.Ctx) error {
 // @Accept json
 // @Produce json
 // @Param Selection body db.Selection true "Create Selection"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /selection/{id} [delete]
@@ -1602,6 +1636,7 @@ func deleteSelectionHandler(c *fiber.Ctx) error {
 // @Accept json
 // @Produce json
 // @Param GiftToSelection body db.GiftToSelection true "Create GiftToSelection"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /giftToSelection [post]
@@ -1627,6 +1662,7 @@ func createGiftToSelectionHandler(c *fiber.Ctx) error {
 // @Accept json
 // @Produce json
 // @Param GiftToSelection body db.GiftToSelection true "Update GiftToSelection"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /giftToSelection/{id} [put]
@@ -1673,6 +1709,7 @@ func findGiftToSelectionHandler(c *fiber.Ctx) error {
 // @Accept json
 // @Produce json
 // @Param id path string true "GiftToSelection ID"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /giftToSelection/{id} [delete]
@@ -1694,6 +1731,7 @@ func deleteGiftToSelectionHandler(c *fiber.Ctx) error {
 // @Accept json
 // @Produce json
 // @Param SelectionCategory body db.SelectionCategory true "Create SelectionCategory"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /selectionCategory [post]
@@ -1720,6 +1758,7 @@ func createSelectionCategoryHandler(c *fiber.Ctx) error {
 // @Accept json
 // @Produce json
 // @Param SelectionCategory body db.SelectionCategory true "Update SelectionCategory"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /selectionCategory/{id} [put]
@@ -1780,6 +1819,7 @@ func findOneSelectionCategoryHandler(c *fiber.Ctx) error {
 // @Accept json
 // @Produce json
 // @Param id path string true "SelectionCategory ID"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /selectionCategory/{id} [delete]
@@ -1800,6 +1840,7 @@ func deleteSelectionCategoryHandler(c *fiber.Ctx) error {
 // @Accept json
 // @Produce json
 // @Param LikeToSelection body db.LikeToSelection true "Create LikeToSelection"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /likeToSelection [post]
@@ -1844,6 +1885,7 @@ func getLikesCountToSelectionHandler(c *fiber.Ctx) error {
 // @Accept json
 // @Produce json
 // @Param id path string true "LikeToSelection ID"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /likeToSelection/{id} [delete]
@@ -1865,6 +1907,7 @@ func deleteLikeToSelectionHandler(c *fiber.Ctx) error {
 // @Accept json
 // @Produce json
 // @Param CommentToSelection body db.CommentToSelection true "Create CommentToSelection"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /commentToSelection [post]
@@ -1911,6 +1954,7 @@ func getCommentsToSelectionHandler(c *fiber.Ctx) error {
 // @Accept json
 // @Produce json
 // @Param CommentToSelection body db.CommentToSelection true "Update CommentToSelection"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /commentToSelection/{id} [put]
@@ -1934,6 +1978,7 @@ func updateCommentToSelectionHandler(c *fiber.Ctx) error {
 // @Accept json
 // @Produce json
 // @Param id path string true "CommentToSelection ID"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /commentToSelection/{id} [delete]

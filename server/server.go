@@ -36,6 +36,10 @@ func ValidatePasswordFormat(fl validator.FieldLevel) bool {
 	return regexp.MustCompile(`[A-Z]`).MatchString(password)
 }
 
+// func ValidateEmailFormat(fl validator.FieldLevel) bool {
+
+// }
+
 func Setup() {
 	// Default config
 	app = fiber.New()
@@ -81,9 +85,9 @@ func Setup() {
 	bookedGift.Get("/:user_id", findUserBookedGifts)
 
 	giftCategory := app.Group("/gift_category")
-	giftCategory.Post("", createGiftCategory)
+	giftCategory.Post("", adminMiddleware, createGiftCategory)
 
-	giftCategory.Delete("/:id", deleteGiftCategory)
+	giftCategory.Delete("/:id", adminMiddleware, deleteGiftCategory)
 
 	giftReview := app.Group("/gift_review")
 	giftReview.Post("", createGiftReviwHandler, authMiddleware)
@@ -235,7 +239,7 @@ func Setup() {
 	wishlists.Delete("/:id/:gift_id/:user_id", DeleteWishlistHandler)
 
 	wishes := app.Group("/wishes", authMiddleware)
-	wishes.Get("/:wishlist_id", FindManyWishlistsHandler)
+	wishes.Get("/:wishlist_id", FindAllWishesInWishlistHandler)
 	wishes.Post("/:gift_id/:wishlist_id", AddWishHandler)
 	wishes.Delete("/:wishlist_id/:gift_id", DeleteWishHandler)
 

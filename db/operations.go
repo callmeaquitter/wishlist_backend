@@ -2,7 +2,6 @@ package db
 
 import (
 	"fmt"
-	_ "wishlist/docs"
 	// "github.com/shopspring/decimal"
 )
 
