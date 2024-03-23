@@ -42,7 +42,7 @@ type User struct {
 	Birthday string `json:"birthday" validate:"required"`
 	Coins    int    `json:"coins"`
 	RoleName string `json:"role_name"`
-	Login    string `json:"login" validate:"required,email"`
+	Login    string `json:"login" validate:"required,email" gorm:"unique"`
 	Password string `json:"password" validate:"required,password"`
 }
 
