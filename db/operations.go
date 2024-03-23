@@ -292,7 +292,7 @@ func DeleteWishlist(wishlistID, giftID, userID string) bool {
 }
 
 func CreateUser(user User) bool {
-	
+
 	result := Database.Create(&user)
 	if result.Error != nil {
 		fmt.Println("Error in CreateUser", result.Error)
@@ -683,8 +683,9 @@ func UpdateGiftToSelection(giftToSelection GiftToSelection) bool {
 	return true
 }
 
-func FindGiftToSelection(giftToSelection GiftToSelection) bool {
-	result := Database.Find(&giftToSelection)
+func FindGiftToSelection(selectionID string) bool {
+	var giftToSelection []GiftToSelection
+	result := Database.Where(GiftToSelection{SelectionID: selectionID}).Find(&giftToSelection)
 	if result.Error != nil {
 		fmt.Println("Error in findGiftToSelection", result.Error)
 		return false

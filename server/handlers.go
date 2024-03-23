@@ -1132,7 +1132,7 @@ func UpdateWishlistHandler(c *fiber.Ctx) error {
 
 // deleteWishlist godoc
 // @Summary Deletes your wishlist.
-// @Description delete a wishlist and wishes related with it 
+// @Description delete a wishlist and wishes related with it
 // @Tags Wishlist
 // @Accept  json
 // @Produce json
@@ -1673,8 +1673,7 @@ func getManySelectionsHandler(c *fiber.Ctx) error {
 
 func getOneSelectionHandler(c *fiber.Ctx) error {
 	selectionID := c.Params("selection_id")
-	// Захардкодим userID для тестирования
-	userID := "111"
+	userID := c.Locals("user").(string)
 	result, ok := db.FindOneSelection(selectionID, userID)
 	if !ok {
 		return c.SendString("Failed to get Selection")
@@ -1753,27 +1752,24 @@ func updateGiftToSelectionHandler(c *fiber.Ctx) error {
 	return c.SendString("GiftToSelection updated successfully")
 }
 
-// findGiftToSelectionHandler обрабатывает HTTP GET запросы на /giftToSelection/{id}.
+// findGiftToSelectionHandler обрабатывает HTTP GET запросы на /giftToSelection.
 // @Summary Находит существующий GiftToSelection
 // @Description Принимает id GiftToSelection в качестве параметра пути и находит соответствующий GiftToSelection
 // @Tags GiftToSelection
 // @Accept json
 // @Produce json
 // @Param id path string true "GiftToSelection ID"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /giftToSelection/{id} [get]
 func findGiftToSelectionHandler(c *fiber.Ctx) error {
-	var giftToSelection db.GiftToSelection
-	if err := c.BodyParser(&giftToSelection); err != nil {
-		return c.SendString(err.Error())
-	}
-
-	ok := db.FindGiftToSelection(giftToSelection)
+	selectionID := c.Params("id")
+	ok := db.FindGiftToSelection(selectionID)
 	if !ok {
 		return c.SendString("Error in findGiftToSelection operation")
 	}
-	return c.JSON(giftToSelection)
+	return c.JSON(selectionID)
 }
 
 // deleteGiftToSelectionHandler обрабатывает HTTP DELETE запросы на /giftToSelection/{id}.
