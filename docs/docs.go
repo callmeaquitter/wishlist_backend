@@ -45,6 +45,13 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/db.BookedGiftInWishlist"
                         }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Bearer токен",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -89,6 +96,13 @@ const docTemplate = `{
                 ],
                 "summary": "Deletes a booked gift from the wishlist.",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer токен",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "type": "string",
                         "description": "ID of the booked gift to be deleted",
@@ -139,6 +153,13 @@ const docTemplate = `{
                 ],
                 "summary": "Finds booked gifts for a specific user.",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer токен",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "type": "string",
                         "description": "ID of the user",
@@ -200,6 +221,13 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/db.CommentToSelection"
                         }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Bearer токен",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -276,6 +304,13 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/db.CommentToSelection"
                         }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Bearer токен",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -311,6 +346,13 @@ const docTemplate = `{
                         "description": "CommentToSelection ID",
                         "name": "id",
                         "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Bearer токен",
+                        "name": "Authorization",
+                        "in": "header",
                         "required": true
                     }
                 ],
@@ -352,6 +394,13 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/db.GiftToSelection"
                         }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Bearer токен",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -389,6 +438,13 @@ const docTemplate = `{
                         "description": "GiftToSelection ID",
                         "name": "id",
                         "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Bearer токен",
+                        "name": "Authorization",
+                        "in": "header",
                         "required": true
                     }
                 ],
@@ -428,6 +484,13 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/db.GiftToSelection"
                         }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Bearer токен",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -463,6 +526,13 @@ const docTemplate = `{
                         "description": "GiftToSelection ID",
                         "name": "id",
                         "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Bearer токен",
+                        "name": "Authorization",
+                        "in": "header",
                         "required": true
                     }
                 ],
@@ -539,6 +609,13 @@ const docTemplate = `{
                 "summary": "Creates a new gift category.",
                 "parameters": [
                     {
+                        "type": "string",
+                        "description": "Bearer токен",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
                         "description": "Gift Category object to be created",
                         "name": "GiftCategory",
                         "in": "body",
@@ -593,6 +670,13 @@ const docTemplate = `{
                 ],
                 "summary": "Deletes a gift category.",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer токен",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "type": "string",
                         "description": "ID of the gift category to be deleted",
@@ -651,6 +735,13 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/db.GiftReview"
                         }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Bearer токен",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -857,6 +948,13 @@ const docTemplate = `{
                         "name": "id",
                         "in": "path",
                         "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Bearer токен",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -940,13 +1038,11 @@ const docTemplate = `{
                         }
                     },
                     {
-                        "description": "Create Gift",
-                        "name": "Gift",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/db.Gift"
-                        }
+                        "type": "string",
+                        "description": "Bearer токен",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -1093,6 +1189,13 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/db.Gift"
                         }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Bearer токен",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -1151,6 +1254,13 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/db.LikeToSelection"
                         }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Bearer токен",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -1188,6 +1298,13 @@ const docTemplate = `{
                         "description": "LikeToSelection ID",
                         "name": "id",
                         "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Bearer токен",
+                        "name": "Authorization",
+                        "in": "header",
                         "required": true
                     }
                 ],
@@ -1297,7 +1414,58 @@ const docTemplate = `{
                 }
             }
         },
-        "/offline-shop/create": {
+        "/loginSeller": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Logs a Seller in.",
+                "parameters": [
+                    {
+                        "description": "Reg seller",
+                        "name": "Seller",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/db.Seller"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/server.ResponseHTTP"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/db.Seller"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseHTTP"
+                        }
+                    }
+                }
+            }
+        },
+        "/offlineshop/create": {
             "post": {
                 "description": "Принимает JSON тело запроса с полями Offline Shop и создает новый Offline Shop",
                 "consumes": [
@@ -1307,7 +1475,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Offline Shops"
+                    "OfflineShops"
                 ],
                 "summary": "Создает новый Offline Shop",
                 "parameters": [
@@ -1319,6 +1487,13 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/db.OfflineShops"
                         }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Bearer токен",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -1349,11 +1524,11 @@ const docTemplate = `{
                 }
             }
         },
-        "/offline-shop/delete/{id}": {
+        "/offlineshop/delete/{id}": {
             "delete": {
                 "description": "Принимает ID офлайн магазина в URL и удаляет соответствующий офлайн магазин",
                 "tags": [
-                    "Offline Shops"
+                    "OfflineShops"
                 ],
                 "summary": "Удаляет существующий Offline Shop по ID",
                 "parameters": [
@@ -1362,6 +1537,13 @@ const docTemplate = `{
                         "description": "Offline Shop ID",
                         "name": "id",
                         "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Bearer токен",
+                        "name": "Authorization",
+                        "in": "header",
                         "required": true
                     }
                 ],
@@ -1381,7 +1563,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/offline-shop/update/{id}": {
+        "/offlineshop/update/{id}": {
             "put": {
                 "description": "Принимает JSON тело запроса с обновленными полями Offline Shop и обновляет существующий Offline Shop по его ID",
                 "consumes": [
@@ -1391,7 +1573,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Offline Shops"
+                    "OfflineShops"
                 ],
                 "summary": "Обновляет существующий Offline Shop по ID",
                 "parameters": [
@@ -1410,6 +1592,13 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/db.OfflineShops"
                         }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Bearer токен",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -1435,6 +1624,85 @@ const docTemplate = `{
                         "description": "Bad Request",
                         "schema": {
                             "$ref": "#/definitions/server.ResponseHTTP"
+                        }
+                    }
+                }
+            }
+        },
+        "/offlineshops/getmany": {
+            "get": {
+                "description": "Возвращает список всех офлайн магазинов OfflineShops",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "OfflineShops"
+                ],
+                "summary": "Получает список офлайн магазинов OfflineShops",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/server.ResponseHTTP"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/db.OfflineShops"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/offlineshops/getone/{id}": {
+            "get": {
+                "description": "Возвращает информацию о конкретном офлайн магазине OfflineShops по его ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "OfflineShops"
+                ],
+                "summary": "Получает один офлайн магазин OfflineShops по ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "OfflineShops ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/server.ResponseHTTP"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/db.OfflineShops"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "404": {
+                        "description": "OfflineShops not found",
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 }
@@ -1462,6 +1730,13 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/db.Quest"
                         }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Bearer токен",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -1506,6 +1781,13 @@ const docTemplate = `{
                         "name": "id",
                         "in": "path",
                         "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Bearer токен",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -1513,6 +1795,85 @@ const docTemplate = `{
                         "description": "Quest deleted successfully",
                         "schema": {
                             "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Quest not found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/quest/getmany": {
+            "get": {
+                "description": "Возвращает список всех квестов Quest",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Quest"
+                ],
+                "summary": "Получает список квестов Quest",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/server.ResponseHTTP"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/db.Quest"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/quest/getone/{id}": {
+            "get": {
+                "description": "Возвращает информацию о конкретном квесте Quest по его ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Quest"
+                ],
+                "summary": "Получает один квест Quest по ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Quest ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/server.ResponseHTTP"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/db.Quest"
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     },
                     "404": {
@@ -1546,6 +1907,13 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/db.Quest"
                         }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Bearer токен",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -1628,6 +1996,57 @@ const docTemplate = `{
                 }
             }
         },
+        "/registerSeller": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Creates a new seller.",
+                "parameters": [
+                    {
+                        "description": "Register seller",
+                        "name": "Seller",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/db.Seller"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/server.ResponseHTTP"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/db.Seller"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseHTTP"
+                        }
+                    }
+                }
+            }
+        },
         "/selection": {
             "get": {
                 "description": "Возвращает все Selections из базы данных",
@@ -1672,7 +2091,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/selection/create": {
+        "/selection/": {
             "post": {
                 "description": "Принимает JSON тело запроса с полями Selection и создает новый Selection",
                 "consumes": [
@@ -1694,6 +2113,13 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/db.Selection"
                         }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Bearer токен",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -1725,54 +2151,6 @@ const docTemplate = `{
             }
         },
         "/selection/{id}": {
-            "get": {
-                "description": "Возвращает один Selection из базы данных по id",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Selection"
-                ],
-                "summary": "Получает один Selection",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Selection ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/server.ResponseHTTP"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/db.Selection"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    }
-                }
-            },
             "put": {
                 "description": "Принимает id Selection в качестве параметра пути и JSON тело запроса с новыми полями Selection",
                 "consumes": [
@@ -1794,6 +2172,13 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/db.Selection"
                         }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Bearer токен",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -1844,6 +2229,13 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/db.Selection"
                         }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Bearer токен",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -1884,6 +2276,13 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/db.SelectionCategory"
                         }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Bearer токен",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -1960,6 +2359,13 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/db.SelectionCategory"
                         }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Bearer токен",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -1995,6 +2401,13 @@ const docTemplate = `{
                         "description": "SelectionCategory ID",
                         "name": "id",
                         "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Bearer токен",
+                        "name": "Authorization",
+                        "in": "header",
                         "required": true
                     }
                 ],
@@ -2066,13 +2479,20 @@ const docTemplate = `{
                 "summary": "Creates a new connection of Seller-Service.",
                 "parameters": [
                     {
-                        "description": "Create Selllers-Services",
+                        "description": "Create Sellers-Services",
                         "name": "SellerToService",
                         "in": "body",
                         "required": true,
                         "schema": {
                             "$ref": "#/definitions/db.SellerToService"
                         }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Bearer токен",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -2169,6 +2589,13 @@ const docTemplate = `{
                         "name": "id",
                         "in": "path",
                         "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Bearer токен",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -2184,240 +2611,6 @@ const docTemplate = `{
                                     "properties": {
                                         "data": {
                                             "$ref": "#/definitions/db.SellerToService"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    }
-                }
-            }
-        },
-        "/sellers": {
-            "get": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Sellers"
-                ],
-                "summary": "Fetches all sellers.",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/server.ResponseHTTP"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/db.Seller"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Sellers"
-                ],
-                "summary": "Creates a new seller.",
-                "parameters": [
-                    {
-                        "description": "Create Seller",
-                        "name": "Seller",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/db.Seller"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/server.ResponseHTTP"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/db.Seller"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    }
-                }
-            }
-        },
-        "/sellers/{id}": {
-            "get": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Sellers"
-                ],
-                "summary": "Fetches a specific seller.",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Seller ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/server.ResponseHTTP"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/db.Seller"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Sellers"
-                ],
-                "summary": "Deletes a specified seller.",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Delete Seller",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/server.ResponseHTTP"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/db.Seller"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    }
-                }
-            },
-            "patch": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Sellers"
-                ],
-                "summary": "Updates an existing seller.",
-                "parameters": [
-                    {
-                        "description": "Update Seller",
-                        "name": "Seller",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/db.Seller"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/server.ResponseHTTP"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/db.Seller"
                                         }
                                     }
                                 }
@@ -2492,6 +2685,13 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/db.ServiceReview"
                         }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Bearer токен",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -2637,6 +2837,13 @@ const docTemplate = `{
                         "name": "id",
                         "in": "path",
                         "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Bearer токен",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -2686,6 +2893,13 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/db.ServiceReview"
                         }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Bearer токен",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -2775,6 +2989,62 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/db.Service"
                         }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Bearer токен",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/server.ResponseHTTP"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/db.Service"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseHTTP"
+                        }
+                    }
+                }
+            }
+        },
+        "/services/seller/{id}": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Services"
+                ],
+                "summary": "Fetches all services of a specified seller.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Seller ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -2871,6 +3141,13 @@ const docTemplate = `{
                         "name": "id",
                         "in": "path",
                         "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Bearer токен",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -2920,6 +3197,13 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/db.Service"
                         }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Bearer токен",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -2972,6 +3256,13 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/db.Subquest"
                         }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Bearer токен",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -3015,6 +3306,13 @@ const docTemplate = `{
                         "description": "Subquest ID",
                         "name": "id",
                         "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Bearer токен",
+                        "name": "Authorization",
+                        "in": "header",
                         "required": true
                     }
                 ],
@@ -3135,6 +3433,13 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/db.Tasks"
                         }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Bearer токен",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -3178,6 +3483,13 @@ const docTemplate = `{
                         "description": "Tasks ID",
                         "name": "id",
                         "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Bearer токен",
+                        "name": "Authorization",
+                        "in": "header",
                         "required": true
                     }
                 ],
@@ -3298,6 +3610,13 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/db.Tasks"
                         }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Bearer токен",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -3328,47 +3647,33 @@ const docTemplate = `{
                 }
             }
         },
-        "/wishes/{id}/{wishlist_id}": {
-            "get": {
-                "description": "get the status of server.",
+        "/upload": {
+            "post": {
                 "consumes": [
-                    "application/json"
+                    "image/jpeg",
+                    "image/png"
                 ],
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "Wishes"
+                    "Upload"
                 ],
-                "summary": "Creates a new gift.",
+                "summary": "Upload a beautiful picture",
                 "parameters": [
                     {
-                        "description": "Add wishes",
-                        "name": "Wishes",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/db.Wishes"
-                        }
+                        "type": "file",
+                        "description": "Upload your beautiful picture",
+                        "name": "photo",
+                        "in": "formData",
+                        "required": true
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/server.ResponseHTTP"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/db.Wishes"
-                                        }
-                                    }
-                                }
-                            ]
+                            "$ref": "#/definitions/server.ResponseHTTP"
                         }
                     },
                     "400": {
@@ -3376,11 +3681,18 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/server.ResponseHTTP"
                         }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseHTTP"
+                        }
                     }
                 }
-            },
+            }
+        },
+        "/wishes/{id}/{wishlist_id}": {
             "delete": {
-                "description": "get the status of server.",
                 "consumes": [
                     "application/json"
                 ],
@@ -3390,7 +3702,7 @@ const docTemplate = `{
                 "tags": [
                     "Wishes"
                 ],
-                "summary": "Creates a new gift.",
+                "summary": "Deletes a wish from wishlist.",
                 "parameters": [
                     {
                         "description": "Add wishes",
@@ -3400,6 +3712,13 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/db.Wishes"
                         }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Bearer токен",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -3431,7 +3750,7 @@ const docTemplate = `{
             }
         },
         "/wishes/{wishlist_id}": {
-            "post": {
+            "get": {
                 "description": "get the status of server.",
                 "consumes": [
                     "application/json"
@@ -3442,7 +3761,55 @@ const docTemplate = `{
                 "tags": [
                     "Wishes"
                 ],
-                "summary": "Creates a new gift.",
+                "summary": "finds all wishes in your wishlist",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer токен",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/server.ResponseHTTP"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/db.Wishes"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseHTTP"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "There you can add wish in your wishlist.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Wishes"
+                ],
+                "summary": "Adds a gift in your wishlist.",
                 "parameters": [
                     {
                         "description": "Add wishes",
@@ -3452,6 +3819,13 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/db.Wishes"
                         }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Bearer токен",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -3484,7 +3858,6 @@ const docTemplate = `{
         },
         "/wishlists": {
             "get": {
-                "description": "get the status of server.",
                 "consumes": [
                     "application/json"
                 ],
@@ -3494,16 +3867,21 @@ const docTemplate = `{
                 "tags": [
                     "Wishlist"
                 ],
-                "summary": "Creates a new gift.",
+                "summary": "Finds you all of your wishlists.",
                 "parameters": [
                     {
-                        "description": "Create Wishlist",
-                        "name": "UserWishlist",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/db.UserWishlist"
-                        }
+                        "type": "string",
+                        "description": "Find FindManyWishlists",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Bearer токен",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -3518,7 +3896,10 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/db.UserWishlist"
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/db.UserWishlist"
+                                            }
                                         }
                                     }
                                 }
@@ -3534,7 +3915,6 @@ const docTemplate = `{
                 }
             },
             "put": {
-                "description": "get the status of server.",
                 "consumes": [
                     "application/json"
                 ],
@@ -3544,7 +3924,7 @@ const docTemplate = `{
                 "tags": [
                     "Wishlist"
                 ],
-                "summary": "Creates a new gift.",
+                "summary": "updates your wishlist.",
                 "parameters": [
                     {
                         "description": "Create Wishlist",
@@ -3554,6 +3934,13 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/db.UserWishlist"
                         }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Bearer токен",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -3584,7 +3971,7 @@ const docTemplate = `{
                 }
             },
             "post": {
-                "description": "get the status of server.",
+                "description": "There is handler that creates a new wishlist.",
                 "consumes": [
                     "application/json"
                 ],
@@ -3594,16 +3981,70 @@ const docTemplate = `{
                 "tags": [
                     "Wishlist"
                 ],
-                "summary": "Creates a new gift.",
+                "summary": "Creates a brand new wishlist.",
                 "parameters": [
                     {
-                        "description": "Create Wishlist",
-                        "name": "UserWishlist",
-                        "in": "body",
-                        "required": true,
+                        "type": "string",
+                        "description": "Bearer токен",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/db.UserWishlist"
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/server.ResponseHTTP"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/db.UserWishlist"
+                                        }
+                                    }
+                                }
+                            ]
                         }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseHTTP"
+                        }
+                    }
+                }
+            }
+        },
+        "/wishlists/{name}": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Wishlist"
+                ],
+                "summary": "Finds wishlist by name",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Delete ServiceReview",
+                        "name": "name",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Bearer токен",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -3636,7 +4077,7 @@ const docTemplate = `{
         },
         "/wishlists/{wishlist_id}/{gift_id}": {
             "delete": {
-                "description": "get the status of server.",
+                "description": "delete a wishlist and wishes related with it",
                 "consumes": [
                     "application/json"
                 ],
@@ -3646,7 +4087,7 @@ const docTemplate = `{
                 "tags": [
                     "Wishlist"
                 ],
-                "summary": "Creates a new gift.",
+                "summary": "Deletes your wishlist.",
                 "parameters": [
                     {
                         "description": "Delete Wishlist",
@@ -3656,6 +4097,13 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/db.UserWishlist"
                         }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Bearer токен",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -3908,20 +4356,25 @@ const docTemplate = `{
         "db.Seller": {
             "type": "object",
             "required": [
-                "email",
-                "name"
+                "login",
+                "name",
+                "password"
             ],
             "properties": {
-                "email": {
-                    "type": "string",
-                    "minLength": 5
+                "login": {
+                    "type": "string"
                 },
                 "name": {
                     "type": "string",
-                    "maxLength": 50,
-                    "minLength": 5
+                    "maxLength": 50
+                },
+                "password": {
+                    "type": "string"
                 },
                 "photo": {
+                    "type": "string"
+                },
+                "role_name": {
                     "type": "string"
                 }
             }
@@ -4001,7 +4454,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "is_done": {
-                    "type": "integer"
+                    "type": "boolean"
                 },
                 "reward": {
                     "type": "integer"
