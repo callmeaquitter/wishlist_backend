@@ -151,7 +151,7 @@ type Subquest struct {
 	ID     string `json:"id"`
 	TaskID string `json:"task_id" validate:"required,task_"`
 	Reward int    `json:"reward" validate:"required"`
-	IsDone int    `json:"is_done"`
+	IsDone bool   `json:"is_done"`
 }
 
 type Tasks struct {
