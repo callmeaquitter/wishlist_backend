@@ -236,9 +236,9 @@ func Setup() {
 
 	wishlists := app.Group("/wishlists", authMiddleware)
 	wishlists.Get("", FindManyWishlistsHandler)
-	wishlists.Get("/:name", findWishlistByName)
+	wishlists.Get("/:name", findWishlistByNameHandler)
 	wishlists.Post("", CreateWishlistHandler)
-	wishlists.Put("/:id", UpdateWishlist)
+	wishlists.Put("/:id", UpdateWishlistHandler)
 	wishlists.Delete("/:id/:gift_id/:user_id", DeleteWishlistHandler)
 
 	wishes := app.Group("/wishes", authMiddleware)
