@@ -938,8 +938,8 @@ func loginSellerHandler(c *fiber.Ctx) error {
 }
 
 // AddWishHandler godoc
-// @Summary Creates a new gift.
-// @Description get the status of server.
+// @Summary Adds a gift in your wishlist.
+// @Description There you can add wish in your wishlist.
 // @Tags Wishes
 // @Accept  json
 // @Produce json
@@ -971,8 +971,8 @@ func AddWishHandler(c *fiber.Ctx) error {
 }
 
 // DeleteWishHandler godoc
-// @Summary Creates a new gift.
-// @Description get the status of server.
+// @Summary Deletes a wish from wishlist.
+// @Description
 // @Tags Wishes
 // @Accept  json
 // @Produce json
@@ -993,8 +993,8 @@ func DeleteWishHandler(c *fiber.Ctx) error {
 }
 
 // createWishlist godoc
-// @Summary Creates a new gift.
-// @Description get the status of server.
+// @Summary Creates a brand new wishlist.
+// @Description There is handler that creates a new wishlist.
 // @Tags Wishlist
 // @Accept  json
 // @Produce json
@@ -1026,8 +1026,7 @@ func CreateWishlistHandler(c *fiber.Ctx) error {
 }
 
 // FindManyWishlists godoc
-// @Summary Creates a new gift.
-// @Description get the status of server.
+// @Summary Finds you all of your wishlists.
 // @Tags Wishlist
 // @Accept  json
 // @Produce json
@@ -1045,9 +1044,8 @@ func FindManyWishlistsHandler(c *fiber.Ctx) error {
 	return c.JSON(wishlists)
 }
 
-// findWishlistByName godoc
-// @Summary Creates a new gift.
-// @Description get the status of server.
+// findWishlistByNameHandler godoc
+// @Summary Finds wishlist by name
 // @Tags Wishlist
 // @Accept  json
 // @Produce json
@@ -1056,7 +1054,7 @@ func FindManyWishlistsHandler(c *fiber.Ctx) error {
 // @Success 200 {object} ResponseHTTP{data=db.UserWishlist}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /wishlists/{name} [get]
-func findWishlistByName(c *fiber.Ctx) error {
+func findWishlistByNameHandler(c *fiber.Ctx) error {
 	nameID := c.Params("name")
 	wishlist, ok := db.FindWishlistByName(nameID)
 	if !ok {
@@ -1065,8 +1063,8 @@ func findWishlistByName(c *fiber.Ctx) error {
 	return c.JSON(wishlist)
 }
 
-// DeleteWishHandler godoc
-// @Summary Creates a new gift.
+// FindAllWishesInWishlistHandler godoc
+// @Summary finds all wishes in your wishlist
 // @Description get the status of server.
 // @Tags Wishes
 // @Accept  json
@@ -1074,7 +1072,7 @@ func findWishlistByName(c *fiber.Ctx) error {
 // @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.Wishes}
 // @Failure 400 {object} ResponseHTTP{}
-// @Router /wishes/{id}/{wishlist_id} [get]
+// @Router /wishes/{wishlist_id} [get]
 func FindAllWishesInWishlistHandler(c *fiber.Ctx) error {
 	wishlistID := c.Params("wishlist_id")
 	wishes, ok := db.GetManyWishesInWishlist(wishlistID)
@@ -1106,8 +1104,7 @@ func deleteServiceReviewHandler(c *fiber.Ctx) error {
 }
 
 // updateWishlist godoc
-// @Summary Creates a new gift.
-// @Description get the status of server.
+// @Summary updates your wishlist.
 // @Tags Wishlist
 // @Accept  json
 // @Produce json
@@ -1116,7 +1113,7 @@ func deleteServiceReviewHandler(c *fiber.Ctx) error {
 // @Success 200 {object} ResponseHTTP{data=db.UserWishlist}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /wishlists [put]
-func UpdateWishlist(c *fiber.Ctx) error {
+func UpdateWishlistHandler(c *fiber.Ctx) error {
 	wishlistID := c.Params("id")
 	fmt.Println("wishlist id", wishlistID)
 	var wishlistName struct {
@@ -1134,8 +1131,8 @@ func UpdateWishlist(c *fiber.Ctx) error {
 }
 
 // deleteWishlist godoc
-// @Summary Creates a new gift.
-// @Description get the status of server.
+// @Summary Deletes your wishlist.
+// @Description delete a wishlist and wishes related with it 
 // @Tags Wishlist
 // @Accept  json
 // @Produce json
