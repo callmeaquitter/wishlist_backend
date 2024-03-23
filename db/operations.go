@@ -157,7 +157,7 @@ func FindManyWishlists(userID string) (UserWishlist, bool) {
 
 func FindWishlistByName(name string) (UserWishlist, bool) {
 	var wishlist UserWishlist
-	result := Database.Where(&UserWishlist{Name: name}).Take(&wishlist)
+	result := Database.Where(&UserWishlist{Name: name}).First(&wishlist)
 	if result.Error != nil {
 		fmt.Println("Error in FindWishlistByName", result.Error)
 		return wishlist, false

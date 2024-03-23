@@ -947,7 +947,6 @@ func DeleteWishHandler(c *fiber.Ctx) error {
 // @Tags Wishlist
 // @Accept  json
 // @Produce json
-// @Param UserWishlist body db.UserWishlist true "Create Wishlist"
 // @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.UserWishlist}
 // @Failure 400 {object} ResponseHTTP{}
@@ -975,15 +974,15 @@ func CreateWishlistHandler(c *fiber.Ctx) error {
 
 }
 
-// createWishlist godoc
+// FindManyWishlists godoc
 // @Summary Creates a new gift.
 // @Description get the status of server.
 // @Tags Wishlist
 // @Accept  json
 // @Produce json
-// @Param UserWishlist body db.UserWishlist true "Create Wishlist"
+// @Param id path string true "Find FindManyWishlists"
 // @Param Authorization header string true "Bearer токен"
-// @Success 200 {object} ResponseHTTP{data=db.UserWishlist}
+// @Success 200 {object} ResponseHTTP{data=[]db.UserWishlist}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /wishlists [get]
 func FindManyWishlistsHandler(c *fiber.Ctx) error {
@@ -995,13 +994,32 @@ func FindManyWishlistsHandler(c *fiber.Ctx) error {
 	return c.JSON(wishlists)
 }
 
+// findWishlistByName godoc
+// @Summary Creates a new gift.
+// @Description get the status of server.
+// @Tags Wishlist
+// @Accept  json
+// @Produce json
+// @Param name path string true "Delete ServiceReview"
+// @Param Authorization header string true "Bearer токен"
+// @Success 200 {object} ResponseHTTP{data=db.UserWishlist}
+// @Failure 400 {object} ResponseHTTP{}
+// @Router /wishlists/{name} [get]
+func findWishlistByName(c *fiber.Ctx) error {
+	nameID := c.Params("name")
+	wishlist, ok := db.FindWishlistByName(nameID)
+	if !ok {
+		return c.SendString("error in findManyWishlists operation")
+	}
+	return c.JSON(wishlist)
+}
+
 // DeleteWishHandler godoc
 // @Summary Creates a new gift.
 // @Description get the status of server.
 // @Tags Wishes
 // @Accept  json
 // @Produce json
-// @Param Wishes body db.Wishes true "Add wishes"
 // @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.Wishes}
 // @Failure 400 {object} ResponseHTTP{}

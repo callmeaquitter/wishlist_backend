@@ -48,8 +48,9 @@ func Setup() {
 	validate.RegisterValidation("user_", ValidateIDFormat("user_"))
 	validate.RegisterValidation("password", ValidatePasswordFormat)
 	app.Use(cors.New(cors.Config{
-		AllowOrigins: "*",
-		AllowHeaders: "Origin, Content-Type, Accept"}))
+		AllowOrigins:     "*",
+		AllowHeaders:     "Origin, Content-Type, Accept, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, x-api-key",
+	}))
 
 	app.Get("/docs/*", swagger.HandlerDefault)
 	//https://docs.stripe.com/api/charges
@@ -234,6 +235,7 @@ func Setup() {
 
 	wishlists := app.Group("/wishlists", authMiddleware)
 	wishlists.Get("", FindManyWishlistsHandler)
+	wishlists.Get("/:name", findWishlistByName)
 	wishlists.Post("", CreateWishlistHandler)
 	wishlists.Put("/:id", UpdateWishlist)
 	wishlists.Delete("/:id/:gift_id/:user_id", DeleteWishlistHandler)
