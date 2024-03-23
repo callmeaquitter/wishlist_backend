@@ -1626,7 +1626,7 @@ func createSelectionHandler(c *fiber.Ctx) error {
 // @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.Selection}
 // @Failure 400 {object} ResponseHTTP{}
-// @Router /selection/{id} [put]
+// @Router /selection/{id} [patch]
 func updateSelectionHandler(c *fiber.Ctx) error {
 	var selection db.Selection
 	if err := c.BodyParser(&selection); err != nil {
