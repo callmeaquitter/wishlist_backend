@@ -822,6 +822,17 @@ func registerHandler(c *fiber.Ctx) error {
 		return c.SendString("Error in CreateUser operation")
 	}
 
+	session := db.Session{
+		ID:     "session_" + xid.New().String(),
+		UserID: user.ID,
+	}
+	ok = db.CreateSession(session)
+	if !ok {
+		return c.SendString("Cannot create session")
+	}
+
+	return c.JSON(session)
+
 	return c.SendString("Register")
 
 }
@@ -2095,4 +2106,3 @@ func generateUniqueFileName() string {
 	name := xid.New()
 	return "unique_" + name.String() + ".png"
 }
-
