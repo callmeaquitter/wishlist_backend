@@ -130,6 +130,16 @@ func DeleteGiftCategory(id string) bool {
 }
 
 
+func FindManyGiftCategory(searchParams GiftCategory) ([]GiftCategory, bool) {
+	var giftCategories []GiftCategory
+	result := Database.Find(&giftCategories, &searchParams)
+	if result.Error != nil {
+		fmt.Println("Error in findManyGiftCategory:", result.Error)
+		return nil, false
+	}
+	return giftCategories, true
+}
+
 // gift rewiev
 func CreateGiftReview(GiftReview GiftReview) bool {
 	result := Database.Create(&GiftReview)

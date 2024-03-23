@@ -224,7 +224,7 @@ func findUserBookedGifts(c *fiber.Ctx) error {
 // @Success 200 {object} ResponseHTTP{data=[]db.GiftCategory}
 // @Failure 400 {string} string "CategoryName is required"
 // @Failure 400 {string} string "Failed to create gift category"
-// @Router /gift_category/create [post]
+// @Router /gift_category [post]
 func createGiftCategory(c *fiber.Ctx) error {
 	var giftCategory db.GiftCategory
 	if err := c.BodyParser(&giftCategory); err != nil {
@@ -264,6 +264,27 @@ func deleteGiftCategory(c *fiber.Ctx) error {
 		return c.SendString("Error in deleteGiftCategory operation")
 	}
 	return c.SendString("GiftCategory deleted successfully")
+}
+
+// GetAllGiftsCategory is a function to get all gifts data from database
+// @Summary Get all gift categories
+// @Description Get all gift categories
+// @Tags GiftCategory
+// @Accept json
+// @Produce json
+// @Success 200 {object} ResponseHTTP{data=[]db.Gift}
+// @Failure 503 {object} ResponseHTTP{}
+// @Router /gift_category [get]
+func getManyGiftsCategoryHandler(c *fiber.Ctx) error {
+	giftCategories, ok := db.FindManyGiftCategory(db.GiftCategory{})
+	// fmt.Println("Gifts:", gifts)
+	if !ok {
+		return c.SendString("Error in findManyGiftsCategory operation")
+	}
+	if len(giftCategories) == 0 {
+		return c.SendString("No giftCateegories found")
+	}
+	return c.JSON(giftCategories)
 }
 
 // createGiftReviwHandler godoc

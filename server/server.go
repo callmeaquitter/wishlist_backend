@@ -83,6 +83,8 @@ func Setup() {
 
 	giftCategory.Delete("/:id", deleteGiftCategory)
 
+	giftCategory.Get("", getManyGiftsCategoryHandler)
+
 	giftReview := app.Group("/gift_review")
 	giftReview.Post("", createGiftReviwHandler, authMiddleware)
 

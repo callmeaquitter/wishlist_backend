@@ -499,17 +499,11 @@ paths:
       summary: Обновляет существующий CommentToSelection
       tags:
       - CommentToSelection
-  /gift_category/{id}:
-    delete:
+  /gift_category:
+    get:
       consumes:
       - application/json
-      description: Deletes a gift category based on the provided category ID.
-      parameters:
-      - description: ID of the gift category to be deleted
-        in: path
-        name: id
-        required: true
-        type: string
+      description: Get all gift categories
       produces:
       - application/json
       responses:
@@ -520,16 +514,17 @@ paths:
             - $ref: '#/definitions/server.ResponseHTTP'
             - properties:
                 data:
-                  $ref: '#/definitions/db.GiftCategory'
+                  items:
+                    $ref: '#/definitions/db.Gift'
+                  type: array
               type: object
-        "400":
-          description: Bad Request
+        "503":
+          description: Service Unavailable
           schema:
             $ref: '#/definitions/server.ResponseHTTP'
-      summary: Deletes a gift category.
+      summary: Get all gift categories
       tags:
       - GiftCategory
-  /gift_category/create:
     post:
       consumes:
       - application/json
@@ -560,6 +555,36 @@ paths:
           schema:
             type: string
       summary: Creates a new gift category.
+      tags:
+      - GiftCategory
+  /gift_category/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Deletes a gift category based on the provided category ID.
+      parameters:
+      - description: ID of the gift category to be deleted
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.GiftCategory'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Deletes a gift category.
       tags:
       - GiftCategory
   /gift_review:
