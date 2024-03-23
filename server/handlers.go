@@ -557,7 +557,7 @@ func deleteServiceHandler(c *fiber.Ctx) error {
 // @Tags SellerToService
 // @Accept json
 // @Produce json
-// @Param SellerToService body db.SellerToService true "Create Selllers-Services"
+// @Param SellerToService body db.SellerToService true "Create Sellers-Services"
 // @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.SellerToService}
 // @Failure 400 {object} ResponseHTTP{}
