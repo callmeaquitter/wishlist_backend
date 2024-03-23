@@ -2066,6 +2066,16 @@ func deleteCommentToSelectionHandler(c *fiber.Ctx) error {
 	return c.SendString("CommentToSelection deleted successfully")
 }
 
+// Upload godoc
+// @Summary Upload a beautiful picture
+// @Tags Upload
+// @Accept  jpeg,png
+// @Produce json
+// @Param photo formData file true "Upload your beautiful picture"
+// @Success 200 {object} ResponseHTTP{}
+// @Failure 400 {object} ResponseHTTP{}
+// @Failure 500 {object} ResponseHTTP{}
+// @Router /upload [post]
 func uploadGiftsHandler(c *fiber.Ctx) error {
 	// Получаем файл из тела запроса
 	file, err := c.FormFile("photo")

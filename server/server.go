@@ -61,7 +61,7 @@ func Setup() {
 		AllowHeaders: "Origin, Content-Type, Accept, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, x-api-key",
 	}))
 
-	app.Static("/","/public/gifts")
+	app.Static("/", "./public/gifts/")
 
 	app.Get("/docs/*", swagger.HandlerDefault)
 	//https://docs.stripe.com/api/charges
