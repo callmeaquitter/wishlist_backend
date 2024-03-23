@@ -402,105 +402,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/quest/getone/{id}": {
-            "get": {
-                "description": "Возвращает информацию о конкретном квесте Quest по его ID",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Quest"
-                ],
-                "summary": "Получает один квест Quest по ID",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Quest ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/server.ResponseHTTP"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/db.Quest"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "404": {
-                        "description": "Quest not found",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/quest/update": {
-            "put": {
-                "description": "Принимает JSON тело запроса с обновленными полями Quest и обновляет существующий Quest",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Quest"
-                ],
-                "summary": "Обновляет существующий Quest",
-                "parameters": [
-                    {
-                        "description": "Update Quest",
-                        "name": "Quest",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/db.Quest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/server.ResponseHTTP"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/db.Quest"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseHTTP"
-                        }
-                    }
-                }
-            }
-        },
         "/subquest/create": {
             "post": {
                 "description": "Принимает JSON тело запроса с полями Subquest и создает новый Subquest",
@@ -659,6 +560,58 @@ const docTemplate = `{
                         "description": "Subquest not found",
                         "schema": {
                             "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/subquest/update": {
+            "put": {
+                "description": "Принимает JSON тело запроса с обновленными полями Subquest и обновляет существующий Subquest",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Subquest"
+                ],
+                "summary": "Обновляет существующий Subquest",
+                "parameters": [
+                    {
+                        "description": "Update Subquest",
+                        "name": "Subquest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/db.Subquest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/server.ResponseHTTP"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/db.Subquest"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseHTTP"
                         }
                     }
                 }
@@ -951,7 +904,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "is_done": {
-                    "type": "integer"
+                    "type": "boolean"
                 },
                 "reward": {
                     "type": "integer"

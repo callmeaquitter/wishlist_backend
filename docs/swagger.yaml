@@ -47,7 +47,7 @@ definitions:
       id:
         type: string
       is_done:
-        type: integer
+        type: boolean
       reward:
         type: integer
       task_id:
@@ -315,66 +315,6 @@ paths:
       summary: Получает список квестов Quest
       tags:
       - Quest
-  /quest/getone/{id}:
-    get:
-      description: Возвращает информацию о конкретном квесте Quest по его ID
-      parameters:
-      - description: Quest ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            allOf:
-            - $ref: '#/definitions/server.ResponseHTTP'
-            - properties:
-                data:
-                  $ref: '#/definitions/db.Quest'
-              type: object
-        "404":
-          description: Quest not found
-          schema:
-            type: string
-      summary: Получает один квест Quest по ID
-      tags:
-      - Quest
-  /quest/update:
-    put:
-      consumes:
-      - application/json
-      description: Принимает JSON тело запроса с обновленными полями Quest и обновляет
-        существующий Quest
-      parameters:
-      - description: Update Quest
-        in: body
-        name: Quest
-        required: true
-        schema:
-          $ref: '#/definitions/db.Quest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            allOf:
-            - $ref: '#/definitions/server.ResponseHTTP'
-            - properties:
-                data:
-                  $ref: '#/definitions/db.Quest'
-              type: object
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/server.ResponseHTTP'
-      summary: Обновляет существующий Quest
-      tags:
-      - Quest
   /subquest/create:
     post:
       consumes:
@@ -472,6 +412,38 @@ paths:
           schema:
             type: string
       summary: Получает одно Subquest по ID
+      tags:
+      - Subquest
+  /subquest/update:
+    put:
+      consumes:
+      - application/json
+      description: Принимает JSON тело запроса с обновленными полями Subquest и обновляет
+        существующий Subquest
+      parameters:
+      - description: Update Subquest
+        in: body
+        name: Subquest
+        required: true
+        schema:
+          $ref: '#/definitions/db.Subquest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.Subquest'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Обновляет существующий Subquest
       tags:
       - Subquest
   /tasks/create:

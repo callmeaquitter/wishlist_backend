@@ -24,7 +24,7 @@ type Subquest struct {
 	ID     string `json:"id"`
 	TaskID string `json:"task_id"`
 	Reward int    `json:"reward"`
-	IsDone int    `json:"is_done"`
+	IsDone bool    `json:"is_done"`
 }
 
 type Tasks struct {
