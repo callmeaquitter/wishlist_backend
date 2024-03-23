@@ -383,9 +383,24 @@ func FindManyService() ([]Service, bool) {
 	return service, true
 }
 
+func FindSingleService(sellerId string) ([]Service, bool) {
+	var service []Service
+	result := Database.
+		Table("services").
+		Select("*").
+		Where("seller_id = ?", sellerId).
+		Joins("left join seller_to_services on services.service_id = seller_to_services.service_id").
+		Find(&service)
+	if result.Error != nil {
+		fmt.Println("Error in findSingleService", result.Error)
+		return service, false
+	}
+	return service, true
+}
+
 func FindOneService(serviceId string) (Service, bool) {
 	var service Service
-	result := Database.Take(&service, "id = ?", serviceId)
+	result := Database.Take(&service, "service_id = ?", serviceId)
 	if result.Error != nil {
 		fmt.Println("Error in findOneService", result.Error)
 		return service, false
