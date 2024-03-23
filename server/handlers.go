@@ -780,8 +780,16 @@ func registerHandler(c *fiber.Ctx) error {
 			SendString(err.Error())
 	}
 
+	existingUser := new(db.User)
+
+	if err := db.Database.Model(user).Where("Login = ?", user.Login).First(existingUser).Error; err == nil {
+		// Если пользователь с таким Login уже существует
+		return c.Status(fiber.StatusConflict).JSON(fiber.Map{"error": "Пользователь с таким Login уже существует"})
+	}
+
 	user.ID = ""
 	user.ID = "user_" + xid.New().String()
+
 	ok := db.CreateUser(user)
 	if !ok {
 		return c.SendString("Error in CreateUser operation")

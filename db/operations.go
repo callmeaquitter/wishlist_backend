@@ -280,6 +280,7 @@ func DeleteWishlist(wishlistID, giftID, userID string) bool {
 }
 
 func CreateUser(user User) bool {
+	
 	result := Database.Create(&user)
 	if result.Error != nil {
 		fmt.Println("Error in CreateUser", result.Error)

@@ -32,15 +32,26 @@ func adminMiddleware(c *fiber.Ctx) error {
 		return c.SendString("Unauthorized")
 	}
 
-	if specialSession != "user_cnot2oc69lbksn28kko0" {
+	fmt.Println(specialSession)
+	specialSession = strings.TrimPrefix(specialSession, "Bearer ")
+	session, ok := db.FindSession(specialSession)
+	if !ok {
+		return c.SendString("Unauthorized")
+	}
+
+	if specialSession != "session_cnvdk9k69lbm5c1vej1g" {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
 			"error": "Недостаточно прав для доступа",
 		})
 	}
+
+	fmt.Println(specialSession)
+	fmt.Println(session)
+	c.Locals("user", session.ID)
 	return c.Next()
 }
 
-func sellerAuthMiddleware(c *fiber.Ctx) error{
+func sellerAuthMiddleware(c *fiber.Ctx) error {
 	sellerSessionID := c.Get("seller_Authorization")
 	if sellerSessionID == "" {
 		return c.SendString("Unauthorized")

@@ -48,8 +48,8 @@ func Setup() {
 	validate.RegisterValidation("user_", ValidateIDFormat("user_"))
 	validate.RegisterValidation("password", ValidatePasswordFormat)
 	app.Use(cors.New(cors.Config{
-		AllowOrigins:     "*",
-		AllowHeaders:     "Origin, Content-Type, Accept, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, x-api-key",
+		AllowOrigins: "*",
+		AllowHeaders: "Origin, Content-Type, Accept, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, x-api-key",
 	}))
 
 	app.Get("/docs/*", swagger.HandlerDefault)
@@ -64,7 +64,7 @@ func Setup() {
 
 	//Route: POST /gifts
 	gifts := app.Group("/gifts")
-	gifts.Post("", createGiftHandler, adminMiddleware)
+	gifts.Post("", adminMiddleware, createGiftHandler)
 	//Route: DELETE /gifts/:id
 	//DELETE /gifts/gift_cneq8k9u9g5j3m6ft0v0
 	gifts.Delete("/:id", adminMiddleware, deleteGiftHandler)
@@ -91,9 +91,9 @@ func Setup() {
 	giftCategory.Delete("/:id", adminMiddleware, deleteGiftCategory)
 
 	giftReview := app.Group("/gift_review")
-	giftReview.Post("", createGiftReviwHandler, authMiddleware)
+	giftReview.Post("", authMiddleware, createGiftReviwHandler)
 
-	giftReview.Delete("/:id", deleteGiftReviewHandler, authMiddleware)
+	giftReview.Delete("/:id", authMiddleware, deleteGiftReviewHandler)
 
 	giftReview.Get("/review/:id", getGiftReviewByIDHandler)
 
@@ -112,16 +112,16 @@ func Setup() {
 	sellersServices := app.Group("/sellerToService")
 	sellersServices.Get("/:id", getOneSellerToServiceHandler)
 	sellersServices.Get("", getManySellerToServiceHandler)
-	sellersServices.Post("", createSellerToServiceHandler)
+	sellersServices.Post("", adminMiddleware, createSellerToServiceHandler)
 	sellersServices.Delete("/:id", deleteSellerToServiceHandler)
 
 	services := app.Group("/services")
 	services.Get("/seller/:seller_id", getSingleServiceHandler)
 	services.Get("/:id", getOneServiceHandler)
 	services.Get("", getManyServicesHandler)
-	services.Post("", createServiceHandler, sellerAuthMiddleware)
-	services.Patch("/:id", updateServiceHandler, sellerAuthMiddleware)
-	services.Delete("/:id", deleteServiceHandler, sellerAuthMiddleware)
+	services.Post("", sellerAuthMiddleware, createServiceHandler)
+	services.Patch("/:id", sellerAuthMiddleware, updateServiceHandler)
+	services.Delete("/:id", sellerAuthMiddleware, deleteServiceHandler)
 
 	//Route: POST /quest
 	quest := app.Group("/quest")
@@ -173,7 +173,7 @@ func Setup() {
 	//
 
 	selection := app.Group("/selection")
-	selection.Post("", createSelectionHandler)
+	selection.Post("", authMiddleware, createSelectionHandler)
 	//Route: DELETE /selection/:id
 	//DELETE /selection/selection_cneq8k9u9g5j3m6ft0v0
 	selection.Delete("/:id", deleteSelectionHandler)
@@ -182,10 +182,10 @@ func Setup() {
 
 	selection.Get("/:selection_id", getOneSelectionHandler)
 
-	selection.Patch("/:id", updateSelectionHandler)
+	selection.Patch("/:id", authMiddleware, updateSelectionHandler)
 
 	//
-	giftToSelection := app.Group("/giftToSelection")
+	giftToSelection := app.Group("/giftToSelection", authMiddleware)
 	giftToSelection.Post("", createGiftToSelectionHandler)
 
 	giftToSelection.Delete("/:gift_id/:selection_id", deleteGiftToSelectionHandler)
@@ -196,32 +196,32 @@ func Setup() {
 
 	//
 	SelectionCategory := app.Group("/SelectionCategory")
-	SelectionCategory.Post("", createSelectionCategoryHandler)
+	SelectionCategory.Post("", authMiddleware, createSelectionCategoryHandler)
 
-	SelectionCategory.Patch("/:id", updatedSelectionCategoryHandler)
+	SelectionCategory.Patch("/:id", adminMiddleware, updatedSelectionCategoryHandler)
 
 	SelectionCategory.Get("", findManySelectionCategoryHandler)
 	SelectionCategory.Get("/:id", findOneSelectionCategoryHandler)
 
-	SelectionCategory.Delete("/:id", deleteSelectionCategoryHandler)
+	SelectionCategory.Delete("/:id", authMiddleware, deleteSelectionCategoryHandler)
 
 	//
 	LikeToSelection := app.Group("/LikeToSelection")
-	LikeToSelection.Post("", createLikeToSelectionHandler)
+	LikeToSelection.Post("", authMiddleware, createLikeToSelectionHandler)
 
 	LikeToSelection.Get("/:selection_id", getLikesCountToSelectionHandler)
 
-	LikeToSelection.Delete("/:selection_id", deleteLikeToSelectionHandler)
+	LikeToSelection.Delete("/:selection_id", authMiddleware, deleteLikeToSelectionHandler)
 
 	//
 	CommentToSelection := app.Group("/CommentToSelection")
-	CommentToSelection.Post("", createCommentToSelectionHandler)
+	CommentToSelection.Post("", authMiddleware, createCommentToSelectionHandler)
 
-	CommentToSelection.Patch("/:id", updateCommentToSelectionHandler)
+	CommentToSelection.Patch("/:id", authMiddleware, updateCommentToSelectionHandler)
 
 	CommentToSelection.Get("/:selection_id", getCommentsToSelectionHandler)
 
-	CommentToSelection.Delete("/:id", deleteCommentToSelectionHandler)
+	CommentToSelection.Delete("/:id", authMiddleware, deleteCommentToSelectionHandler)
 
 	//
 	//request -> middleware -> handler -> response
