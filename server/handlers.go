@@ -82,7 +82,7 @@ func deleteGiftHandler(c *fiber.Ctx) error {
 // @Failure 503 {object} ResponseHTTP{}
 // @Router /gifts [get]
 func getManyGiftsHandler(c *fiber.Ctx) error {
-	gifts, ok := db.FindManyGift(db.Gift{}) 
+	gifts, ok := db.FindManyGift(db.Gift{})
 	// fmt.Println("Gifts:", gifts)
 	if !ok {
 		return c.SendString("Error in findManyGifts operation")
@@ -92,7 +92,6 @@ func getManyGiftsHandler(c *fiber.Ctx) error {
 	}
 	return c.JSON(gifts)
 }
-
 
 // GetOneGifts is a function to get all books data from database
 // @Summary Get one gift
@@ -105,12 +104,12 @@ func getManyGiftsHandler(c *fiber.Ctx) error {
 // @Failure 503 {object} ResponseHTTP{}
 // @Router /gifts/{id} [get]
 func getOneGiftHandler(c *fiber.Ctx) error {
-    id := c.Params("id")
-    gift, ok := db.FindOneGift(id)
-    if !ok {
-        return c.SendString("Error in findOneGift operation")
-    }
-    return c.JSON(gift)
+	id := c.Params("id")
+	gift, ok := db.FindOneGift(id)
+	if !ok {
+		return c.SendString("Error in findOneGift operation")
+	}
+	return c.JSON(gift)
 }
 
 // Update Gift godoc
@@ -119,6 +118,7 @@ func getOneGiftHandler(c *fiber.Ctx) error {
 // @Tags 	Gifts
 // @Accept  json
 // @Produce json
+// @Param id path string true "Gift id"
 // @Param Gift body db.Gift true "Update Gift"
 // @Success 200 {object} ResponseHTTP{data=db.Gift}
 // @Failure 400 {object} ResponseHTTP{}
@@ -132,11 +132,11 @@ func updateGiftHandler(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusBadRequest).SendString("Error parsing request body")
 	}
 
-	err := validate.Struct(updatedGift)
-	if err != nil {
-		return c.Status(fiber.StatusUnprocessableEntity).
-			SendString(err.Error())
-	}
+	// err := validate.Struct(updatedGift)
+	// if err != nil {
+	// 	return c.Status(fiber.StatusUnprocessableEntity).
+	// 		SendString(err.Error())
+	// }
 
 	ok := db.UpdateGift(giftID, updatedGift)
 	if !ok {
@@ -155,7 +155,7 @@ func updateGiftHandler(c *fiber.Ctx) error {
 // @Param BookedGiftInWishlist body db.BookedGiftInWishlist true "Booked Gift in Wishlist object to be created"
 // @Success 200 {object} ResponseHTTP{data=db.BookedGiftInWishlist}
 // @Failure 400 {object} ResponseHTTP{}
-// @Router /booked_gifts/create [post]
+// @Router /booked_gifts [post]
 func createBookedGiftInWishlist(c *fiber.Ctx) error {
 	var bookedGiftInWishlist db.BookedGiftInWishlist
 	if err := c.BodyParser(&bookedGiftInWishlist); err != nil {
@@ -1065,7 +1065,6 @@ func createSelectionHandler(c *fiber.Ctx) error {
 			SendString(err.Error())
 	}
 
-
 	selection.ID = "selection_" + xid.New().String()
 	if selection.ID == "" {
 		return c.Status(fiber.StatusInternalServerError).SendString("Error generating ID")
@@ -1658,7 +1657,7 @@ func createQuestHandler(c *fiber.Ctx) error {
 func updateQuestHandler(c *fiber.Ctx) error {
 	var quest db.Quest
 	ok := db.UpdateQuest(quest)
-	//TODO: А где здесь парсер? 
+	//TODO: А где здесь парсер?
 	if !ok {
 		return c.SendString("Error in updateQuest operation")
 	}
@@ -1945,3 +1944,27 @@ func deleteOfflineShopsHandler(c *fiber.Ctx) error {
 	}
 	return c.SendString("OfflineShops deleted successfully")
 }
+
+func uploadGiftsHandler(c *fiber.Ctx) error {
+	// Получаем файл из тела запроса
+	file, err := c.FormFile("photo")
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).SendString(err.Error())
+	}
+
+	// Создаем новый файл в директории uploads с уникальным именем
+	newFileName := generateUniqueFileName()
+
+	destination := fmt.Sprintf("./public/gifts/%s", newFileName)
+	if err := c.SaveFile(file, destination); err != nil {
+		return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
+	}
+	return c.SendString(fmt.Sprintf("File uploaded successfully: %s", newFileName))
+}
+
+func generateUniqueFileName() string {
+	name := xid.New()
+	return "unique_" + name.String() + ".png"
+}
+
+

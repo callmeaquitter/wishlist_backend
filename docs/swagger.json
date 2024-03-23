@@ -17,7 +17,7 @@
     "host": "localhost:7777",
     "basePath": "/",
     "paths": {
-        "/booked_gifts/create": {
+        "/booked_gifts": {
             "post": {
                 "description": "Creates a booked gift in the wishlist based on the provided data.",
                 "consumes": [
@@ -966,6 +966,13 @@
                 ],
                 "summary": "update gift by ID",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Gift id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
                     {
                         "description": "Update Gift",
                         "name": "Gift",
@@ -3660,7 +3667,6 @@
         "db.GiftReview": {
             "type": "object",
             "required": [
-                "comment",
                 "gift_id",
                 "mark"
             ],
@@ -3684,10 +3690,6 @@
         },
         "db.GiftToSelection": {
             "type": "object",
-            "required": [
-                "gift_id",
-                "selection_id"
-            ],
             "properties": {
                 "gift_id": {
                     "type": "string"

@@ -23,7 +23,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/booked_gifts/create": {
+        "/booked_gifts": {
             "post": {
                 "description": "Creates a booked gift in the wishlist based on the provided data.",
                 "consumes": [
@@ -972,6 +972,13 @@ const docTemplate = `{
                 ],
                 "summary": "update gift by ID",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Gift id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
                     {
                         "description": "Update Gift",
                         "name": "Gift",
@@ -3666,7 +3673,6 @@ const docTemplate = `{
         "db.GiftReview": {
             "type": "object",
             "required": [
-                "comment",
                 "gift_id",
                 "mark"
             ],
@@ -3690,10 +3696,6 @@ const docTemplate = `{
         },
         "db.GiftToSelection": {
             "type": "object",
-            "required": [
-                "gift_id",
-                "selection_id"
-            ],
             "properties": {
                 "gift_id": {
                     "type": "string"

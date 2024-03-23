@@ -73,7 +73,6 @@ definitions:
       mark:
         type: number
     required:
-    - comment
     - gift_id
     - mark
     type: object
@@ -83,9 +82,6 @@ definitions:
         type: string
       selection_id:
         type: string
-    required:
-    - gift_id
-    - selection_id
     type: object
   db.LikeToSelection:
     properties:
@@ -304,6 +300,37 @@ info:
   title: Wishlist
   version: "1.0"
 paths:
+  /booked_gifts:
+    post:
+      consumes:
+      - application/json
+      description: Creates a booked gift in the wishlist based on the provided data.
+      parameters:
+      - description: Booked Gift in Wishlist object to be created
+        in: body
+        name: BookedGiftInWishlist
+        required: true
+        schema:
+          $ref: '#/definitions/db.BookedGiftInWishlist'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.BookedGiftInWishlist'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Creates a booked gift in the wishlist.
+      tags:
+      - BookedGifts
   /booked_gifts/{gift_id}:
     delete:
       consumes:
@@ -366,37 +393,6 @@ paths:
           schema:
             $ref: '#/definitions/server.ResponseHTTP'
       summary: Finds booked gifts for a specific user.
-      tags:
-      - BookedGifts
-  /booked_gifts/create:
-    post:
-      consumes:
-      - application/json
-      description: Creates a booked gift in the wishlist based on the provided data.
-      parameters:
-      - description: Booked Gift in Wishlist object to be created
-        in: body
-        name: BookedGiftInWishlist
-        required: true
-        schema:
-          $ref: '#/definitions/db.BookedGiftInWishlist'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            allOf:
-            - $ref: '#/definitions/server.ResponseHTTP'
-            - properties:
-                data:
-                  $ref: '#/definitions/db.BookedGiftInWishlist'
-              type: object
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/server.ResponseHTTP'
-      summary: Creates a booked gift in the wishlist.
       tags:
       - BookedGifts
   /commentToSelection:
@@ -906,6 +902,11 @@ paths:
       - application/json
       description: get the status of server.
       parameters:
+      - description: Gift id
+        in: path
+        name: id
+        required: true
+        type: string
       - description: Update Gift
         in: body
         name: Gift

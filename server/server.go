@@ -24,6 +24,18 @@ func ValidateIDFormat(tag_ string) validator.Func {
 func Setup() {
 	// Default config
 	app = fiber.New()
+	app.Static("/","/public/gifts")
+	// Limit file size to 1MB
+	
+	app = fiber.New(fiber.Config{
+		BodyLimit: 5 * 1024 * 1024,
+	})
+
+	// Обработчик для загрузки файлов
+	app.Post("/upload", uploadGiftsHandler)
+
+	
+	
 
 	app.Use(cors.New())
 	app.Use(cors.New(cors.Config{
