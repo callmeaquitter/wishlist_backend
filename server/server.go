@@ -188,7 +188,7 @@ func Setup() {
 
 	selection.Get("/:selection_id", getOneSelectionHandler)
 
-	selection.Patch("/:id", authMiddleware, updateSelectionHandler)
+	selection.Patch("", authMiddleware, updateSelectionHandler)
 
 	//
 	giftToSelection := app.Group("/giftToSelection", authMiddleware)
