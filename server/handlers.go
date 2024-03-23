@@ -1608,7 +1608,7 @@ func createSelectionHandler(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusInternalServerError).SendString("Error generating ID")
 	}
 
-	selection.UserID = "111" //c.Locals("user")
+	selection.UserID = c.Locals("user").(string)
 
 	ok := db.CreateSelection(selection)
 	if !ok {
