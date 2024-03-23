@@ -36,21 +36,32 @@ func ValidatePasswordFormat(fl validator.FieldLevel) bool {
 	return regexp.MustCompile(`[A-Z]`).MatchString(password)
 }
 
-// func ValidateEmailFormat(fl validator.FieldLevel) bool {
-
-// }
-
 func Setup() {
-	// Default config
-	app = fiber.New()
+	app = fiber.New(fiber.Config{
+		BodyLimit: 5 * 1024 * 1024, // Limit file size to 5MB
+	})
+
+	app.Use(cors.New())
+	app.Use(cors.New(cors.Config{
+		AllowOrigins: "*",
+		AllowHeaders: "Origin, Content-Type, Accept",
+	}))
+
+	validate.RegisterValidation("role_", ValidateIDFormat("role_"))
+	validate.RegisterValidation("gift_", ValidateIDFormat("gift_"))
+	validate.RegisterValidation("wishlist_", ValidateIDFormat("wishlist_"))
+	validate.RegisterValidation("selection_", ValidateIDFormat("selection_"))
 	validate.RegisterValidation("seller_", ValidateIDFormat("seller_"))
 	validate.RegisterValidation("service_", ValidateIDFormat("service_"))
 	validate.RegisterValidation("user_", ValidateIDFormat("user_"))
 	validate.RegisterValidation("password", ValidatePasswordFormat)
+
 	app.Use(cors.New(cors.Config{
 		AllowOrigins: "*",
 		AllowHeaders: "Origin, Content-Type, Accept, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, x-api-key",
 	}))
+
+	app.Static("/", "./public/gifts/")
 
 	app.Get("/docs/*", swagger.HandlerDefault)
 	//https://docs.stripe.com/api/charges
@@ -75,6 +86,9 @@ func Setup() {
 
 	gifts.Patch("/:id", updateGiftHandler, authMiddleware)
 
+	// Обработчик для загрузки файлов
+	app.Post("/upload", uploadGiftsHandler)
+
 	// ??
 	bookedGift := app.Group("/booked_gifts", authMiddleware)
 	bookedGift.Post("", createBookedGiftInWishlist)
@@ -89,6 +103,8 @@ func Setup() {
 	giftCategory.Post("", adminMiddleware, createGiftCategory)
 
 	giftCategory.Delete("/:id", adminMiddleware, deleteGiftCategory)
+
+	giftCategory.Get("", getManyGiftsCategoryHandler)
 
 	giftReview := app.Group("/gift_review")
 	giftReview.Post("", authMiddleware, createGiftReviwHandler)

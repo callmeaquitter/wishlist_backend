@@ -2,7 +2,6 @@ package db
 
 import (
 	"fmt"
-	// "github.com/shopspring/decimal"
 )
 
 func CreateGift(gift Gift) bool {
@@ -23,22 +22,24 @@ func DeleteGift(id string) bool {
 	return true
 }
 
-func FindManyGift(gift Gift) bool {
-	result := Database.Find(&gift)
+func FindManyGift(searchParams Gift) ([]Gift, bool) {
+	var gifts []Gift
+	result := Database.Find(&gifts, &searchParams)
 	if result.Error != nil {
-		fmt.Println("Error in findManyGift", result.Error)
-		return false
+		fmt.Println("Error in findManyGift:", result.Error)
+		return nil, false
 	}
-	return true
+	return gifts, true
 }
 
-func FindOneGift(gift Gift) bool {
-	result := Database.Take(&gift)
-	if result.Error != nil {
-		fmt.Println("Error in findOneGift", result.Error)
-		return false
-	}
-	return true
+func FindOneGift(id string) (*Gift, bool) {
+    var gift Gift
+    result := Database.First(&gift, "id = ?", id) 
+    if result.Error != nil {
+        fmt.Println("Error in findOneGift:", result.Error)
+        return nil, false
+    }
+    return &gift, true
 }
 
 func UpdateGift(id string, updatedGift Gift) bool {
@@ -124,6 +125,17 @@ func DeleteGiftCategory(id string) bool {
 		return false
 	}
 	return true
+}
+
+
+func FindManyGiftCategory(searchParams GiftCategory) ([]GiftCategory, bool) {
+	var giftCategories []GiftCategory
+	result := Database.Find(&giftCategories, &searchParams)
+	if result.Error != nil {
+		fmt.Println("Error in findManyGiftCategory:", result.Error)
+		return nil, false
+	}
+	return giftCategories, true
 }
 
 // gift rewiev
@@ -526,7 +538,6 @@ func FindSingleServiceReview(serviceId string) ([]ServiceReview, bool) {
 	return serviceReview, true
 }
 
-// Не работает лол
 func UpdateServiceReview(serviceReview ServiceReview) bool {
 	result := Database.Model(&serviceReview).
 		Update("service_id", serviceReview.ServiceID)

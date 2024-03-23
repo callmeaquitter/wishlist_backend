@@ -31,7 +31,7 @@ type GiftReview struct {
 	ID      string    `json:"id"`
 	GiftID  string    `json:"gift_id" validate:"required,gift_"`
 	Mark    float32   `json:"mark" validate:"required"`
-	Comment string    `json:"comment" validate:"required"`
+	Comment string    `json:"comment"`
 	Date    time.Time `json:"date"`
 }
 
@@ -81,8 +81,8 @@ type Selection struct {
 }
 
 type GiftToSelection struct {
-	SelectionID string `json:"selection_id" gorm:"primaryKey" validate:"required,selection_"`
-	GiftID      string `json:"gift_id" gorm:"primaryKey" validate:"required,gift_"`
+	SelectionID string `json:"selection_id" gorm:"primaryKey"`
+	GiftID      string `json:"gift_id" gorm:"primaryKey"`
 }
 
 type SelectionCategory struct {

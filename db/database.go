@@ -5,7 +5,6 @@ import (
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-	"gorm.io/gorm/logger"
 )
 
 // func getDsn() string {
@@ -20,9 +19,7 @@ import (
 var Database *gorm.DB
 
 func Setup(dsn string) {
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
-		Logger: logger.Default.LogMode(logger.Info),
-	})
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		fmt.Println("Error in New | Establishing a connection", err)
 	}
@@ -55,6 +52,7 @@ func Setup(dsn string) {
 	if err != nil {
 		fmt.Println("Couldn't Automigrate Database.", err)
 	}
+
 
 	Database = db
 
