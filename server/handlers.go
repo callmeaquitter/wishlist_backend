@@ -833,8 +833,6 @@ func registerHandler(c *fiber.Ctx) error {
 
 	return c.JSON(session)
 
-	return c.SendString("Register")
-
 }
 
 // Login Handler godoc
