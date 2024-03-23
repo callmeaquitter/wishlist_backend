@@ -107,7 +107,7 @@ paths:
       summary: Creates a new gift.
       tags:
       - Gift
-  /offlineshop/create:
+  /offlineshop:
     post:
       consumes:
       - application/json
@@ -139,7 +139,7 @@ paths:
       summary: Создает новый Offline Shop
       tags:
       - OfflineShops
-  /offlineshop/delete/{id}:
+  /offlineshop/{id}:
     delete:
       description: Принимает ID офлайн магазина в URL и удаляет соответствующий офлайн
         магазин
@@ -161,7 +161,6 @@ paths:
       summary: Удаляет существующий Offline Shop по ID
       tags:
       - OfflineShops
-  /offlineshop/update/{id}:
     put:
       consumes:
       - application/json
@@ -198,7 +197,7 @@ paths:
       summary: Обновляет существующий Offline Shop по ID
       tags:
       - OfflineShops
-  /offlineshops/getmany:
+  /offlineshops:
     get:
       description: Возвращает список всех офлайн магазинов OfflineShops
       produces:
@@ -216,7 +215,7 @@ paths:
       summary: Получает список офлайн магазинов OfflineShops
       tags:
       - OfflineShops
-  /offlineshops/getone/{id}:
+  /offlineshops/{id}:
     get:
       description: Возвращает информацию о конкретном офлайн магазине OfflineShops
         по его ID
@@ -245,7 +244,24 @@ paths:
       summary: Получает один офлайн магазин OfflineShops по ID
       tags:
       - OfflineShops
-  /quest/create:
+  /quest:
+    get:
+      description: Возвращает список всех квестов Quest
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.Quest'
+              type: object
+      summary: Получает список квестов Quest
+      tags:
+      - Quest
     post:
       consumes:
       - application/json
@@ -276,7 +292,7 @@ paths:
       summary: Создает новый Quest
       tags:
       - Quest
-  /quest/delete/{id}:
+  /quest/{id}:
     delete:
       description: Принимает ID квеста в URL и удаляет соответствующий квест
       parameters:
@@ -297,9 +313,9 @@ paths:
       summary: Удаляет существующий Quest по ID
       tags:
       - Quest
-  /quest/getmany:
+  /subquest:
     get:
-      description: Возвращает список всех квестов Quest
+      description: Возвращает список всех подзаданий (Subquest)
       produces:
       - application/json
       responses:
@@ -310,12 +326,11 @@ paths:
             - $ref: '#/definitions/server.ResponseHTTP'
             - properties:
                 data:
-                  $ref: '#/definitions/db.Quest'
+                  $ref: '#/definitions/db.Subquest'
               type: object
-      summary: Получает список квестов Quest
+      summary: Получает список Subquest
       tags:
-      - Quest
-  /subquest/create:
+      - Subquest
     post:
       consumes:
       - application/json
@@ -346,7 +361,7 @@ paths:
       summary: Создает новый Subquest
       tags:
       - Subquest
-  /subquest/delete/{id}:
+  /subquest/{id}:
     delete:
       description: Принимает ID подзадания в URL и удаляет соответствующее подзадание
       parameters:
@@ -367,25 +382,6 @@ paths:
       summary: Удаляет существующий Subquest по ID
       tags:
       - Subquest
-  /subquest/getmany:
-    get:
-      description: Возвращает список всех подзаданий (Subquest)
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            allOf:
-            - $ref: '#/definitions/server.ResponseHTTP'
-            - properties:
-                data:
-                  $ref: '#/definitions/db.Subquest'
-              type: object
-      summary: Получает список Subquest
-      tags:
-      - Subquest
-  /subquest/getone/{id}:
     get:
       description: Возвращает информацию о конкретном подзадании (Subquest) по его
         ID
@@ -414,7 +410,6 @@ paths:
       summary: Получает одно Subquest по ID
       tags:
       - Subquest
-  /subquest/update:
     put:
       consumes:
       - application/json
@@ -446,7 +441,24 @@ paths:
       summary: Обновляет существующий Subquest
       tags:
       - Subquest
-  /tasks/create:
+  /tasks:
+    get:
+      description: Возвращает список всех заданий Tasks
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.Tasks'
+              type: object
+      summary: Получает список заданий Tasks
+      tags:
+      - Tasks
     post:
       consumes:
       - application/json
@@ -477,7 +489,7 @@ paths:
       summary: Создает новое задание Tasks
       tags:
       - Tasks
-  /tasks/delete/{id}:
+  /tasks/{id}:
     delete:
       description: Принимает ID задания в URL и удаляет соответствующее задание
       parameters:
@@ -498,25 +510,6 @@ paths:
       summary: Удаляет существующее задание Tasks по ID
       tags:
       - Tasks
-  /tasks/getmany:
-    get:
-      description: Возвращает список всех заданий Tasks
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            allOf:
-            - $ref: '#/definitions/server.ResponseHTTP'
-            - properties:
-                data:
-                  $ref: '#/definitions/db.Tasks'
-              type: object
-      summary: Получает список заданий Tasks
-      tags:
-      - Tasks
-  /tasks/getone/{id}:
     get:
       description: Возвращает информацию о конкретном задании Tasks по его ID
       parameters:
@@ -544,7 +537,6 @@ paths:
       summary: Получает одно задание Tasks по ID
       tags:
       - Tasks
-  /tasks/update:
     put:
       consumes:
       - application/json

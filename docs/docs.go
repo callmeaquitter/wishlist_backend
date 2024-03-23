@@ -64,7 +64,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/offlineshop/create": {
+        "/offlineshop": {
             "post": {
                 "description": "Принимает JSON тело запроса с полями Offline Shop и создает новый Offline Shop",
                 "consumes": [
@@ -116,39 +116,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/offlineshop/delete/{id}": {
-            "delete": {
-                "description": "Принимает ID офлайн магазина в URL и удаляет соответствующий офлайн магазин",
-                "tags": [
-                    "OfflineShops"
-                ],
-                "summary": "Удаляет существующий Offline Shop по ID",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Offline Shop ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Offline Shop deleted successfully",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "404": {
-                        "description": "Offline Shop not found",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/offlineshop/update/{id}": {
+        "/offlineshop/{id}": {
             "put": {
                 "description": "Принимает JSON тело запроса с обновленными полями Offline Shop и обновляет существующий Offline Shop по его ID",
                 "consumes": [
@@ -205,9 +173,39 @@ const docTemplate = `{
                         }
                     }
                 }
+            },
+            "delete": {
+                "description": "Принимает ID офлайн магазина в URL и удаляет соответствующий офлайн магазин",
+                "tags": [
+                    "OfflineShops"
+                ],
+                "summary": "Удаляет существующий Offline Shop по ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Offline Shop ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Offline Shop deleted successfully",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Offline Shop not found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
             }
         },
-        "/offlineshops/getmany": {
+        "/offlineshops": {
             "get": {
                 "description": "Возвращает список всех офлайн магазинов OfflineShops",
                 "produces": [
@@ -239,7 +237,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/offlineshops/getone/{id}": {
+        "/offlineshops/{id}": {
             "get": {
                 "description": "Возвращает информацию о конкретном офлайн магазине OfflineShops по его ID",
                 "produces": [
@@ -286,7 +284,37 @@ const docTemplate = `{
                 }
             }
         },
-        "/quest/create": {
+        "/quest": {
+            "get": {
+                "description": "Возвращает список всех квестов Quest",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Quest"
+                ],
+                "summary": "Получает список квестов Quest",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/server.ResponseHTTP"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/db.Quest"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
             "post": {
                 "description": "Принимает JSON тело запроса с полями Quest и создает новый Quest",
                 "consumes": [
@@ -338,7 +366,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/quest/delete/{id}": {
+        "/quest/{id}": {
             "delete": {
                 "description": "Принимает ID квеста в URL и удаляет соответствующий квест",
                 "tags": [
@@ -370,16 +398,16 @@ const docTemplate = `{
                 }
             }
         },
-        "/quest/getmany": {
+        "/subquest": {
             "get": {
-                "description": "Возвращает список всех квестов Quest",
+                "description": "Возвращает список всех подзаданий (Subquest)",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "Quest"
+                    "Subquest"
                 ],
-                "summary": "Получает список квестов Quest",
+                "summary": "Получает список Subquest",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -392,7 +420,7 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/db.Quest"
+                                            "$ref": "#/definitions/db.Subquest"
                                         }
                                     }
                                 }
@@ -400,9 +428,7 @@ const docTemplate = `{
                         }
                     }
                 }
-            }
-        },
-        "/subquest/create": {
+            },
             "post": {
                 "description": "Принимает JSON тело запроса с полями Subquest и создает новый Subquest",
                 "consumes": [
@@ -454,71 +480,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/subquest/delete/{id}": {
-            "delete": {
-                "description": "Принимает ID подзадания в URL и удаляет соответствующее подзадание",
-                "tags": [
-                    "Subquest"
-                ],
-                "summary": "Удаляет существующий Subquest по ID",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Subquest ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Subquest deleted successfully",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "404": {
-                        "description": "Subquest not found",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/subquest/getmany": {
-            "get": {
-                "description": "Возвращает список всех подзаданий (Subquest)",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Subquest"
-                ],
-                "summary": "Получает список Subquest",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/server.ResponseHTTP"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/db.Subquest"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
-        },
-        "/subquest/getone/{id}": {
+        "/subquest/{id}": {
             "get": {
                 "description": "Возвращает информацию о конкретном подзадании (Subquest) по его ID",
                 "produces": [
@@ -563,9 +525,7 @@ const docTemplate = `{
                         }
                     }
                 }
-            }
-        },
-        "/subquest/update": {
+            },
             "put": {
                 "description": "Принимает JSON тело запроса с обновленными полями Subquest и обновляет существующий Subquest",
                 "consumes": [
@@ -615,9 +575,69 @@ const docTemplate = `{
                         }
                     }
                 }
+            },
+            "delete": {
+                "description": "Принимает ID подзадания в URL и удаляет соответствующее подзадание",
+                "tags": [
+                    "Subquest"
+                ],
+                "summary": "Удаляет существующий Subquest по ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Subquest ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Subquest deleted successfully",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Subquest not found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
             }
         },
-        "/tasks/create": {
+        "/tasks": {
+            "get": {
+                "description": "Возвращает список всех заданий Tasks",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tasks"
+                ],
+                "summary": "Получает список заданий Tasks",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/server.ResponseHTTP"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/db.Tasks"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
             "post": {
                 "description": "Принимает JSON тело запроса с полями Tasks и создает новое задание",
                 "consumes": [
@@ -669,71 +689,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/tasks/delete/{id}": {
-            "delete": {
-                "description": "Принимает ID задания в URL и удаляет соответствующее задание",
-                "tags": [
-                    "Tasks"
-                ],
-                "summary": "Удаляет существующее задание Tasks по ID",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Tasks ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Tasks deleted successfully",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "404": {
-                        "description": "Tasks not found",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/tasks/getmany": {
-            "get": {
-                "description": "Возвращает список всех заданий Tasks",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Tasks"
-                ],
-                "summary": "Получает список заданий Tasks",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/server.ResponseHTTP"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/db.Tasks"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
-        },
-        "/tasks/getone/{id}": {
+        "/tasks/{id}": {
             "get": {
                 "description": "Возвращает информацию о конкретном задании Tasks по его ID",
                 "produces": [
@@ -778,9 +734,7 @@ const docTemplate = `{
                         }
                     }
                 }
-            }
-        },
-        "/tasks/update": {
+            },
             "put": {
                 "description": "Принимает JSON тело запроса с обновленными полями Tasks и обновляет существующее задание",
                 "consumes": [
@@ -827,6 +781,36 @@ const docTemplate = `{
                         "description": "Bad Request",
                         "schema": {
                             "$ref": "#/definitions/server.ResponseHTTP"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Принимает ID задания в URL и удаляет соответствующее задание",
+                "tags": [
+                    "Tasks"
+                ],
+                "summary": "Удаляет существующее задание Tasks по ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Tasks ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Tasks deleted successfully",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Tasks not found",
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 }

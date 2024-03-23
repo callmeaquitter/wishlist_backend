@@ -80,7 +80,6 @@ func DeleteQuest(id string) bool {
 	return true
 }
 
-
 //Subquest
 
 func CreateSubquest(subquest Subquest) bool {
