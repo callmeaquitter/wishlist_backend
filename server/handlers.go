@@ -24,10 +24,9 @@ type ResponseHTTP struct {
 // @Accept json
 // @Produce json
 // @Param Gift body db.Gift true "Create Gift"
-// @Param Gift body db.Gift true "Create Gift"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.Gift}
 // @Failure 400 {object} ResponseHTTP{}
-// @Router /gifts [post]
 // @Router /gifts [post]
 func createGiftHandler(c *fiber.Ctx) error {
 	var gift db.Gift
@@ -120,6 +119,7 @@ func getOneGiftHandler(c *fiber.Ctx) error {
 // @Produce json
 // @Param id path string true "Gift id"
 // @Param Gift body db.Gift true "Update Gift"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.Gift}
 // @Failure 400 {object} ResponseHTTP{}
 // @Failure 500 {object} ResponseHTTP{}
@@ -153,6 +153,7 @@ func updateGiftHandler(c *fiber.Ctx) error {
 // @Accept json
 // @Produce json
 // @Param BookedGiftInWishlist body db.BookedGiftInWishlist true "Booked Gift in Wishlist object to be created"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.BookedGiftInWishlist}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /booked_gifts [post]
@@ -181,6 +182,7 @@ func createBookedGiftInWishlist(c *fiber.Ctx) error {
 // @Tags BookedGifts
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer токен"
 // @Param gift_id path string true "ID of the booked gift to be deleted"
 // @Success 200 {object} ResponseHTTP{data=db.BookedGiftInWishlist}
 // @Failure 400 {object} ResponseHTTP{}
@@ -201,6 +203,7 @@ func deleteBookedGiftInWishlist(c *fiber.Ctx) error {
 // @Tags BookedGifts
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer токен"
 // @Param user_id path string true "ID of the user"
 // @Success 200 {object} ResponseHTTP{data=[]db.BookedGiftInWishlist}
 // @Failure 503 {object} ResponseHTTP{}
@@ -220,6 +223,7 @@ func findUserBookedGifts(c *fiber.Ctx) error {
 // @Tags GiftCategory
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer токен"
 // @Param GiftCategory body db.GiftCategory true "Gift Category object to be created"
 // @Success 200 {object} ResponseHTTP{data=[]db.GiftCategory}
 // @Failure 400 {string} string "CategoryName is required"
@@ -252,6 +256,7 @@ func createGiftCategory(c *fiber.Ctx) error {
 // @Tags GiftCategory
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer токен"
 // @Param id path string true "ID of the gift category to be deleted"
 // @Success 200 {object} ResponseHTTP{data=db.GiftCategory}
 // @Failure 400 {object} ResponseHTTP{}
@@ -294,6 +299,7 @@ func getManyGiftsCategoryHandler(c *fiber.Ctx) error {
 // @Accept  json
 // @Produce json
 // @Param Gift body db.GiftReview true "Create GiftReview"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.GiftReview}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /gift_review [post]
@@ -324,6 +330,7 @@ func createGiftReviwHandler(c *fiber.Ctx) error {
 // @Accept  json
 // @Produce json
 // @Param id path string true "GiftReview ID to delete"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {string} string "GiftReview deleted successfully"
 // @Failure 400 {string} string "Error in deleteGiftReview operation"
 // @Router /gift_review/{id} [delete]
@@ -394,126 +401,13 @@ func calculateAverageMarkByGiftIDHandler(c *fiber.Ctx) error {
 	return c.JSON(averageMark)
 }
 
-// createSeller godoc
-// @Summary Creates a new seller.
-// @Tags Sellers
-// @Accept json
-// @Produce json
-// @Param Seller body db.Seller true "Create Seller"
-// @Success 200 {object} ResponseHTTP{data=db.Seller}
-// @Failure 400 {object} ResponseHTTP{}
-// @Router /sellers [post]
-func createSellerHandler(c *fiber.Ctx) error {
-	var seller db.Seller
-	if err := c.BodyParser(&seller); err != nil {
-		return c.SendString(err.Error())
-	}
-
-	err := validate.Struct(seller)
-	if err != nil {
-		return c.Status(fiber.StatusUnprocessableEntity).SendString(err.Error())
-	}
-
-	seller.SellerID = "seller_" + xid.New().String()
-
-	ok := db.CreateSeller(seller)
-	if !ok {
-		return c.SendString("Error in createSeller operation")
-	}
-
-	return c.JSON(seller)
-}
-
-// deleteSeller godoc
-// @Summary Deletes a specified seller.
-// @Tags Sellers
-// @Accept json
-// @Produce json
-// @Param id path string true "Delete Seller"
-// @Success 200 {object} ResponseHTTP{data=db.Seller}
-// @Failure 400 {object} ResponseHTTP{}
-// @Router /sellers/{id} [delete]
-func deleteSellerHandler(c *fiber.Ctx) error {
-	id := c.Params("id")
-
-	ok := db.DeleteSeller(id)
-	if !ok {
-		return c.SendString("Error in deleteSeller operation")
-	}
-	return c.SendString("Seller deleted successfully")
-}
-
-// getManySellers godoc
-// @Summary Fetches all sellers.
-// @Tags Sellers
-// @Accept json
-// @Produce json
-// @Success 200 {object} ResponseHTTP{data=db.Seller}
-// @Failure 400 {object} ResponseHTTP{}
-// @Router /sellers [get]
-func getManySellersHandler(c *fiber.Ctx) error {
-	result, ok := db.FindManySeller()
-	if !ok {
-		return c.SendString("Error in findManySellers operation")
-	}
-	return c.JSON(result)
-}
-
-// getOneSeller godoc
-// @Summary Fetches a specific seller.
-// @Tags Sellers
-// @Accept json
-// @Produce json
-// @Param id path string true "Seller ID"
-// @Success 200 {object} ResponseHTTP{data=db.Seller}
-// @Failure 400 {object} ResponseHTTP{}
-// @Router /sellers/{id} [get]
-func getOneSellerHandler(c *fiber.Ctx) error {
-	sellerId := c.Params("id")
-	result, ok := db.FindOneSeller(sellerId)
-	if !ok {
-		return c.SendString("Error in findOneSeller operation")
-	}
-	return c.JSON(result)
-}
-
-// updateSeller godoc
-// @Summary Updates an existing seller.
-// @Tags Sellers
-// @Accept json
-// @Produce json
-// @Param Seller body db.Seller true "Update Seller"
-// @Success 200 {object} ResponseHTTP{data=db.Seller}
-// @Failure 400 {object} ResponseHTTP{}
-// @Router /sellers/{id} [patch]
-func updateSellerHandler(c *fiber.Ctx) error {
-	var seller db.Seller
-	if err := c.BodyParser(&seller); err != nil {
-		return c.SendString(err.Error())
-	}
-
-	err := validate.Struct(seller)
-	if err != nil {
-		return c.Status(fiber.StatusUnprocessableEntity).SendString(err.Error())
-	}
-
-	ok := db.UpdateSeller(seller)
-	if !ok {
-		return c.SendString("Error in updateSeller operation")
-	}
-	return c.JSON(ResponseHTTP{
-		Success: true,
-		Message: "Successfully updated the Seller.",
-		Data:    &seller,
-	})
-}
-
 // createService godoc
 // @Summary Creates a new service.
 // @Tags Services
 // @Accept json
 // @Produce json
 // @Param Service body db.Service true "Create Service"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.Service}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /services [post]
@@ -564,6 +458,24 @@ func getManyServicesHandler(c *fiber.Ctx) error {
 	return c.JSON(result)
 }
 
+// getSingleService godoc
+// @Summary Fetches all services of a specified seller.
+// @Tags Services
+// @Accept json
+// @Produce json
+// @Param id path string true "Seller ID"
+// @Success 200 {object} ResponseHTTP{data=db.Service}
+// @Failure 400 {object} ResponseHTTP{}
+// @Router /services/seller/{id} [get]
+func getSingleServiceHandler(c *fiber.Ctx) error {
+	sellerId := c.Params("seller_id")
+	result, ok := db.FindSingleService(sellerId)
+	if !ok {
+		return c.SendString("Error in findOneService operation")
+	}
+	return c.JSON(result)
+}
+
 // getOneService godoc
 // @Summary Fetches a specific service.
 // @Tags Services
@@ -588,6 +500,7 @@ func getOneServiceHandler(c *fiber.Ctx) error {
 // @Accept json
 // @Produce json
 // @Param Service body db.Service true "Update Service"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.Service}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /services/{id} [patch]
@@ -623,6 +536,7 @@ func updateServiceHandler(c *fiber.Ctx) error {
 // @Accept json
 // @Produce json
 // @Param id path string true "Delete Service"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.Service}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /services/{id} [delete]
@@ -642,6 +556,7 @@ func deleteServiceHandler(c *fiber.Ctx) error {
 // @Accept json
 // @Produce json
 // @Param SellerToService body db.SellerToService true "Create Selllers-Services"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.SellerToService}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /sellerToService [post]
@@ -704,6 +619,7 @@ func getOneSellerToServiceHandler(c *fiber.Ctx) error {
 // @Accept json
 // @Produce json
 // @Param id path string true "Service ID"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.SellerToService}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /sellerToService/{id} [delete]
@@ -723,6 +639,7 @@ func deleteSellerToServiceHandler(c *fiber.Ctx) error {
 // @Accept json
 // @Produce json
 // @Param ServiceReview body db.ServiceReview true "Create ServiceReview"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.ServiceReview}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /serviceReviews [post]
@@ -817,6 +734,7 @@ func getSingleServiceReviewHandler(c *fiber.Ctx) error {
 // @Accept json
 // @Produce json
 // @Param ServiceReview body db.ServiceReview true "Update ServiceReview"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.ServiceReview}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /serviceReviews/{id} [patch]
@@ -881,16 +799,22 @@ func registerHandler(c *fiber.Ctx) error {
 		return c.SendString(err.Error())
 	}
 
-	if user.Login == "" {
-		return c.SendString("Login is required") //TODO: Check unique username
+	err := validate.Struct(user)
+	if err != nil {
+		return c.Status(fiber.StatusUnprocessableEntity).
+			SendString(err.Error())
 	}
 
-	if user.Password == "" {
-		return c.SendString("Password is required")
+	existingUser := new(db.User)
+
+	if err := db.Database.Model(user).Where("Login = ?", user.Login).First(existingUser).Error; err == nil {
+		// Если пользователь с таким Login уже существует
+		return c.Status(fiber.StatusConflict).JSON(fiber.Map{"error": "Пользователь с таким Login уже существует"})
 	}
 
 	user.ID = ""
 	user.ID = "user_" + xid.New().String()
+
 	ok := db.CreateUser(user)
 	if !ok {
 		return c.SendString("Error in CreateUser operation")
@@ -916,6 +840,12 @@ func loginHandler(c *fiber.Ctx) error {
 		return c.SendString(err.Error())
 	}
 
+	err := validate.Struct(authCredentials)
+	if err != nil {
+		return c.Status(fiber.StatusUnprocessableEntity).
+			SendString(err.Error())
+	}
+
 	user, ok := db.FindUser(authCredentials.Login, authCredentials.Password)
 	if !ok {
 		return c.SendString("Invalid creditials")
@@ -939,6 +869,74 @@ func loginHandler(c *fiber.Ctx) error {
 	// return c.JSON(AuthResponse{Session: session})
 }
 
+// RegisterSeller Handler godoc
+// @Summary Creates a new seller.
+// @Tags auth
+// @Accept  json
+// @Produce json
+// @Param Seller body db.Seller true "Register seller"
+// @Success 200 {object} ResponseHTTP{data=db.Seller}
+// @Failure 400 {object} ResponseHTTP{}
+// @Router /registerSeller [post]
+func registerSellerHandler(c *fiber.Ctx) error {
+	var seller db.Seller
+	if err := c.BodyParser(&seller); err != nil {
+		return c.SendString(err.Error())
+	}
+
+	err := validate.Struct(seller)
+	if err != nil {
+		return c.Status(fiber.StatusUnprocessableEntity).
+			SendString(err.Error())
+	}
+
+	seller.SellerID = ""
+	seller.SellerID = "seller_" + xid.New().String()
+	ok := db.CreateSeller(seller)
+	if !ok {
+		return c.SendString("Error in CreateSeller operation")
+	}
+
+	return c.SendString("Registered successfully!")
+}
+
+// LoginSeller Handler godoc
+// @Summary Logs a Seller in.
+// @Tags auth
+// @Accept  json
+// @Produce json
+// @Param Seller body db.Seller true "Reg seller"
+// @Success 200 {object} ResponseHTTP{data=db.Seller}
+// @Failure 400 {object} ResponseHTTP{}
+// @Router /loginSeller [post]
+func loginSellerHandler(c *fiber.Ctx) error {
+	var authCredentials SellerAuthCredentials
+	if err := c.BodyParser(&authCredentials); err != nil {
+		return c.SendString(err.Error())
+	}
+
+	err := validate.Struct(authCredentials)
+	if err != nil {
+		return c.Status(fiber.StatusUnprocessableEntity).
+			SendString(err.Error())
+	}
+
+	seller, ok := db.FindSeller(authCredentials.Login, authCredentials.Password)
+	if !ok {
+		return c.SendString("Invalid creditials")
+	}
+	sellerSession := db.SellerSession{
+		ID:       "session_" + xid.New().String(),
+		SellerID: seller.SellerID,
+	}
+	ok = db.CreateSellerSession(sellerSession)
+	if !ok {
+		return c.SendString("Cannot create session")
+	}
+
+	return c.JSON(sellerSession)
+}
+
 // AddWishHandler godoc
 // @Summary Creates a new gift.
 // @Description get the status of server.
@@ -946,6 +944,7 @@ func loginHandler(c *fiber.Ctx) error {
 // @Accept  json
 // @Produce json
 // @Param Wishes body db.Wishes true "Add wishes"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.Wishes}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /wishes/{wishlist_id} [post]
@@ -978,6 +977,7 @@ func AddWishHandler(c *fiber.Ctx) error {
 // @Accept  json
 // @Produce json
 // @Param Wishes body db.Wishes true "Add wishes"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.Wishes}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /wishes/{id}/{wishlist_id} [delete]
@@ -998,7 +998,7 @@ func DeleteWishHandler(c *fiber.Ctx) error {
 // @Tags Wishlist
 // @Accept  json
 // @Produce json
-// @Param UserWishlist body db.UserWishlist true "Create Wishlist"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.UserWishlist}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /wishlists [post]
@@ -1025,14 +1025,15 @@ func CreateWishlistHandler(c *fiber.Ctx) error {
 
 }
 
-// createWishlist godoc
+// FindManyWishlists godoc
 // @Summary Creates a new gift.
 // @Description get the status of server.
 // @Tags Wishlist
 // @Accept  json
 // @Produce json
-// @Param UserWishlist body db.UserWishlist true "Create Wishlist"
-// @Success 200 {object} ResponseHTTP{data=db.UserWishlist}
+// @Param id path string true "Find FindManyWishlists"
+// @Param Authorization header string true "Bearer токен"
+// @Success 200 {object} ResponseHTTP{data=[]db.UserWishlist}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /wishlists [get]
 func FindManyWishlistsHandler(c *fiber.Ctx) error {
@@ -1044,13 +1045,33 @@ func FindManyWishlistsHandler(c *fiber.Ctx) error {
 	return c.JSON(wishlists)
 }
 
+// findWishlistByName godoc
+// @Summary Creates a new gift.
+// @Description get the status of server.
+// @Tags Wishlist
+// @Accept  json
+// @Produce json
+// @Param name path string true "Delete ServiceReview"
+// @Param Authorization header string true "Bearer токен"
+// @Success 200 {object} ResponseHTTP{data=db.UserWishlist}
+// @Failure 400 {object} ResponseHTTP{}
+// @Router /wishlists/{name} [get]
+func findWishlistByName(c *fiber.Ctx) error {
+	nameID := c.Params("name")
+	wishlist, ok := db.FindWishlistByName(nameID)
+	if !ok {
+		return c.SendString("error in findManyWishlists operation")
+	}
+	return c.JSON(wishlist)
+}
+
 // DeleteWishHandler godoc
 // @Summary Creates a new gift.
 // @Description get the status of server.
 // @Tags Wishes
 // @Accept  json
 // @Produce json
-// @Param Wishes body db.Wishes true "Add wishes"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.Wishes}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /wishes/{id}/{wishlist_id} [get]
@@ -1064,506 +1085,6 @@ func FindAllWishesInWishlistHandler(c *fiber.Ctx) error {
 	return c.JSON(wishes)
 }
 
-// createSelectionHandler обрабатывает HTTP POST запросы на /selection/create.
-// @Summary Создает новый Selection
-// @Description Принимает JSON тело запроса с полями Selection и создает новый Selection
-// @Tags Selection
-// @Accept json
-// @Produce json
-// @Param Selection body db.Selection true "Create Selection"
-// @Success 200 {object} ResponseHTTP{data=db.Selection}
-// @Failure 400 {object} ResponseHTTP{}
-// @Router /selection/create [post]
-func createSelectionHandler(c *fiber.Ctx) error {
-	var selection db.Selection
-	if err := c.BodyParser(&selection); err != nil {
-		return c.Status(fiber.StatusBadRequest).SendString(err.Error())
-	}
-
-	err := validate.Struct(selection)
-	if err != nil {
-		return c.Status(fiber.StatusUnprocessableEntity).
-			SendString(err.Error())
-	}
-
-	selection.ID = "selection_" + xid.New().String()
-	if selection.ID == "" {
-		return c.Status(fiber.StatusInternalServerError).SendString("Error generating ID")
-	}
-
-	selection.UserID = "111" //c.Locals("user")
-
-	ok := db.CreateSelection(selection)
-	if !ok {
-		return c.Status(fiber.StatusInternalServerError).SendString("Error in createSelection operation")
-	}
-
-	return c.JSON(selection)
-}
-
-// updateSelectionHandler обрабатывает HTTP PUT запросы на /selection/{id}.
-// @Summary Обновляет существующий Selection
-// @Description Принимает id Selection в качестве параметра пути и JSON тело запроса с новыми полями Selection
-// @Tags Selection
-// @Accept json
-// @Produce json
-// @Param Selection body db.Selection true "Create Selection"
-// @Success 200 {object} ResponseHTTP{data=db.Selection}
-// @Failure 400 {object} ResponseHTTP{}
-// @Router /selection/{id} [put]
-func updateSelectionHandler(c *fiber.Ctx) error {
-	var selection db.Selection
-	if err := c.BodyParser(&selection); err != nil {
-		return c.SendString(err.Error())
-	}
-
-	ok := db.UpdateSelection(selection)
-	if !ok {
-		return c.SendString("Error in updateSelection operation")
-	}
-	return c.SendString("Selection updated successfully")
-}
-
-// getManySelectionsHandler обрабатывает HTTP GET запросы на /selections.
-// @Summary Получает все Selections
-// @Description Возвращает все Selections из базы данных
-// @Tags Selection
-// @Accept json
-// @Produce json
-// @Success 200 {object} ResponseHTTP{data=[]db.Selection}
-// @Failure 400 {object} ResponseHTTP{}
-// @Router /selection [get]
-func getManySelectionsHandler(c *fiber.Ctx) error {
-	var selection db.Selection
-	ok, result := db.FindManySelection(selection)
-	if !ok {
-		return c.SendString("Ошибка в операции FindManySelection")
-	}
-	return c.JSON(result)
-}
-
-// getOneSelectionHandler обрабатывает HTTP GET запросы на /selection/{id}.
-// @Summary Получает один Selection
-// @Description Возвращает один Selection из базы данных по id
-// @Tags Selection
-// @Accept json
-// @Produce json
-// @Param id path int true "Selection ID"
-// @Success 200 {object} ResponseHTTP{data=db.Selection}
-// @Failure 400 {object} ResponseHTTP{}
-// @Router /selection/{id} [get]
-func getOneSelectionHandler(c *fiber.Ctx) error {
-	var selection db.Selection
-	ok := db.FindOneSelection(selection)
-	if !ok {
-		return c.SendString("Ошибка в операции FindOneSelection")
-	}
-	return c.SendString("Selection найден успешно")
-}
-
-// deleteSelectionHandler обрабатывает HTTP DELETE запросы на /selection/{id}.
-// @Summary Удаляет существующий Selection
-// @Description Принимает id Selection в качестве параметра пути и удаляет соответствующий Selection
-// @Tags Selection
-// @Accept json
-// @Produce json
-// @Param Selection body db.Selection true "Create Selection"
-// @Success 200 {object} ResponseHTTP{}
-// @Failure 400 {object} ResponseHTTP{}
-// @Router /selection/{id} [delete]
-func deleteSelectionHandler(c *fiber.Ctx) error {
-	id := c.Params("id")
-
-	ok := db.DeleteSelection(id)
-	if !ok {
-		return c.SendString("Error in deleteSelection operation")
-	}
-	return c.SendString("Selection deleted successfully")
-}
-
-// createGiftToSelectionHandler обрабатывает HTTP POST запросы на /giftToSelection.
-// @Summary Создает новый GiftToSelection
-// @Description Принимает GiftToSelection в теле запроса и создает соответствующий GiftToSelection
-// @Tags GiftToSelection
-// @Accept json
-// @Produce json
-// @Param GiftToSelection body db.GiftToSelection true "Create GiftToSelection"
-// @Success 200 {object} ResponseHTTP{}
-// @Failure 400 {object} ResponseHTTP{}
-// @Router /giftToSelection [post]
-func createGiftToSelectionHandler(c *fiber.Ctx) error {
-	var giftToSelection db.GiftToSelection
-	if err := c.BodyParser(&giftToSelection); err != nil {
-		return c.SendString(err.Error())
-	}
-
-	err := validate.Struct(giftToSelection)
-	if err != nil {
-		return c.Status(fiber.StatusUnprocessableEntity).
-			SendString(err.Error())
-	}
-
-	// giftToSelection.SelectionID = "giftToSelection_" + xid.New().String()
-
-	ok := db.CreateGiftToSelection(giftToSelection)
-	if !ok {
-		return c.SendString("Error in createGiftToSelection operation")
-	}
-
-	return c.JSON(giftToSelection)
-}
-
-// updateGiftToSelectionHandler обрабатывает HTTP PUT запросы на /giftToSelection/{id}.
-// @Summary Обновляет существующий GiftToSelection
-// @Description Принимает id GiftToSelection в качестве параметра пути и обновляет соответствующий GiftToSelection
-// @Tags GiftToSelection
-// @Accept json
-// @Produce json
-// @Param GiftToSelection body db.GiftToSelection true "Update GiftToSelection"
-// @Success 200 {object} ResponseHTTP{}
-// @Failure 400 {object} ResponseHTTP{}
-// @Router /giftToSelection/{id} [put]
-func updateGiftToSelectionHandler(c *fiber.Ctx) error {
-	var giftToSelection db.GiftToSelection
-	if err := c.BodyParser(&giftToSelection); err != nil {
-		return c.SendString(err.Error())
-	}
-
-	err := validate.Struct(giftToSelection)
-	if err != nil {
-		return c.Status(fiber.StatusUnprocessableEntity).
-			SendString(err.Error())
-	}
-
-	ok := db.UpdateGiftToSelection(giftToSelection)
-	if !ok {
-		return c.SendString("Error in updateGiftToSelection operation")
-	}
-	return c.SendString("GiftToSelection updated successfully")
-}
-
-// findGiftToSelectionHandler обрабатывает HTTP GET запросы на /giftToSelection/{id}.
-// @Summary Находит существующий GiftToSelection
-// @Description Принимает id GiftToSelection в качестве параметра пути и находит соответствующий GiftToSelection
-// @Tags GiftToSelection
-// @Accept json
-// @Produce json
-// @Param id path string true "GiftToSelection ID"
-// @Success 200 {object} ResponseHTTP{}
-// @Failure 400 {object} ResponseHTTP{}
-// @Router /giftToSelection/{id} [get]
-func findGiftToSelectionHandler(c *fiber.Ctx) error {
-	var giftToSelection db.GiftToSelection
-	if err := c.BodyParser(&giftToSelection); err != nil {
-		return c.SendString(err.Error())
-	}
-
-	ok := db.FindGiftToSelection(giftToSelection)
-	if !ok {
-		return c.SendString("Error in findGiftToSelection operation")
-	}
-	return c.JSON(giftToSelection)
-}
-
-// deleteGiftToSelectionHandler обрабатывает HTTP DELETE запросы на /giftToSelection/{id}.
-// @Summary Удаляет существующий GiftToSelection
-// @Description Принимает id GiftToSelection в качестве параметра пути и удаляет соответствующий GiftToSelection
-// @Tags GiftToSelection
-// @Accept json
-// @Produce json
-// @Param id path string true "GiftToSelection ID"
-// @Success 200 {object} ResponseHTTP{}
-// @Failure 400 {object} ResponseHTTP{}
-// @Router /giftToSelection/{id} [delete]
-func deleteGiftToSelectionHandler(c *fiber.Ctx) error {
-	GiftID := c.Params("gift_id")
-	SelectionID := c.Locals("selection_id").(string)
-
-	ok := db.DeleteGiftToSelection(SelectionID, GiftID)
-	if !ok {
-		return c.SendString("Error in deleteGiftToSelection operation")
-	}
-	return c.SendString("GiftToSelection deleted successfully")
-}
-
-// createSelectionCategoryHandler обрабатывает HTTP POST запросы на /selectionCategory.
-// @Summary Создает новый SelectionCategory
-// @Description Принимает SelectionCategory в теле запроса и создает соответствующий SelectionCategory
-// @Tags SelectionCategory
-// @Accept json
-// @Produce json
-// @Param SelectionCategory body db.SelectionCategory true "Create SelectionCategory"
-// @Success 200 {object} ResponseHTTP{}
-// @Failure 400 {object} ResponseHTTP{}
-// @Router /selectionCategory [post]
-func createSelectionCategoryHandler(c *fiber.Ctx) error {
-	var selectionCategory db.SelectionCategory
-	if err := c.BodyParser(&selectionCategory); err != nil {
-		return c.SendString(err.Error())
-	}
-
-	err := validate.Struct(selectionCategory)
-	if err != nil {
-		return c.Status(fiber.StatusUnprocessableEntity).
-			SendString(err.Error())
-	}
-
-	selectionCategory.ID = "selectionCategory_" + xid.New().String()
-
-	ok := db.CreateSelectionCategory(selectionCategory)
-	if !ok {
-		return c.SendString("Error in createSelectionCategory operation")
-	}
-
-	return c.JSON(selectionCategory)
-}
-
-// updateSelectionCategoryHandler обрабатывает HTTP PUT запросы на /selectionCategory/{id}.
-// @Summary Обновляет существующий SelectionCategory
-// @Description Принимает id SelectionCategory в качестве параметра пути и обновляет соответствующий SelectionCategory
-// @Tags SelectionCategory
-// @Accept json
-// @Produce json
-// @Param SelectionCategory body db.SelectionCategory true "Update SelectionCategory"
-// @Success 200 {object} ResponseHTTP{}
-// @Failure 400 {object} ResponseHTTP{}
-// @Router /selectionCategory/{id} [put]
-func updatedSelectionCategoryHandler(c *fiber.Ctx) error {
-	var selectionCategory db.SelectionCategory
-	if err := c.BodyParser(&selectionCategory); err != nil {
-		return c.SendString(err.Error())
-	}
-
-	err := validate.Struct(selectionCategory)
-	if err != nil {
-		return c.Status(fiber.StatusUnprocessableEntity).
-			SendString(err.Error())
-	}
-
-	ok := db.UpdatedSelectionCategory(selectionCategory)
-	if !ok {
-		return c.SendString("Error in updateSelectionCategory operation")
-	}
-	return c.SendString("SelectionCategory updated successfully")
-}
-
-// findSelectionCategoryHandler обрабатывает HTTP GET запросы на /selectionCategory/{id}.
-// @Summary Находит существующий SelectionCategory
-// @Description Принимает id SelectionCategory в качестве параметра пути и находит соответствующий SelectionCategory
-// @Tags SelectionCategory
-// @Accept json
-// @Produce json
-// @Param id path string true "SelectionCategory ID"
-// @Success 200 {object} ResponseHTTP{}
-// @Failure 400 {object} ResponseHTTP{}
-// @Router /selectionCategory/{id} [get]
-func findSelectionCategoryHandler(c *fiber.Ctx) error {
-	var selectionCategory db.SelectionCategory
-	if err := c.BodyParser(&selectionCategory); err != nil {
-		return c.SendString(err.Error())
-	}
-
-	ok := db.FindSelectionCategory(selectionCategory)
-	if !ok {
-		return c.SendString("Error in findSelectionCategory operation")
-	}
-	return c.JSON(selectionCategory)
-}
-
-// deleteSelectionCategoryHandler обрабатывает HTTP DELETE запросы на /selectionCategory/{id}.
-// @Summary Удаляет существующий SelectionCategory
-// @Description Принимает id SelectionCategory в качестве параметра пути и удаляет соответствующий SelectionCategory
-// @Tags SelectionCategory
-// @Accept json
-// @Produce json
-// @Param id path string true "SelectionCategory ID"
-// @Success 200 {object} ResponseHTTP{}
-// @Failure 400 {object} ResponseHTTP{}
-// @Router /selectionCategory/{id} [delete]
-func deleteSelectionCategoryHandler(c *fiber.Ctx) error {
-	id := c.Params("id")
-
-	ok := db.DeleteSelectionCategory(id)
-	if !ok {
-		return c.SendString("Error in deleteSelectionCategory operation")
-	}
-	return c.SendString("SelectionCategory deleted successfully")
-}
-
-// createLikeToSelectionHandler обрабатывает HTTP POST запросы на /likeToSelection.
-// @Summary Создает новый LikeToSelection
-// @Description Принимает LikeToSelection в теле запроса и создает соответствующий LikeToSelection
-// @Tags LikeToSelection
-// @Accept json
-// @Produce json
-// @Param LikeToSelection body db.LikeToSelection true "Create LikeToSelection"
-// @Success 200 {object} ResponseHTTP{}
-// @Failure 400 {object} ResponseHTTP{}
-// @Router /likeToSelection [post]
-func createLikeToSelectionHandler(c *fiber.Ctx) error {
-	var likeToSelection db.LikeToSelection
-	if err := c.BodyParser(&likeToSelection); err != nil {
-		return c.SendString(err.Error())
-	}
-
-	err := validate.Struct(likeToSelection)
-	if err != nil {
-		return c.Status(fiber.StatusUnprocessableEntity).
-			SendString(err.Error())
-	}
-
-	likeToSelection.SelectionID = "likeToSelection_" + xid.New().String()
-
-	ok := db.CreateLikeToSelection(likeToSelection)
-	if !ok {
-		return c.SendString("Error in createLikeToSelection operation")
-	}
-
-	return c.JSON(likeToSelection)
-}
-
-// getLikesCountToSelectionHandler обрабатывает HTTP GET запросы на /likeToSelection/{id}/count.
-// @Summary Получает количество лайков для Selection
-// @Description Принимает id Selection в качестве параметра пути и возвращает количество лайков для соответствующего Selection
-// @Tags LikeToSelection
-// @Accept json
-// @Produce json
-// @Param id path string true "Selection ID"
-// @Success 200 {object} ResponseHTTP{}
-// @Failure 400 {object} ResponseHTTP{}
-// @Router /likeToSelection/{id}/count [get]
-func getLikesCountToSelectionHandler(c *fiber.Ctx) error {
-	selectionID := c.Params("selection_id")
-
-	count := db.GetLikesCountToSelection(selectionID)
-	if count == -1 {
-		return c.SendString("Error in getLikesCountToSelection operation")
-	}
-	return c.SendString(fmt.Sprintf("Likes count: %d", count))
-}
-
-// deleteLikeToSelectionHandler обрабатывает HTTP DELETE запросы на /likeToSelection/{id}.
-// @Summary Удаляет существующий LikeToSelection
-// @Description Принимает id LikeToSelection в качестве параметра пути и удаляет соответствующий LikeToSelection
-// @Tags LikeToSelection
-// @Accept json
-// @Produce json
-// @Param id path string true "LikeToSelection ID"
-// @Success 200 {object} ResponseHTTP{}
-// @Failure 400 {object} ResponseHTTP{}
-// @Router /likeToSelection/{id} [delete]
-func deleteLikeToSelectionHandler(c *fiber.Ctx) error {
-	UserID := c.Params("user_id")
-	SelectionID := c.Locals("selection_id").(string)
-
-	ok := db.DeleteLikeToSelection(UserID, SelectionID)
-	if !ok {
-		return c.SendString("Error in deleteLikeToSelection operation")
-	}
-	return c.SendString("LikeToSelection deleted successfully")
-}
-
-// createCommentToSelectionHandler обрабатывает HTTP POST запросы на /commentToSelection.
-// @Summary Создает новый CommentToSelection
-// @Description Принимает CommentToSelection в теле запроса и создает соответствующий CommentToSelection
-// @Tags CommentToSelection
-// @Accept json
-// @Produce json
-// @Param CommentToSelection body db.CommentToSelection true "Create CommentToSelection"
-// @Success 200 {object} ResponseHTTP{}
-// @Failure 400 {object} ResponseHTTP{}
-// @Router /commentToSelection [post]
-func createCommentToSelectionHandler(c *fiber.Ctx) error {
-	var commentToSelection db.CommentToSelection
-	if err := c.BodyParser(&commentToSelection); err != nil {
-		return c.SendString(err.Error())
-	}
-
-	err := validate.Struct(commentToSelection)
-	if err != nil {
-		return c.Status(fiber.StatusUnprocessableEntity).
-			SendString(err.Error())
-	}
-
-	commentToSelection.ID = "commentToSelection_" + xid.New().String()
-
-	ok := db.CreateCommentToSelection(commentToSelection)
-	if !ok {
-		return c.SendString("Error in createCommentToSelection operation")
-	}
-
-	return c.JSON(commentToSelection)
-}
-
-// getCommentsToSelectionHandler обрабатывает HTTP GET запросы на /commentToSelection/{id}.
-// @Summary Получает комментарии для Selection
-// @Description Принимает id Selection в качестве параметра пути и возвращает комментарии для соответствующего Selection
-// @Tags CommentToSelection
-// @Accept json
-// @Produce json
-// @Param id path string true "Selection ID"
-// @Success 200 {object} ResponseHTTP{}
-// @Failure 400 {object} ResponseHTTP{}
-// @Router /commentToSelection/{id} [get]
-func getCommentsToSelectionHandler(c *fiber.Ctx) error {
-	id := c.Params("id")
-
-	comments, ok := db.GetCommentsToSelection(id)
-	if !ok {
-		return c.SendString("Error in getCommentsToSelection operation")
-	}
-	return c.JSON(comments)
-}
-
-// updateCommentToSelectionHandler обрабатывает HTTP PUT запросы на /commentToSelection/{id}.
-// @Summary Обновляет существующий CommentToSelection
-// @Description Принимает id CommentToSelection в качестве параметра пути и обновляет соответствующий CommentToSelection
-// @Tags CommentToSelection
-// @Accept json
-// @Produce json
-// @Param CommentToSelection body db.CommentToSelection true "Update CommentToSelection"
-// @Success 200 {object} ResponseHTTP{}
-// @Failure 400 {object} ResponseHTTP{}
-// @Router /commentToSelection/{id} [put]
-func updateCommentToSelectionHandler(c *fiber.Ctx) error {
-	var commentToSelection db.CommentToSelection
-	if err := c.BodyParser(&commentToSelection); err != nil {
-		return c.SendString(err.Error())
-	}
-
-	err := validate.Struct(commentToSelection)
-	if err != nil {
-		return c.Status(fiber.StatusUnprocessableEntity).
-			SendString(err.Error())
-	}
-
-	ok := db.UpdateCommentToSelection(commentToSelection)
-	if !ok {
-		return c.SendString("Error in updateCommentToSelection operation")
-	}
-	return c.SendString("CommentToSelection updated successfully")
-}
-
-// deleteCommentToSelectionHandler обрабатывает HTTP DELETE запросы на /commentToSelection/{id}.
-// @Summary Удаляет существующий CommentToSelection
-// @Description Принимает id CommentToSelection в качестве параметра пути и удаляет соответствующий CommentToSelection
-// @Tags CommentToSelection
-// @Accept json
-// @Produce json
-// @Param id path string true "CommentToSelection ID"
-// @Success 200 {object} ResponseHTTP{}
-// @Failure 400 {object} ResponseHTTP{}
-// @Router /commentToSelection/{id} [delete]
-func deleteCommentToSelectionHandler(c *fiber.Ctx) error {
-	id := c.Params("id")
-
-	ok := db.DeleteCommentToSelection(id)
-	if !ok {
-		return c.SendString("Error in deleteCommentToSelection operation")
-	}
-	return c.SendString("CommentToSelection deleted successfully")
-}
-
 // deleteServiceReview godoc
 // @Summary Deletes a specified serviceReview.
 // @Tags ServiceReviews
@@ -1571,6 +1092,7 @@ func deleteCommentToSelectionHandler(c *fiber.Ctx) error {
 // @Produce json
 // @Param id path string true "Delete ServiceReview"
 // @Success 200 {object} ResponseHTTP{data=db.ServiceReview}
+// @Param Authorization header string true "Bearer токен"
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /serviceReviews/{id} [delete]
 func deleteServiceReviewHandler(c *fiber.Ctx) error {
@@ -1590,6 +1112,7 @@ func deleteServiceReviewHandler(c *fiber.Ctx) error {
 // @Accept  json
 // @Produce json
 // @Param UserWishlist body db.UserWishlist true "Create Wishlist"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.UserWishlist}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /wishlists [put]
@@ -1617,6 +1140,7 @@ func UpdateWishlist(c *fiber.Ctx) error {
 // @Accept  json
 // @Produce json
 // @Param Wishlist body db.UserWishlist true "Delete Wishlist"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.UserWishlist}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /wishlists/{wishlist_id}/{gift_id} [delete]
@@ -1640,6 +1164,7 @@ func DeleteWishlistHandler(c *fiber.Ctx) error {
 // @Accept json
 // @Produce json
 // @Param Quest body db.Quest true "Create Quest"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.Quest}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /quest/create [post]
@@ -1672,6 +1197,7 @@ func createQuestHandler(c *fiber.Ctx) error {
 // @Accept json
 // @Produce json
 // @Param Quest body db.Quest true "Update Quest"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.Quest}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /quest/update [put]
@@ -1685,11 +1211,46 @@ func updateQuestHandler(c *fiber.Ctx) error {
 	return c.SendString("Quest updated Succesfully")
 }
 
+// getOneQuestHandler обрабатывает HTTP GET запросы на /quest/getone/{id}.
+// @Summary Получает один квест Quest по ID
+// @Description Возвращает информацию о конкретном квесте Quest по его ID
+// @Tags Quest
+// @Param id path int true "Quest ID"
+// @Produce json
+// @Success 200 {object} ResponseHTTP{data=db.Quest}
+// @Failure 404 {string} string "Quest not found"
+// @Router /quest/getone/{id} [get]
+func getOneQuestHandler(c *fiber.Ctx) error {
+	var quest db.Quest
+	ok := db.FindOneQuest(quest)
+	if !ok {
+		return c.SendString("Error in findOneQuest operation")
+	}
+	return c.SendString("Quest Found Succesfully")
+}
+
+// getManyQuestHandler обрабатывает HTTP GET запросы на /quest/getmany.
+// @Summary Получает список квестов Quest
+// @Description Возвращает список всех квестов Quest
+// @Tags Quest
+// @Produce json
+// @Success 200 {object} ResponseHTTP{data=db.Quest}
+// @Router /quest/getmany [get]
+func getManyQuestHandler(c *fiber.Ctx) error {
+	var quest db.Quest
+	ok := db.FindManyQuest(quest)
+	if !ok {
+		return c.SendString("Error in findManyQuest operation")
+	}
+	return c.SendString("Quest Found Succesfully")
+}
+
 // deleteQuestHandler обрабатывает HTTP DELETE запросы на /quest/delete/{id}.
 // @Summary Удаляет существующий Quest по ID
 // @Description Принимает ID квеста в URL и удаляет соответствующий квест
 // @Tags Quest
 // @Param id path int true "Quest ID"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {string} string "Quest deleted successfully"
 // @Failure 404 {string} string "Quest not found"
 // @Router /quest/delete/{id} [delete]
@@ -1712,6 +1273,7 @@ func deleteQuestHandler(c *fiber.Ctx) error {
 // @Accept json
 // @Produce json
 // @Param Subquest body db.Subquest true "Create Subquest"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.Subquest}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /subquest/create [post]
@@ -1776,6 +1338,7 @@ func getOneSubquestHandler(c *fiber.Ctx) error {
 // @Description Принимает ID подзадания в URL и удаляет соответствующее подзадание
 // @Tags Subquest
 // @Param id path int true "Subquest ID"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {string} string "Subquest deleted successfully"
 // @Failure 404 {string} string "Subquest not found"
 // @Router /subquest/delete/{id} [delete]
@@ -1798,6 +1361,7 @@ func deleteSubquestHandler(c *fiber.Ctx) error {
 // @Accept json
 // @Produce json
 // @Param Tasks body db.Tasks true "Create Tasks"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.Tasks}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /tasks/create [post]
@@ -1830,6 +1394,7 @@ func createTasksHandler(c *fiber.Ctx) error {
 // @Accept json
 // @Produce json
 // @Param Tasks body db.Tasks true "Update Tasks"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.Tasks}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /tasks/update [put]
@@ -1881,6 +1446,7 @@ func getManyTasksHandler(c *fiber.Ctx) error {
 // @Description Принимает ID задания в URL и удаляет соответствующее задание
 // @Tags Tasks
 // @Param id path int true "Tasks ID"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {string} string "Tasks deleted successfully"
 // @Failure 404 {string} string "Tasks not found"
 // @Router /tasks/delete/{id} [delete]
@@ -1896,16 +1462,17 @@ func deleteTasksHandler(c *fiber.Ctx) error {
 
 //OfflineShops
 
-// createOfflineShopHandler обрабатывает HTTP POST запросы на /offline-shop/create.
+// createOfflineShopHandler обрабатывает HTTP POST запросы на /offlineshop/create.
 // @Summary Создает новый Offline Shop
 // @Description Принимает JSON тело запроса с полями Offline Shop и создает новый Offline Shop
-// @Tags Offline Shops
+// @Tags OfflineShops
 // @Accept json
 // @Produce json
 // @Param OfflineShop body db.OfflineShops true "Create Offline Shop"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.OfflineShops}
 // @Failure 400 {object} ResponseHTTP{}
-// @Router /offline-shop/create [post]
+// @Router /offlineshop/create [post]
 func createOfflineShopsHandler(c *fiber.Ctx) error {
 	var offlineshops db.OfflineShops
 	if err := c.BodyParser(&offlineshops); err != nil {
@@ -1928,17 +1495,18 @@ func createOfflineShopsHandler(c *fiber.Ctx) error {
 	return c.JSON(offlineshops)
 }
 
-// updateOfflineShopHandler обрабатывает HTTP PUT запросы на /offline-shop/update/{id}.
+// updateOfflineShopHandler обрабатывает HTTP PUT запросы на /offlineshop/update/{id}.
 // @Summary Обновляет существующий Offline Shop по ID
 // @Description Принимает JSON тело запроса с обновленными полями Offline Shop и обновляет существующий Offline Shop по его ID
-// @Tags Offline Shops
+// @Tags OfflineShops
 // @Accept json
 // @Produce json
 // @Param id path string true "Offline Shop ID"
 // @Param OfflineShop body db.OfflineShops true "Update Offline Shop"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.OfflineShops}
 // @Failure 400 {object} ResponseHTTP{}
-// @Router /offline-shop/update/{id} [put]
+// @Router /offlineshop/update/{id} [put]
 func updateOfflineShopsHandler(c *fiber.Ctx) error {
 	var offlineshops db.OfflineShops
 	ok := db.UpdateOfflineShops(offlineshops)
@@ -1948,14 +1516,49 @@ func updateOfflineShopsHandler(c *fiber.Ctx) error {
 	return c.SendString("OfflineShops updated Succesfully")
 }
 
-// deleteOfflineShopHandler обрабатывает HTTP DELETE запросы на /offline-shop/delete/{id}.
+// getOneOfflineShopsHandler обрабатывает HTTP GET запросы на /offlineshops/getone/{id}.
+// @Summary Получает один офлайн магазин OfflineShops по ID
+// @Description Возвращает информацию о конкретном офлайн магазине OfflineShops по его ID
+// @Tags OfflineShops
+// @Param id path int true "OfflineShops ID"
+// @Produce json
+// @Success 200 {object} ResponseHTTP{data=db.OfflineShops}
+// @Failure 404 {string} string "OfflineShops not found"
+// @Router /offlineshops/getone/{id} [get]
+func getOneOfflineShopsHandler(c *fiber.Ctx) error {
+	var offlineshops db.OfflineShops
+	ok := db.FindOneOfflineShops(offlineshops)
+	if !ok {
+		return c.SendString("Error in findOneOfflineShops operation")
+	}
+	return c.SendString("OfflineShops Found Succesfully")
+}
+
+// getManyOfflineShopsHandler обрабатывает HTTP GET запросы на /offlineshops/getmany.
+// @Summary Получает список офлайн магазинов OfflineShops
+// @Description Возвращает список всех офлайн магазинов OfflineShops
+// @Tags OfflineShops
+// @Produce json
+// @Success 200 {object} ResponseHTTP{data=db.OfflineShops}
+// @Router /offlineshops/getmany [get]
+func getManyOfflineShopsHandler(c *fiber.Ctx) error {
+	var offlineshops db.OfflineShops
+	ok := db.FindManyOfflineShops(offlineshops)
+	if !ok {
+		return c.SendString("Error in findManyOfflineShops operation")
+	}
+	return c.SendString("OfflineShops Found Succesfully")
+}
+
+// deleteOfflineShopHandler обрабатывает HTTP DELETE запросы на /offlineshop/delete/{id}.
 // @Summary Удаляет существующий Offline Shop по ID
 // @Description Принимает ID офлайн магазина в URL и удаляет соответствующий офлайн магазин
-// @Tags Offline Shops
+// @Tags OfflineShops
 // @Param id path string true "Offline Shop ID"
+// @Param Authorization header string true "Bearer токен"
 // @Success 200 {string} string "Offline Shop deleted successfully"
 // @Failure 404 {string} string "Offline Shop not found"
-// @Router /offline-shop/delete/{id} [delete]
+// @Router /offlineshop/delete/{id} [delete]
 func deleteOfflineShopsHandler(c *fiber.Ctx) error {
 	id := c.Params("id")
 
@@ -1964,6 +1567,506 @@ func deleteOfflineShopsHandler(c *fiber.Ctx) error {
 		return c.SendString("Error in deleteOfflineShops operation")
 	}
 	return c.SendString("OfflineShops deleted successfully")
+}
+
+// createSelectionHandler обрабатывает HTTP POST запросы на /selection/create.
+// @Summary Создает новый Selection
+// @Description Принимает JSON тело запроса с полями Selection и создает новый Selection
+// @Tags Selection
+// @Accept json
+// @Produce json
+// @Param Selection body db.Selection true "Create Selection"
+// @Param Authorization header string true "Bearer токен"
+// @Success 200 {object} ResponseHTTP{data=db.Selection}
+// @Failure 400 {object} ResponseHTTP{}
+// @Router /selection/create [post]
+func createSelectionHandler(c *fiber.Ctx) error {
+	var selection db.Selection
+	if err := c.BodyParser(&selection); err != nil {
+		return c.Status(fiber.StatusBadRequest).SendString(err.Error())
+	}
+
+	if selection.Name == "" {
+		return c.Status(fiber.StatusBadRequest).SendString("Name is required")
+	}
+	if selection.Description == "" {
+		return c.Status(fiber.StatusBadRequest).SendString("Description is required")
+	}
+
+	selection.ID = "selection_" + xid.New().String()
+	if selection.ID == "" {
+		return c.Status(fiber.StatusInternalServerError).SendString("Error generating ID")
+	}
+
+	selection.UserID = "111" //c.Locals("user")
+
+	ok := db.CreateSelection(selection)
+	if !ok {
+		return c.Status(fiber.StatusInternalServerError).SendString("Error in createSelection operation")
+	}
+
+	return c.JSON(selection)
+}
+
+// updateSelectionHandler обрабатывает HTTP PUT запросы на /selection/{id}.
+// @Summary Обновляет существующий Selection
+// @Description Принимает id Selection в качестве параметра пути и JSON тело запроса с новыми полями Selection
+// @Tags Selection
+// @Accept json
+// @Produce json
+// @Param Selection body db.Selection true "Create Selection"
+// @Param Authorization header string true "Bearer токен"
+// @Success 200 {object} ResponseHTTP{data=db.Selection}
+// @Failure 400 {object} ResponseHTTP{}
+// @Router /selection/{id} [put]
+func updateSelectionHandler(c *fiber.Ctx) error {
+	var selection db.Selection
+	if err := c.BodyParser(&selection); err != nil {
+		return c.SendString(err.Error())
+	}
+
+	ok := db.UpdateSelection(selection)
+	if !ok {
+		return c.SendString("Error in updateSelection operation")
+	}
+	return c.SendString("Selection updated successfully")
+}
+
+// getManySelectionsHandler обрабатывает HTTP GET запросы на /selections.
+// @Summary Получает все Selections
+// @Description Возвращает все Selections из базы данных
+// @Tags Selection
+// @Accept json
+// @Produce json
+// @Success 200 {object} ResponseHTTP{data=[]db.Selection}
+// @Failure 400 {object} ResponseHTTP{}
+// @Router /selection [get]
+func getManySelectionsHandler(c *fiber.Ctx) error {
+	ok, selections := db.FindManySelection()
+	if !ok {
+		return c.SendString("Error in FindManySelection")
+	}
+	return c.JSON(selections)
+}
+
+// getOneSelectionHandler обрабатывает HTTP GET запросы на /selection/{id}.
+// @Summary Получает один Selection
+// @Description Возвращает один Selection из базы данных по id
+// @Tags Selection
+// @Accept json
+// @Produce json
+// @Param id path int true "Selection ID"
+// @Success 200 {object} ResponseHTTP{data=db.Selection}
+// @Failure 400 {object} ResponseHTTP{}
+// @Router /selection/{id} [get]
+
+// func getOneSelectionHandler(c *fiber.Ctx) error {
+// 	selectionID := c.Params("id")
+// 	session := c.Locals("session")
+// 	if session == nil {
+// 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "session not found"})
+// 	}
+// 	userID := session.(string)
+// 	result, ok := db.FindOneSelection(selectionID, userID)
+// 	if !ok {
+// 		return c.JSON(result)
+// 	}
+// 	return c.JSON(result)
+// }
+
+func getOneSelectionHandler(c *fiber.Ctx) error {
+	selectionID := c.Params("selection_id")
+	// Захардкодим userID для тестирования
+	userID := "111"
+	result, ok := db.FindOneSelection(selectionID, userID)
+	if !ok {
+		return c.SendString("Failed to get Selection")
+	}
+	return c.JSON(result)
+}
+
+// deleteSelectionHandler обрабатывает HTTP DELETE запросы на /selection/{id}.
+// @Summary Удаляет существующий Selection
+// @Description Принимает id Selection в качестве параметра пути и удаляет соответствующий Selection
+// @Tags Selection
+// @Accept json
+// @Produce json
+// @Param Selection body db.Selection true "Create Selection"
+// @Param Authorization header string true "Bearer токен"
+// @Success 200 {object} ResponseHTTP{}
+// @Failure 400 {object} ResponseHTTP{}
+// @Router /selection/{id} [delete]
+func deleteSelectionHandler(c *fiber.Ctx) error {
+	id := c.Params("id")
+
+	ok := db.DeleteSelection(id)
+	if !ok {
+		return c.SendString("Error in deleteSelection operation")
+	}
+	return c.SendString("Selection deleted successfully")
+}
+
+// createGiftToSelectionHandler обрабатывает HTTP POST запросы на /giftToSelection.
+// @Summary Создает новый GiftToSelection
+// @Description Принимает GiftToSelection в теле запроса и создает соответствующий GiftToSelection
+// @Tags GiftToSelection
+// @Accept json
+// @Produce json
+// @Param GiftToSelection body db.GiftToSelection true "Create GiftToSelection"
+// @Param Authorization header string true "Bearer токен"
+// @Success 200 {object} ResponseHTTP{}
+// @Failure 400 {object} ResponseHTTP{}
+// @Router /giftToSelection [post]
+func createGiftToSelectionHandler(c *fiber.Ctx) error {
+	var giftToSelection db.GiftToSelection
+	if err := c.BodyParser(&giftToSelection); err != nil {
+		return c.SendString(err.Error())
+	}
+
+	ok := db.CreateGiftToSelection(giftToSelection)
+
+	if !ok {
+		return c.SendString("Error in createGiftToSelection operation")
+	}
+
+	return c.JSON(giftToSelection)
+}
+
+// updateGiftToSelectionHandler обрабатывает HTTP PUT запросы на /giftToSelection/{id}.
+// @Summary Обновляет существующий GiftToSelection
+// @Description Принимает id GiftToSelection в качестве параметра пути и обновляет соответствующий GiftToSelection
+// @Tags GiftToSelection
+// @Accept json
+// @Produce json
+// @Param GiftToSelection body db.GiftToSelection true "Update GiftToSelection"
+// @Param Authorization header string true "Bearer токен"
+// @Success 200 {object} ResponseHTTP{}
+// @Failure 400 {object} ResponseHTTP{}
+// @Router /giftToSelection/{id} [put]
+func updateGiftToSelectionHandler(c *fiber.Ctx) error {
+	var giftToSelection db.GiftToSelection
+	if err := c.BodyParser(&giftToSelection); err != nil {
+		return c.SendString(err.Error())
+	}
+
+	ok := db.UpdateGiftToSelection(giftToSelection)
+	if !ok {
+		return c.SendString("Error in updateGiftToSelection operation")
+	}
+	return c.SendString("GiftToSelection updated successfully")
+}
+
+// findGiftToSelectionHandler обрабатывает HTTP GET запросы на /giftToSelection/{id}.
+// @Summary Находит существующий GiftToSelection
+// @Description Принимает id GiftToSelection в качестве параметра пути и находит соответствующий GiftToSelection
+// @Tags GiftToSelection
+// @Accept json
+// @Produce json
+// @Param id path string true "GiftToSelection ID"
+// @Success 200 {object} ResponseHTTP{}
+// @Failure 400 {object} ResponseHTTP{}
+// @Router /giftToSelection/{id} [get]
+func findGiftToSelectionHandler(c *fiber.Ctx) error {
+	var giftToSelection db.GiftToSelection
+	if err := c.BodyParser(&giftToSelection); err != nil {
+		return c.SendString(err.Error())
+	}
+
+	ok := db.FindGiftToSelection(giftToSelection)
+	if !ok {
+		return c.SendString("Error in findGiftToSelection operation")
+	}
+	return c.JSON(giftToSelection)
+}
+
+// deleteGiftToSelectionHandler обрабатывает HTTP DELETE запросы на /giftToSelection/{id}.
+// @Summary Удаляет существующий GiftToSelection
+// @Description Принимает id GiftToSelection в качестве параметра пути и удаляет соответствующий GiftToSelection
+// @Tags GiftToSelection
+// @Accept json
+// @Produce json
+// @Param id path string true "GiftToSelection ID"
+// @Param Authorization header string true "Bearer токен"
+// @Success 200 {object} ResponseHTTP{}
+// @Failure 400 {object} ResponseHTTP{}
+// @Router /giftToSelection/{id} [delete]
+func deleteGiftToSelectionHandler(c *fiber.Ctx) error {
+	GiftID := c.Params("gift_id")
+	SelectionID := c.Params("selection_id")
+	fmt.Println(GiftID, SelectionID)
+	ok := db.DeleteGiftToSelection(SelectionID, GiftID)
+	if !ok {
+		return c.Status(fiber.StatusInternalServerError).SendString("Error in deleteGiftToSelection operation")
+	}
+	return c.SendString("GiftToSelection deleted successfully")
+}
+
+// createSelectionCategoryHandler обрабатывает HTTP POST запросы на /selectionCategory.
+// @Summary Создает новый SelectionCategory
+// @Description Принимает SelectionCategory в теле запроса и создает соответствующий SelectionCategory
+// @Tags SelectionCategory
+// @Accept json
+// @Produce json
+// @Param SelectionCategory body db.SelectionCategory true "Create SelectionCategory"
+// @Param Authorization header string true "Bearer токен"
+// @Success 200 {object} ResponseHTTP{}
+// @Failure 400 {object} ResponseHTTP{}
+// @Router /selectionCategory [post]
+func createSelectionCategoryHandler(c *fiber.Ctx) error {
+	var selectionCategory db.SelectionCategory
+	if err := c.BodyParser(&selectionCategory); err != nil {
+		return c.SendString(err.Error())
+	}
+
+	selectionCategory.ID = "selectionCategory_" + xid.New().String()
+
+	ok := db.CreateSelectionCategory(selectionCategory)
+	if !ok {
+		return c.SendString("Error in createSelectionCategory operation")
+	}
+
+	return c.JSON(selectionCategory)
+}
+
+// updateSelectionCategoryHandler обрабатывает HTTP PUT запросы на /selectionCategory/{id}.
+// @Summary Обновляет существующий SelectionCategory
+// @Description Принимает id SelectionCategory в качестве параметра пути и обновляет соответствующий SelectionCategory
+// @Tags SelectionCategory
+// @Accept json
+// @Produce json
+// @Param SelectionCategory body db.SelectionCategory true "Update SelectionCategory"
+// @Param Authorization header string true "Bearer токен"
+// @Success 200 {object} ResponseHTTP{}
+// @Failure 400 {object} ResponseHTTP{}
+// @Router /selectionCategory/{id} [put]
+func updatedSelectionCategoryHandler(c *fiber.Ctx) error {
+	var selectionCategory db.SelectionCategory
+	if err := c.BodyParser(&selectionCategory); err != nil {
+		return c.SendString(err.Error())
+	}
+	selectionCategory.ID = c.Params("id")
+	ok := db.UpdatedSelectionCategory(selectionCategory)
+	if !ok {
+		return c.SendString("Error in updateSelectionCategory operation")
+	}
+	return c.SendString("SelectionCategory updated successfully")
+}
+
+// findManySelectionCategoryHandler обрабатывает HTTP GET запросы на /selectionCategory/{id}.
+// @Summary Находит существующий SelectionCategory
+// @Description Принимает id SelectionCategory в качестве параметра пути и находит соответствующий SelectionCategory
+// @Tags SelectionCategory
+// @Accept json
+// @Produce json
+// @Param id path string true "SelectionCategory ID"
+// @Success 200 {object} ResponseHTTP{}
+// @Failure 400 {object} ResponseHTTP{}
+// @Router /selectionCategory/{id} [get]
+func findManySelectionCategoryHandler(c *fiber.Ctx) error {
+	result, ok := db.FindManySelectionCategory()
+	if !ok {
+		return c.SendString("Error in findSelectionCategory operation")
+	}
+	return c.JSON(result)
+}
+
+// findOneSelectionCategoryHandler обрабатывает HTTP GET запросы на /selectionCategory/{id}.
+// @Summary Находит существующий SelectionCategory
+// @Description Принимает id SelectionCategory в качестве параметра пути и находит соответствующий SelectionCategory
+// @Tags SelectionCategory
+// @Accept json
+// @Produce json
+// @Param id path string true "SelectionCategory ID"
+// @Success 200 {object} ResponseHTTP{}
+// @Failure 400 {object} ResponseHTTP{}
+// @Router /selectionCategory/{id} [get]
+func findOneSelectionCategoryHandler(c *fiber.Ctx) error {
+	selectionCategoryID := c.Params("id")
+	result, ok := db.FindOneSelectionCategory(selectionCategoryID)
+	if !ok {
+		return c.SendString("Error in findSelectionCategory operation")
+	}
+	return c.JSON(result)
+}
+
+// deleteSelectionCategoryHandler обрабатывает HTTP DELETE запросы на /selectionCategory/{id}.
+// @Summary Удаляет существующий SelectionCategory
+// @Description Принимает id SelectionCategory в качестве параметра пути и удаляет соответствующий SelectionCategory
+// @Tags SelectionCategory
+// @Accept json
+// @Produce json
+// @Param id path string true "SelectionCategory ID"
+// @Param Authorization header string true "Bearer токен"
+// @Success 200 {object} ResponseHTTP{}
+// @Failure 400 {object} ResponseHTTP{}
+// @Router /selectionCategory/{id} [delete]
+func deleteSelectionCategoryHandler(c *fiber.Ctx) error {
+	id := c.Params("id")
+
+	ok := db.DeleteSelectionCategory(id)
+	if !ok {
+		return c.SendString("Error in deleteSelectionCategory operation")
+	}
+	return c.SendString("SelectionCategory deleted successfully")
+}
+
+// createLikeToSelectionHandler обрабатывает HTTP POST запросы на /likeToSelection.
+// @Summary Создает новый LikeToSelection
+// @Description Принимает LikeToSelection в теле запроса и создает соответствующий LikeToSelection
+// @Tags LikeToSelection
+// @Accept json
+// @Produce json
+// @Param LikeToSelection body db.LikeToSelection true "Create LikeToSelection"
+// @Param Authorization header string true "Bearer токен"
+// @Success 200 {object} ResponseHTTP{}
+// @Failure 400 {object} ResponseHTTP{}
+// @Router /likeToSelection [post]
+func createLikeToSelectionHandler(c *fiber.Ctx) error {
+	var likeToSelection db.LikeToSelection
+	if err := c.BodyParser(&likeToSelection); err != nil {
+		return c.SendString(err.Error())
+	}
+	// likeToSelection.UserID = c.Locals("user_id").(string)
+	ok := db.CreateLikeToSelection(likeToSelection)
+	if !ok {
+		return c.SendString("Error in createLikeToSelection operation")
+	}
+
+	return c.JSON(likeToSelection)
+}
+
+// getLikesCountToSelectionHandler обрабатывает HTTP GET запросы на /likeToSelection/{id}/count.
+// @Summary Получает количество лайков для Selection
+// @Description Принимает id Selection в качестве параметра пути и возвращает количество лайков для соответствующего Selection
+// @Tags LikeToSelection
+// @Accept json
+// @Produce json
+// @Param id path string true "Selection ID"
+// @Success 200 {object} ResponseHTTP{}
+// @Failure 400 {object} ResponseHTTP{}
+// @Router /likeToSelection/{id}/count [get]
+func getLikesCountToSelectionHandler(c *fiber.Ctx) error {
+	selectionID := c.Params("selection_id")
+
+	count := db.GetLikesCountToSelection(selectionID)
+	if count == -1 {
+		return c.SendString("Error in getLikesCountToSelection operation")
+	}
+	return c.SendString(fmt.Sprintf("Likes count: %d", count))
+}
+
+// deleteLikeToSelectionHandler обрабатывает HTTP DELETE запросы на /likeToSelection/{id}.
+// @Summary Удаляет существующий LikeToSelection
+// @Description Принимает id LikeToSelection в качестве параметра пути и удаляет соответствующий LikeToSelection
+// @Tags LikeToSelection
+// @Accept json
+// @Produce json
+// @Param id path string true "LikeToSelection ID"
+// @Param Authorization header string true "Bearer токен"
+// @Success 200 {object} ResponseHTTP{}
+// @Failure 400 {object} ResponseHTTP{}
+// @Router /likeToSelection/{id} [delete]
+func deleteLikeToSelectionHandler(c *fiber.Ctx) error {
+	UserID := "" // c.Locals("user_id").(string)
+	SelectionID := c.Params("selection_id")
+
+	ok := db.DeleteLikeToSelection(UserID, SelectionID)
+	if !ok {
+		return c.SendString("Error in deleteLikeToSelection operation")
+	}
+	return c.SendString("LikeToSelection deleted successfully")
+}
+
+// createCommentToSelectionHandler обрабатывает HTTP POST запросы на /commentToSelection.
+// @Summary Создает новый CommentToSelection
+// @Description Принимает CommentToSelection в теле запроса и создает соответствующий CommentToSelection
+// @Tags CommentToSelection
+// @Accept json
+// @Produce json
+// @Param CommentToSelection body db.CommentToSelection true "Create CommentToSelection"
+// @Param Authorization header string true "Bearer токен"
+// @Success 200 {object} ResponseHTTP{}
+// @Failure 400 {object} ResponseHTTP{}
+// @Router /commentToSelection [post]
+func createCommentToSelectionHandler(c *fiber.Ctx) error {
+	var commentToSelection db.CommentToSelection
+	if err := c.BodyParser(&commentToSelection); err != nil {
+		return c.SendString(err.Error())
+	}
+
+	commentToSelection.ID = "commentToSelection_" + xid.New().String()
+	commentToSelection.CreatedAt = time.Now()
+	ok := db.CreateCommentToSelection(commentToSelection)
+	if !ok {
+		return c.SendString("Error in createCommentToSelection operation")
+	}
+
+	return c.JSON(commentToSelection)
+}
+
+// getCommentsToSelectionHandler обрабатывает HTTP GET запросы на /commentToSelection/{id}.
+// @Summary Получает комментарии для Selection
+// @Description Принимает id Selection в качестве параметра пути и возвращает комментарии для соответствующего Selection
+// @Tags CommentToSelection
+// @Accept json
+// @Produce json
+// @Param id path string true "Selection ID"
+// @Success 200 {object} ResponseHTTP{}
+// @Failure 400 {object} ResponseHTTP{}
+// @Router /commentToSelection/{id} [get]
+func getCommentsToSelectionHandler(c *fiber.Ctx) error {
+	id := c.Params("selection_id")
+
+	comments, ok := db.GetCommentsToSelection(id)
+	if !ok {
+		return c.SendString("Error in getCommentsToSelection operation")
+	}
+	return c.JSON(comments)
+}
+
+// updateCommentToSelectionHandler обрабатывает HTTP PUT запросы на /commentToSelection/{id}.
+// @Summary Обновляет существующий CommentToSelection
+// @Description Принимает id CommentToSelection в качестве параметра пути и обновляет соответствующий CommentToSelection
+// @Tags CommentToSelection
+// @Accept json
+// @Produce json
+// @Param CommentToSelection body db.CommentToSelection true "Update CommentToSelection"
+// @Param Authorization header string true "Bearer токен"
+// @Success 200 {object} ResponseHTTP{}
+// @Failure 400 {object} ResponseHTTP{}
+// @Router /commentToSelection/{id} [put]
+func updateCommentToSelectionHandler(c *fiber.Ctx) error {
+	var commentToSelection db.CommentToSelection
+	if err := c.BodyParser(&commentToSelection); err != nil {
+		return c.SendString(err.Error())
+	}
+
+	ok := db.UpdateCommentToSelection(commentToSelection)
+	if !ok {
+		return c.SendString("Error in updateCommentToSelection operation")
+	}
+	return c.SendString("CommentToSelection updated successfully")
+}
+
+// deleteCommentToSelectionHandler обрабатывает HTTP DELETE запросы на /commentToSelection/{id}.
+// @Summary Удаляет существующий CommentToSelection
+// @Description Принимает id CommentToSelection в качестве параметра пути и удаляет соответствующий CommentToSelection
+// @Tags CommentToSelection
+// @Accept json
+// @Produce json
+// @Param id path string true "CommentToSelection ID"
+// @Param Authorization header string true "Bearer токен"
+// @Success 200 {object} ResponseHTTP{}
+// @Failure 400 {object} ResponseHTTP{}
+// @Router /commentToSelection/{id} [delete]
+func deleteCommentToSelectionHandler(c *fiber.Ctx) error {
+	id := c.Params("id")
+
+	ok := db.DeleteCommentToSelection(id)
+	if !ok {
+		return c.SendString("Error in deleteCommentToSelection operation")
+	}
+	return c.SendString("CommentToSelection deleted successfully")
 }
 
 func uploadGiftsHandler(c *fiber.Ctx) error {
@@ -1987,5 +2090,4 @@ func generateUniqueFileName() string {
 	name := xid.New()
 	return "unique_" + name.String() + ".png"
 }
-
 

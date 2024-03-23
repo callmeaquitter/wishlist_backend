@@ -148,18 +148,21 @@ definitions:
     type: object
   db.Seller:
     properties:
-      email:
-        minLength: 5
+      login:
         type: string
       name:
         maxLength: 50
-        minLength: 5
+        type: string
+      password:
         type: string
       photo:
         type: string
+      role_name:
+        type: string
     required:
-    - email
+    - login
     - name
+    - password
     type: object
   db.SellerToService:
     properties:
@@ -312,6 +315,11 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/db.BookedGiftInWishlist'
+      - description: Bearer токен
+        in: header
+        name: Authorization
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -338,6 +346,11 @@ paths:
       description: Deletes a booked gift from the wishlist based on the provided gift
         ID and user ID.
       parameters:
+      - description: Bearer токен
+        in: header
+        name: Authorization
+        required: true
+        type: string
       - description: ID of the booked gift to be deleted
         in: path
         name: gift_id
@@ -369,6 +382,11 @@ paths:
       description: Finds all booked gifts in the wishlist for a specific user based
         on the provided user ID.
       parameters:
+      - description: Bearer токен
+        in: header
+        name: Authorization
+        required: true
+        type: string
       - description: ID of the user
         in: path
         name: user_id
@@ -408,6 +426,11 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/db.CommentToSelection'
+      - description: Bearer токен
+        in: header
+        name: Authorization
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -432,6 +455,11 @@ paths:
       - description: CommentToSelection ID
         in: path
         name: id
+        required: true
+        type: string
+      - description: Bearer токен
+        in: header
+        name: Authorization
         required: true
         type: string
       produces:
@@ -485,6 +513,11 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/db.CommentToSelection'
+      - description: Bearer токен
+        in: header
+        name: Authorization
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -530,6 +563,11 @@ paths:
       - application/json
       description: Creates a new gift category based on the provided data.
       parameters:
+      - description: Bearer токен
+        in: header
+        name: Authorization
+        required: true
+        type: string
       - description: Gift Category object to be created
         in: body
         name: GiftCategory
@@ -563,6 +601,11 @@ paths:
       - application/json
       description: Deletes a gift category based on the provided category ID.
       parameters:
+      - description: Bearer токен
+        in: header
+        name: Authorization
+        required: true
+        type: string
       - description: ID of the gift category to be deleted
         in: path
         name: id
@@ -599,6 +642,11 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/db.GiftReview'
+      - description: Bearer токен
+        in: header
+        name: Authorization
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -662,6 +710,11 @@ paths:
         name: id
         required: true
         type: string
+      - description: Bearer токен
+        in: header
+        name: Authorization
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -714,6 +767,11 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/db.GiftToSelection'
+      - description: Bearer токен
+        in: header
+        name: Authorization
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -738,6 +796,11 @@ paths:
       - description: GiftToSelection ID
         in: path
         name: id
+        required: true
+        type: string
+      - description: Bearer токен
+        in: header
+        name: Authorization
         required: true
         type: string
       produces:
@@ -791,6 +854,11 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/db.GiftToSelection'
+      - description: Bearer токен
+        in: header
+        name: Authorization
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -841,12 +909,11 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/db.Gift'
-      - description: Create Gift
-        in: body
-        name: Gift
+      - description: Bearer токен
+        in: header
+        name: Authorization
         required: true
-        schema:
-          $ref: '#/definitions/db.Gift'
+        type: string
       produces:
       - application/json
       responses:
@@ -938,6 +1005,11 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/db.Gift'
+      - description: Bearer токен
+        in: header
+        name: Authorization
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -974,6 +1046,11 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/db.LikeToSelection'
+      - description: Bearer токен
+        in: header
+        name: Authorization
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -998,6 +1075,11 @@ paths:
       - description: LikeToSelection ID
         in: path
         name: id
+        required: true
+        type: string
+      - description: Bearer токен
+        in: header
+        name: Authorization
         required: true
         type: string
       produces:
@@ -1071,7 +1153,37 @@ paths:
       summary: Creates a new gift.
       tags:
       - auth
-  /offline-shop/create:
+  /loginSeller:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Reg seller
+        in: body
+        name: Seller
+        required: true
+        schema:
+          $ref: '#/definitions/db.Seller'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.Seller'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Logs a Seller in.
+      tags:
+      - auth
+  /offlineshop/create:
     post:
       consumes:
       - application/json
@@ -1084,6 +1196,11 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/db.OfflineShops'
+      - description: Bearer токен
+        in: header
+        name: Authorization
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -1102,8 +1219,8 @@ paths:
             $ref: '#/definitions/server.ResponseHTTP'
       summary: Создает новый Offline Shop
       tags:
-      - Offline Shops
-  /offline-shop/delete/{id}:
+      - OfflineShops
+  /offlineshop/delete/{id}:
     delete:
       description: Принимает ID офлайн магазина в URL и удаляет соответствующий офлайн
         магазин
@@ -1111,6 +1228,11 @@ paths:
       - description: Offline Shop ID
         in: path
         name: id
+        required: true
+        type: string
+      - description: Bearer токен
+        in: header
+        name: Authorization
         required: true
         type: string
       responses:
@@ -1124,8 +1246,8 @@ paths:
             type: string
       summary: Удаляет существующий Offline Shop по ID
       tags:
-      - Offline Shops
-  /offline-shop/update/{id}:
+      - OfflineShops
+  /offlineshop/update/{id}:
     put:
       consumes:
       - application/json
@@ -1143,6 +1265,11 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/db.OfflineShops'
+      - description: Bearer токен
+        in: header
+        name: Authorization
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -1161,7 +1288,54 @@ paths:
             $ref: '#/definitions/server.ResponseHTTP'
       summary: Обновляет существующий Offline Shop по ID
       tags:
-      - Offline Shops
+      - OfflineShops
+  /offlineshops/getmany:
+    get:
+      description: Возвращает список всех офлайн магазинов OfflineShops
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.OfflineShops'
+              type: object
+      summary: Получает список офлайн магазинов OfflineShops
+      tags:
+      - OfflineShops
+  /offlineshops/getone/{id}:
+    get:
+      description: Возвращает информацию о конкретном офлайн магазине OfflineShops
+        по его ID
+      parameters:
+      - description: OfflineShops ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.OfflineShops'
+              type: object
+        "404":
+          description: OfflineShops not found
+          schema:
+            type: string
+      summary: Получает один офлайн магазин OfflineShops по ID
+      tags:
+      - OfflineShops
   /quest/create:
     post:
       consumes:
@@ -1174,6 +1348,11 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/db.Quest'
+      - description: Bearer токен
+        in: header
+        name: Authorization
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -1202,6 +1381,11 @@ paths:
         name: id
         required: true
         type: integer
+      - description: Bearer токен
+        in: header
+        name: Authorization
+        required: true
+        type: string
       responses:
         "200":
           description: Quest deleted successfully
@@ -1212,6 +1396,52 @@ paths:
           schema:
             type: string
       summary: Удаляет существующий Quest по ID
+      tags:
+      - Quest
+  /quest/getmany:
+    get:
+      description: Возвращает список всех квестов Quest
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.Quest'
+              type: object
+      summary: Получает список квестов Quest
+      tags:
+      - Quest
+  /quest/getone/{id}:
+    get:
+      description: Возвращает информацию о конкретном квесте Quest по его ID
+      parameters:
+      - description: Quest ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.Quest'
+              type: object
+        "404":
+          description: Quest not found
+          schema:
+            type: string
+      summary: Получает один квест Quest по ID
       tags:
       - Quest
   /quest/update:
@@ -1227,6 +1457,11 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/db.Quest'
+      - description: Bearer токен
+        in: header
+        name: Authorization
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -1277,6 +1512,36 @@ paths:
       summary: Creates a new gift.
       tags:
       - auth
+  /registerSeller:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Register seller
+        in: body
+        name: Seller
+        required: true
+        schema:
+          $ref: '#/definitions/db.Seller'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.Seller'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Creates a new seller.
+      tags:
+      - auth
   /selection:
     get:
       consumes:
@@ -1316,6 +1581,11 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/db.Selection'
+      - description: Bearer токен
+        in: header
+        name: Authorization
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -1330,35 +1600,6 @@ paths:
       summary: Удаляет существующий Selection
       tags:
       - Selection
-    get:
-      consumes:
-      - application/json
-      description: Возвращает один Selection из базы данных по id
-      parameters:
-      - description: Selection ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            allOf:
-            - $ref: '#/definitions/server.ResponseHTTP'
-            - properties:
-                data:
-                  $ref: '#/definitions/db.Selection'
-              type: object
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/server.ResponseHTTP'
-      summary: Получает один Selection
-      tags:
-      - Selection
     put:
       consumes:
       - application/json
@@ -1371,6 +1612,11 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/db.Selection'
+      - description: Bearer токен
+        in: header
+        name: Authorization
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -1403,6 +1649,11 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/db.Selection'
+      - description: Bearer токен
+        in: header
+        name: Authorization
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -1435,6 +1686,11 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/db.SelectionCategory'
+      - description: Bearer токен
+        in: header
+        name: Authorization
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -1459,6 +1715,11 @@ paths:
       - description: SelectionCategory ID
         in: path
         name: id
+        required: true
+        type: string
+      - description: Bearer токен
+        in: header
+        name: Authorization
         required: true
         type: string
       produces:
@@ -1512,6 +1773,11 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/db.SelectionCategory'
+      - description: Bearer токен
+        in: header
+        name: Authorization
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -1559,6 +1825,11 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/db.SellerToService'
+      - description: Bearer токен
+        in: header
+        name: Authorization
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -1586,6 +1857,11 @@ paths:
       - description: Service ID
         in: path
         name: id
+        required: true
+        type: string
+      - description: Bearer токен
+        in: header
+        name: Authorization
         required: true
         type: string
       produces:
@@ -1635,144 +1911,6 @@ paths:
       summary: Fetches all Services that belong to the speicfied Seller.
       tags:
       - SellerToService
-  /sellers:
-    get:
-      consumes:
-      - application/json
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            allOf:
-            - $ref: '#/definitions/server.ResponseHTTP'
-            - properties:
-                data:
-                  $ref: '#/definitions/db.Seller'
-              type: object
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/server.ResponseHTTP'
-      summary: Fetches all sellers.
-      tags:
-      - Sellers
-    post:
-      consumes:
-      - application/json
-      parameters:
-      - description: Create Seller
-        in: body
-        name: Seller
-        required: true
-        schema:
-          $ref: '#/definitions/db.Seller'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            allOf:
-            - $ref: '#/definitions/server.ResponseHTTP'
-            - properties:
-                data:
-                  $ref: '#/definitions/db.Seller'
-              type: object
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/server.ResponseHTTP'
-      summary: Creates a new seller.
-      tags:
-      - Sellers
-  /sellers/{id}:
-    delete:
-      consumes:
-      - application/json
-      parameters:
-      - description: Delete Seller
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            allOf:
-            - $ref: '#/definitions/server.ResponseHTTP'
-            - properties:
-                data:
-                  $ref: '#/definitions/db.Seller'
-              type: object
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/server.ResponseHTTP'
-      summary: Deletes a specified seller.
-      tags:
-      - Sellers
-    get:
-      consumes:
-      - application/json
-      parameters:
-      - description: Seller ID
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            allOf:
-            - $ref: '#/definitions/server.ResponseHTTP'
-            - properties:
-                data:
-                  $ref: '#/definitions/db.Seller'
-              type: object
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/server.ResponseHTTP'
-      summary: Fetches a specific seller.
-      tags:
-      - Sellers
-    patch:
-      consumes:
-      - application/json
-      parameters:
-      - description: Update Seller
-        in: body
-        name: Seller
-        required: true
-        schema:
-          $ref: '#/definitions/db.Seller'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            allOf:
-            - $ref: '#/definitions/server.ResponseHTTP'
-            - properties:
-                data:
-                  $ref: '#/definitions/db.Seller'
-              type: object
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/server.ResponseHTTP'
-      summary: Updates an existing seller.
-      tags:
-      - Sellers
   /serviceReviews:
     get:
       consumes:
@@ -1806,6 +1944,11 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/db.ServiceReview'
+      - description: Bearer токен
+        in: header
+        name: Authorization
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -1833,6 +1976,11 @@ paths:
       - description: Delete ServiceReview
         in: path
         name: id
+        required: true
+        type: string
+      - description: Bearer токен
+        in: header
+        name: Authorization
         required: true
         type: string
       produces:
@@ -1892,6 +2040,11 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/db.ServiceReview'
+      - description: Bearer токен
+        in: header
+        name: Authorization
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -1973,6 +2126,11 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/db.Service'
+      - description: Bearer токен
+        in: header
+        name: Authorization
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -2000,6 +2158,11 @@ paths:
       - description: Delete Service
         in: path
         name: id
+        required: true
+        type: string
+      - description: Bearer токен
+        in: header
+        name: Authorization
         required: true
         type: string
       produces:
@@ -2059,6 +2222,11 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/db.Service'
+      - description: Bearer токен
+        in: header
+        name: Authorization
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -2078,6 +2246,35 @@ paths:
       summary: Updates an existing service.
       tags:
       - Services
+  /services/seller/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Seller ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.Service'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Fetches all services of a specified seller.
+      tags:
+      - Services
   /subquest/create:
     post:
       consumes:
@@ -2090,6 +2287,11 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/db.Subquest'
+      - description: Bearer токен
+        in: header
+        name: Authorization
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -2118,6 +2320,11 @@ paths:
         name: id
         required: true
         type: integer
+      - description: Bearer токен
+        in: header
+        name: Authorization
+        required: true
+        type: string
       responses:
         "200":
           description: Subquest deleted successfully
@@ -2189,6 +2396,11 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/db.Tasks'
+      - description: Bearer токен
+        in: header
+        name: Authorization
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -2217,6 +2429,11 @@ paths:
         name: id
         required: true
         type: integer
+      - description: Bearer токен
+        in: header
+        name: Authorization
+        required: true
+        type: string
       responses:
         "200":
           description: Tasks deleted successfully
@@ -2288,6 +2505,11 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/db.Tasks'
+      - description: Bearer токен
+        in: header
+        name: Authorization
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -2319,6 +2541,11 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/db.Wishes'
+      - description: Bearer токен
+        in: header
+        name: Authorization
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -2343,12 +2570,11 @@ paths:
       - application/json
       description: get the status of server.
       parameters:
-      - description: Add wishes
-        in: body
-        name: Wishes
+      - description: Bearer токен
+        in: header
+        name: Authorization
         required: true
-        schema:
-          $ref: '#/definitions/db.Wishes'
+        type: string
       produces:
       - application/json
       responses:
@@ -2380,6 +2606,11 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/db.Wishes'
+      - description: Bearer токен
+        in: header
+        name: Authorization
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -2405,12 +2636,16 @@ paths:
       - application/json
       description: get the status of server.
       parameters:
-      - description: Create Wishlist
-        in: body
-        name: UserWishlist
+      - description: Find FindManyWishlists
+        in: path
+        name: id
         required: true
-        schema:
-          $ref: '#/definitions/db.UserWishlist'
+        type: string
+      - description: Bearer токен
+        in: header
+        name: Authorization
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -2421,7 +2656,9 @@ paths:
             - $ref: '#/definitions/server.ResponseHTTP'
             - properties:
                 data:
-                  $ref: '#/definitions/db.UserWishlist'
+                  items:
+                    $ref: '#/definitions/db.UserWishlist'
+                  type: array
               type: object
         "400":
           description: Bad Request
@@ -2435,12 +2672,11 @@ paths:
       - application/json
       description: get the status of server.
       parameters:
-      - description: Create Wishlist
-        in: body
-        name: UserWishlist
+      - description: Bearer токен
+        in: header
+        name: Authorization
         required: true
-        schema:
-          $ref: '#/definitions/db.UserWishlist'
+        type: string
       produces:
       - application/json
       responses:
@@ -2471,6 +2707,46 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/db.UserWishlist'
+      - description: Bearer токен
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  $ref: '#/definitions/db.UserWishlist'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Creates a new gift.
+      tags:
+      - Wishlist
+  /wishlists/{name}:
+    get:
+      consumes:
+      - application/json
+      description: get the status of server.
+      parameters:
+      - description: Delete ServiceReview
+        in: path
+        name: name
+        required: true
+        type: string
+      - description: Bearer токен
+        in: header
+        name: Authorization
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -2502,6 +2778,11 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/db.UserWishlist'
+      - description: Bearer токен
+        in: header
+        name: Authorization
+        required: true
+        type: string
       produces:
       - application/json
       responses:
