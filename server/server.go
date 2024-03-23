@@ -190,7 +190,7 @@ func Setup() {
 
 	giftToSelection.Delete("/:gift_id/:selection_id", deleteGiftToSelectionHandler)
 
-	giftToSelection.Get("", findGiftToSelectionHandler)
+	giftToSelection.Get("/:id", findGiftToSelectionHandler)
 
 	giftToSelection.Patch("/:id", updateGiftToSelectionHandler)
 
