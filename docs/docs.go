@@ -681,7 +681,60 @@ const docTemplate = `{
                 }
             }
         },
-        "/gift_review/{gift_id}": {
+        "/gift_review/gift/{gift_id}": {
+            "get": {
+                "description": "Get all gift reviews by giftId",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "GiftReview"
+                ],
+                "summary": "Get all gift reviews by giftId",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Gift ID",
+                        "name": "gift_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/server.ResponseHTTP"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/db.GiftReview"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "503": {
+                        "description": "Service Unavailable",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseHTTP"
+                        }
+                    }
+                }
+            }
+        },
+        "/gift_review/mark/{gift_id}": {
             "get": {
                 "description": "Calculate average mark for a gift by its ID",
                 "consumes": [
@@ -731,7 +784,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/gift_review/{id}": {
+        "/gift_review/review/{id}": {
             "get": {
                 "description": "Get gift review by id",
                 "consumes": [
@@ -744,6 +797,15 @@ const docTemplate = `{
                     "GiftReview"
                 ],
                 "summary": "Get gift review by id",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "GiftReview ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -773,7 +835,9 @@ const docTemplate = `{
                         }
                     }
                 }
-            },
+            }
+        },
+        "/gift_review/{id}": {
             "delete": {
                 "description": "Deletes a giftReview from the database using the provided ID.",
                 "consumes": [

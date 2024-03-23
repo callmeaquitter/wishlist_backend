@@ -618,7 +618,64 @@ paths:
       summary: Create a new review for gift.
       tags:
       - GiftReview
-  /gift_review/{gift_id}:
+  /gift_review/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Deletes a giftReview from the database using the provided ID.
+      parameters:
+      - description: GiftReview ID to delete
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: GiftReview deleted successfully
+          schema:
+            type: string
+        "400":
+          description: Error in deleteGiftReview operation
+          schema:
+            type: string
+      summary: Delete a giftReview by ID.
+      tags:
+      - GiftReview
+  /gift_review/gift/{gift_id}:
+    get:
+      consumes:
+      - application/json
+      description: Get all gift reviews by giftId
+      parameters:
+      - description: Gift ID
+        in: path
+        name: gift_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/server.ResponseHTTP'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/db.GiftReview'
+                  type: array
+              type: object
+        "503":
+          description: Service Unavailable
+          schema:
+            $ref: '#/definitions/server.ResponseHTTP'
+      summary: Get all gift reviews by giftId
+      tags:
+      - GiftReview
+  /gift_review/mark/{gift_id}:
     get:
       consumes:
       - application/json
@@ -651,35 +708,17 @@ paths:
       summary: Calculate average mark for a gift by its ID
       tags:
       - GiftReview
-  /gift_review/{id}:
-    delete:
-      consumes:
-      - application/json
-      description: Deletes a giftReview from the database using the provided ID.
-      parameters:
-      - description: GiftReview ID to delete
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: GiftReview deleted successfully
-          schema:
-            type: string
-        "400":
-          description: Error in deleteGiftReview operation
-          schema:
-            type: string
-      summary: Delete a giftReview by ID.
-      tags:
-      - GiftReview
+  /gift_review/review/{id}:
     get:
       consumes:
       - application/json
       description: Get gift review by id
+      parameters:
+      - description: GiftReview ID
+        in: path
+        name: id
+        required: true
+        type: string
       produces:
       - application/json
       responses:

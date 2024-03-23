@@ -343,9 +343,10 @@ func deleteGiftReviewHandler(c *fiber.Ctx) error {
 // @Tags GiftReview
 // @Accept json
 // @Produce json
+// @Param id path string true "GiftReview ID"
 // @Success 200 {object} ResponseHTTP{data=[]db.GiftReview}
 // @Failure 503 {object} ResponseHTTP{}
-// @Router /gift_review/{id} [get]
+// @Router /gift_review/review/{id} [get]
 func getGiftReviewByIDHandler(c *fiber.Ctx) error {
 	reviewID := c.Params("id")
 	giftReview, ok := db.GetGiftReviewByID(reviewID)
@@ -361,9 +362,10 @@ func getGiftReviewByIDHandler(c *fiber.Ctx) error {
 // @Tags GiftReview
 // @Accept json
 // @Produce json
+// @Param gift_id path string true "Gift ID"
 // @Success 200 {object} ResponseHTTP{data=[]db.GiftReview}
 // @Failure 503 {object} ResponseHTTP{}
-// @Router /gift_review/{gift_id} [get]
+// @Router /gift_review/gift/{gift_id} [get]
 func getGiftReviewsByGiftIDHandler(c *fiber.Ctx) error {
 	giftID := c.Params("gift_id")
 	giftReviews, ok := db.GetGiftReviewsByGiftID(giftID)
@@ -384,7 +386,7 @@ func getGiftReviewsByGiftIDHandler(c *fiber.Ctx) error {
 // @Failure 400 {string} string "Bad Request"
 // @Failure 404 {string} string "Not Found"
 // @Failure 500 {string} string "Internal Server Error"
-// @Router /gift_review/{gift_id} [get]
+// @Router /gift_review/mark/{gift_id} [get]
 func calculateAverageMarkByGiftIDHandler(c *fiber.Ctx) error {
 	giftID := c.Params("gift_id")
 	averageMark, ok := db.CalculateAverageMarkByGiftID(giftID)
