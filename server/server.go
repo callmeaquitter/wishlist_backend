@@ -81,7 +81,7 @@ func Setup() {
 	gifts.Patch("/:id", updateGiftHandler, authMiddleware)
 
 	// Обработчик для загрузки файлов
-	app.Post("/upload", uploadGiftsHandler)
+	app.Post("/upload", uploadHandler)
 
 	// ??
 	bookedGift := app.Group("/booked_gifts", authMiddleware)
@@ -172,7 +172,7 @@ func Setup() {
 
 	offlineshops.Get("/:id", getOneOfflineShopsHandler)
 
-	offlineshops.Delete("/:id", adminMiddleware, deleteOfflineShopsHandler)
+	offlineshops.Delete("/:/:photoid", adminMiddleware, deleteOfflineShopsHandler)
 
 	offlineshops.Patch("/:id", adminMiddleware, updateOfflineShopsHandler)
 

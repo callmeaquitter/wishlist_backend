@@ -3,6 +3,9 @@ package server
 import (
 	"fmt"
 	"time"
+	"os"
+	"encoding/base64"
+
 	"wishlist/db"
 	_ "wishlist/docs"
 
@@ -2073,31 +2076,45 @@ func deleteCommentToSelectionHandler(c *fiber.Ctx) error {
 // Upload godoc
 // @Summary Upload a beautiful picture
 // @Tags Upload
-// @Accept  jpeg,png
+// @Accept  json
 // @Produce json
-// @Param photo formData file true "Upload your beautiful picture"
+// @Param Photo body db.Photo true "Upload your beautiful picture"
 // @Success 200 {object} ResponseHTTP{}
 // @Failure 400 {object} ResponseHTTP{}
 // @Failure 500 {object} ResponseHTTP{}
 // @Router /upload [post]
-func uploadGiftsHandler(c *fiber.Ctx) error {
-	// Получаем файл из тела запроса
-	file, err := c.FormFile("photo")
+func uploadHandler(c *fiber.Ctx) error {
+	// Получаем base64 из тела запроса
+	var photo db.Photo
+	if err := c.BodyParser(&photo); err != nil {
+		return c.Status(fiber.StatusBadRequest).SendString("Error parsing request body")
+	}
+	err := validate.Struct(photo)
 	if err != nil {
-		return c.Status(fiber.StatusBadRequest).SendString(err.Error())
+		return c.Status(fiber.StatusUnprocessableEntity).
+			SendString(err.Error())
 	}
 
-	// Создаем новый файл в директории uploads с уникальным именем
+	// Декодируем
+	decodedPhoto, err := base64.StdEncoding.DecodeString(photo.Photo)
+	if err != nil {
+		fmt.Println("Failed to decode the photo!")
+		return c.Status(fiber.StatusBadRequest).
+			SendString(err.Error())
+	}
+
+	// Даём уникальное красивое имя
 	newFileName := generateUniqueFileName()
 
+	// Сохраняем
 	destination := fmt.Sprintf("./public/gifts/%s", newFileName)
-	if err := c.SaveFile(file, destination); err != nil {
-		return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
+	if err := os.WriteFile(destination, decodedPhoto, 0666); err != nil {
+		return c.Status(fiber.StatusInternalServerError).
+			SendString(err.Error())
 	}
 	return c.SendString(fmt.Sprintf("File uploaded successfully: %s", newFileName))
 }
 
 func generateUniqueFileName() string {
-	name := xid.New()
-	return "unique_" + name.String() + ".png"
+	return "IMG_" + time.Now().Format("20060102_150405_") + xid.New().String()
 }
