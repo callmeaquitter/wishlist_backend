@@ -671,14 +671,14 @@ func UpdateGiftToSelection(giftToSelection GiftToSelection) bool {
 	return true
 }
 
-func FindGiftToSelection(selectionID string) bool {
+func FindGiftToSelection(selectionID string) ([]GiftToSelection, bool) {
 	var giftToSelection []GiftToSelection
 	result := Database.Where(GiftToSelection{SelectionID: selectionID}).Find(&giftToSelection)
 	if result.Error != nil {
 		fmt.Println("Error in findGiftToSelection", result.Error)
-		return false
+		return giftToSelection, false
 	}
-	return true
+	return giftToSelection, true
 }
 
 func DeleteGiftToSelection(SelectionID, GiftID string) bool {

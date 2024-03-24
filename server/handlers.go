@@ -1,10 +1,10 @@
 package server
 
 import (
-	"fmt"
-	"time"
-	"os"
 	"encoding/base64"
+	"fmt"
+	"os"
+	"time"
 
 	"wishlist/db"
 	_ "wishlist/docs"
@@ -66,7 +66,7 @@ func createGiftHandler(c *fiber.Ctx) error {
 // @Success 200 {string} string "Gift deleted successfully"
 // @Failure 400 {string} string "Error in deleteGift operation"
 // @Router /gifts/{id} [delete]
-func  deleteGiftHandler(c *fiber.Ctx) error {
+func deleteGiftHandler(c *fiber.Ctx) error {
 	id := c.Params("id")
 
 	ok := db.DeleteGift(id)
@@ -1029,8 +1029,6 @@ func CreateWishlistHandler(c *fiber.Ctx) error {
 			SendString(err.Error())
 	}
 
-
-
 	ok := db.CreateWishlist(wishlist)
 	if !ok {
 		return c.SendString("Error in Create wishlist operation")
@@ -1761,12 +1759,13 @@ func updateGiftToSelectionHandler(c *fiber.Ctx) error {
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /giftToSelection/{id} [get]
 func findGiftToSelectionHandler(c *fiber.Ctx) error {
+
 	selectionID := c.Params("id")
-	ok := db.FindGiftToSelection(selectionID)
+	giftInSelection, ok := db.FindGiftToSelection(selectionID)
 	if !ok {
 		return c.SendString("Error in findGiftToSelection operation")
 	}
-	return c.JSON(selectionID)
+	return c.JSON(giftInSelection)
 }
 
 // deleteGiftToSelectionHandler обрабатывает HTTP DELETE запросы на /giftToSelection/{id}.
