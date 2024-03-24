@@ -3608,12 +3608,7 @@ const docTemplate = `{
         "/upload": {
             "post": {
                 "consumes": [
-<<<<<<< HEAD
-                    "image/jpeg",
-                    "image/png"
-=======
                     "application/json"
->>>>>>> 92d7160b27dc2f7b808bca803a0c5cac23d5af31
                 ],
                 "produces": [
                     "application/json"
@@ -3624,13 +3619,6 @@ const docTemplate = `{
                 "summary": "Upload a beautiful picture",
                 "parameters": [
                     {
-<<<<<<< HEAD
-                        "type": "file",
-                        "description": "Upload your beautiful picture",
-                        "name": "photo",
-                        "in": "formData",
-                        "required": true
-=======
                         "description": "Upload your beautiful picture",
                         "name": "Photo",
                         "in": "body",
@@ -3638,7 +3626,6 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/db.Photo"
                         }
->>>>>>> 92d7160b27dc2f7b808bca803a0c5cac23d5af31
                     }
                 ],
                 "responses": {
@@ -4264,8 +4251,6 @@ const docTemplate = `{
                 }
             }
         },
-<<<<<<< HEAD
-=======
         "db.Photo": {
             "type": "object",
             "properties": {
@@ -4274,7 +4259,6 @@ const docTemplate = `{
                 }
             }
         },
->>>>>>> 92d7160b27dc2f7b808bca803a0c5cac23d5af31
         "db.Quest": {
             "type": "object",
             "required": [

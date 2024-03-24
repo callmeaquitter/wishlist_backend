@@ -37,13 +37,14 @@ func createGiftHandler(c *fiber.Ctx) error {
 		return c.SendString(err.Error())
 	}
 
+	gift.ID = "gift_" + xid.New().String()
+
 	err := validate.Struct(gift)
 	if err != nil {
 		return c.Status(fiber.StatusUnprocessableEntity).
 			SendString(err.Error())
 	}
 
-	gift.ID = "gift_" + xid.New().String()
 	//gift.UserID = getUserID()
 
 	ok := db.CreateGift(gift)
@@ -65,7 +66,7 @@ func createGiftHandler(c *fiber.Ctx) error {
 // @Success 200 {string} string "Gift deleted successfully"
 // @Failure 400 {string} string "Error in deleteGift operation"
 // @Router /gifts/{id} [delete]
-func deleteGiftHandler(c *fiber.Ctx) error {
+func  deleteGiftHandler(c *fiber.Ctx) error {
 	id := c.Params("id")
 
 	ok := db.DeleteGift(id)
