@@ -33,13 +33,13 @@ func FindManyGift(searchParams Gift) ([]Gift, bool) {
 }
 
 func FindOneGift(id string) (*Gift, bool) {
-    var gift Gift
-    result := Database.First(&gift, "id = ?", id) 
-    if result.Error != nil {
-        fmt.Println("Error in findOneGift:", result.Error)
-        return nil, false
-    }
-    return &gift, true
+	var gift Gift
+	result := Database.First(&gift, "id = ?", id)
+	if result.Error != nil {
+		fmt.Println("Error in findOneGift:", result.Error)
+		return nil, false
+	}
+	return &gift, true
 }
 
 func UpdateGift(id string, updatedGift Gift) bool {
@@ -127,7 +127,6 @@ func DeleteGiftCategory(id string) bool {
 	return true
 }
 
-
 func FindManyGiftCategory(searchParams GiftCategory) ([]GiftCategory, bool) {
 	var giftCategories []GiftCategory
 	result := Database.Find(&giftCategories, &searchParams)
@@ -208,7 +207,7 @@ func AddWish(wishlistID, giftID string) bool {
 
 func GetManyWishesInWishlist(wishlistID string) ([]Wishes, bool) {
 	var wishes []Wishes
-	result := Database.Where(&wishes, wishlistID).Find(&wishes)
+	result := Database.Where(Wishes{WishlistID: wishlistID}).Find(&wishes)
 	if result.Error != nil {
 		fmt.Println("Error in GetManyWishes", result.Error)
 		return wishes, false
@@ -666,6 +665,7 @@ func DeleteSelection(selectionID string) bool {
 }
 
 func CreateGiftToSelection(giftToSelection GiftToSelection) bool {
+
 	result := Database.Create(&giftToSelection)
 	if result.Error != nil {
 		fmt.Println("Error in CreateGiftToSelection", result.Error)
@@ -674,23 +674,14 @@ func CreateGiftToSelection(giftToSelection GiftToSelection) bool {
 	return true
 }
 
-func UpdateGiftToSelection(giftToSelection GiftToSelection) bool {
-	result := Database.Save(&giftToSelection)
-	if result.Error != nil {
-		fmt.Println("Error in updateGiftToSelection", result.Error)
-		return false
-	}
-	return true
-}
-
-func FindGiftToSelection(selectionID string) bool {
+func FindGiftToSelection(selectionID string) ([]GiftToSelection, bool) {
 	var giftToSelection []GiftToSelection
 	result := Database.Where(GiftToSelection{SelectionID: selectionID}).Find(&giftToSelection)
 	if result.Error != nil {
 		fmt.Println("Error in findGiftToSelection", result.Error)
-		return false
+		return giftToSelection, false
 	}
-	return true
+	return giftToSelection, true
 }
 
 func DeleteGiftToSelection(SelectionID, GiftID string) bool {

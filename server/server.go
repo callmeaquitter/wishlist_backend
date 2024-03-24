@@ -192,13 +192,11 @@ func Setup() {
 
 	//
 	giftToSelection := app.Group("/giftToSelection", authMiddleware)
-	giftToSelection.Post("", createGiftToSelectionHandler)
+	giftToSelection.Post("/:gift_id/:selection_id", createGiftToSelectionHandler)
 
 	giftToSelection.Delete("/:gift_id/:selection_id", deleteGiftToSelectionHandler)
 
-	giftToSelection.Get("/:id", findGiftToSelectionHandler)
-
-	giftToSelection.Patch("/:id", updateGiftToSelectionHandler)
+	giftToSelection.Get("/:selection_id", findGiftToSelectionHandler)
 
 	//
 	SelectionCategory := app.Group("/SelectionCategory")

@@ -1725,7 +1725,9 @@ func deleteSelectionHandler(c *fiber.Ctx) error {
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /giftToSelection [post]
 func createGiftToSelectionHandler(c *fiber.Ctx) error {
-	var giftToSelection db.GiftToSelection
+	selectionID := c.Params("selection_id")
+	giftID := c.Params("gift_id")
+	giftToSelection := db.GiftToSelection{SelectionID: selectionID, GiftID: giftID}
 	if err := c.BodyParser(&giftToSelection); err != nil {
 		return c.SendString(err.Error())
 	}
@@ -1737,30 +1739,6 @@ func createGiftToSelectionHandler(c *fiber.Ctx) error {
 	}
 
 	return c.JSON(giftToSelection)
-}
-
-// updateGiftToSelectionHandler обрабатывает HTTP PUT запросы на /giftToSelection/{id}.
-// @Summary Обновляет существующий GiftToSelection
-// @Description Принимает id GiftToSelection в качестве параметра пути и обновляет соответствующий GiftToSelection
-// @Tags GiftToSelection
-// @Accept json
-// @Produce json
-// @Param GiftToSelection body db.GiftToSelection true "Update GiftToSelection"
-// @Param Authorization header string true "Bearer токен"
-// @Success 200 {object} ResponseHTTP{}
-// @Failure 400 {object} ResponseHTTP{}
-// @Router /giftToSelection/{id} [put]
-func updateGiftToSelectionHandler(c *fiber.Ctx) error {
-	var giftToSelection db.GiftToSelection
-	if err := c.BodyParser(&giftToSelection); err != nil {
-		return c.SendString(err.Error())
-	}
-
-	ok := db.UpdateGiftToSelection(giftToSelection)
-	if !ok {
-		return c.SendString("Error in updateGiftToSelection operation")
-	}
-	return c.SendString("GiftToSelection updated successfully")
 }
 
 // findGiftToSelectionHandler обрабатывает HTTP GET запросы на /giftToSelection.
@@ -1775,12 +1753,12 @@ func updateGiftToSelectionHandler(c *fiber.Ctx) error {
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /giftToSelection/{id} [get]
 func findGiftToSelectionHandler(c *fiber.Ctx) error {
-	selectionID := c.Params("id")
-	ok := db.FindGiftToSelection(selectionID)
+	selectionID := c.Params("selection_id")
+	giftToSelection, ok := db.FindGiftToSelection(selectionID)
 	if !ok {
 		return c.SendString("Error in findGiftToSelection operation")
 	}
-	return c.JSON(selectionID)
+	return c.JSON(giftToSelection)
 }
 
 // deleteGiftToSelectionHandler обрабатывает HTTP DELETE запросы на /giftToSelection/{id}.
