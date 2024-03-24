@@ -556,7 +556,7 @@ func deleteServiceHandler(c *fiber.Ctx) error {
 // @Tags SellerToService
 // @Accept json
 // @Produce json
-// @Param SellerToService body db.SellerToService true "Create Selllers-Services"
+// @Param SellerToService body db.SellerToService true "Create Sellers-Services"
 // @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.SellerToService}
 // @Failure 400 {object} ResponseHTTP{}
@@ -819,7 +819,16 @@ func registerHandler(c *fiber.Ctx) error {
 		return c.SendString("Error in CreateUser operation")
 	}
 
-	return c.SendString("Register")
+	session := db.Session{
+		ID:     "session_" + xid.New().String(),
+		UserID: user.ID,
+	}
+	ok = db.CreateSession(session)
+	if !ok {
+		return c.SendString("Cannot create session")
+	}
+
+	return c.JSON(session)
 
 }
 
@@ -1575,7 +1584,7 @@ func deleteOfflineShopsHandler(c *fiber.Ctx) error {
 // @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.Selection}
 // @Failure 400 {object} ResponseHTTP{}
-// @Router /selection/create [post]
+// @Router /selection [post]
 func createSelectionHandler(c *fiber.Ctx) error {
 	var selection db.Selection
 	if err := c.BodyParser(&selection); err != nil {
@@ -1594,7 +1603,7 @@ func createSelectionHandler(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusInternalServerError).SendString("Error generating ID")
 	}
 
-	selection.UserID = "111" //c.Locals("user")
+	selection.UserID = c.Locals("user").(string)
 
 	ok := db.CreateSelection(selection)
 	if !ok {
@@ -1614,7 +1623,7 @@ func createSelectionHandler(c *fiber.Ctx) error {
 // @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.Selection}
 // @Failure 400 {object} ResponseHTTP{}
-// @Router /selection/{id} [put]
+// @Router /selection/{id} [patch]
 func updateSelectionHandler(c *fiber.Ctx) error {
 	var selection db.Selection
 	if err := c.BodyParser(&selection); err != nil {
@@ -2092,4 +2101,3 @@ func generateUniqueFileName() string {
 	name := xid.New()
 	return "unique_" + name.String() + ".png"
 }
-

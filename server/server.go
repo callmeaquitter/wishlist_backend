@@ -41,12 +41,6 @@ func Setup() {
 		BodyLimit: 5 * 1024 * 1024, // Limit file size to 5MB
 	})
 
-	app.Use(cors.New())
-	app.Use(cors.New(cors.Config{
-		AllowOrigins: "*",
-		AllowHeaders: "Origin, Content-Type, Accept",
-	}))
-
 	validate.RegisterValidation("role_", ValidateIDFormat("role_"))
 	validate.RegisterValidation("gift_", ValidateIDFormat("gift_"))
 	validate.RegisterValidation("wishlist_", ValidateIDFormat("wishlist_"))
@@ -147,7 +141,6 @@ func Setup() {
 
 	quest.Delete("/:id", adminMiddleware, deleteQuestHandler)
 
-
 	//Route: POST /subquest
 	subquest := app.Group("/subquest")
 	subquest.Post("", adminMiddleware, createSubquestHandler)
@@ -195,7 +188,7 @@ func Setup() {
 
 	selection.Get("/:selection_id", getOneSelectionHandler)
 
-	selection.Patch("/:id", authMiddleware, updateSelectionHandler)
+	selection.Patch("", authMiddleware, updateSelectionHandler)
 
 	//
 	giftToSelection := app.Group("/giftToSelection", authMiddleware)
