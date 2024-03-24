@@ -60,6 +60,7 @@ func createGiftHandler(c *fiber.Ctx) error {
 // @Tags Gifts
 // @Accept  json
 // @Produce json
+// @Param Authorization header string true "Bearer токен"
 // @Param id path string true "Gift ID to delete"
 // @Success 200 {string} string "Gift deleted successfully"
 // @Failure 400 {string} string "Error in deleteGift operation"
