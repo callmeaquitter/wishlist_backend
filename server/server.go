@@ -158,6 +158,8 @@ func Setup() {
 
 	subquest.Get("/:id", getOneSubquestHandler)
 
+	subquest.Patch("/:id", adminMiddleware, updateSubquestHandler)
+
 	//Route: POST /tasks
 	tasks := app.Group("/tasks")
 	tasks.Post("", adminMiddleware, createTasksHandler)
