@@ -421,32 +421,29 @@ func FindOneService(serviceId string) (Service, bool) {
 	return service, true
 }
 
-func UpdateService(service Service) bool {
-	if service.Name != "string" {
-		result := Database.Model(&service).Update("name", service.Name)
-		if result.Error != nil {
-			fmt.Println("Error in updateservice", result.Error)
-			return false
-		}
-	}
-	result := Database.Model(&service).Update("price", service.Price)
+func UpdateService(serviceId string, updatedService Service) bool {
+	existingService := Service{}
+	result := Database.First(&existingService, "service_id = ?", serviceId)
 	if result.Error != nil {
-		fmt.Println("Error in updateservice", result.Error)
+		fmt.Println("Error in finding service:", result.Error)
 		return false
 	}
-	if service.Location != "string" {
-		result := Database.Model(&service).Update("location", service.Location)
-		if result.Error != nil {
-			fmt.Println("Error in updateservice", result.Error)
-			return false
-		}
+
+	if updatedService.Name != "string" {
+		existingService.Name = updatedService.Name
 	}
-	if service.Photos != "string" {
-		result := Database.Model(&service).Update("photos", service.Photos)
-		if result.Error != nil {
-			fmt.Println("Error in updateservice", result.Error)
-			return false
-		}
+	existingService.Price = updatedService.Price
+	if updatedService.Photos != "string" {
+		existingService.Photos = updatedService.Photos
+	}
+	if updatedService.Location != "string" {
+		existingService.Location = updatedService.Location
+	}
+
+	result = Database.Save(&existingService)
+	if result.Error != nil {
+		fmt.Println("Error updating the service:", result.Error)
+		return false
 	}
 
 	return true
@@ -538,37 +535,29 @@ func FindSingleServiceReview(serviceId string) ([]ServiceReview, bool) {
 	return serviceReview, true
 }
 
-func UpdateServiceReview(serviceReview ServiceReview) bool {
-	result := Database.Model(&serviceReview).
-		Update("service_id", serviceReview.ServiceID)
+func UpdateServiceReview(serviceReviewId string, updatedServiceReview ServiceReview) bool {
+	existingServiceReview := ServiceReview{}
+	result := Database.First(&existingServiceReview, "id = ?", serviceReviewId)
 	if result.Error != nil {
-		fmt.Println("Error in updateServiceReview", result.Error)
+		fmt.Println("Error in finding Service Review:", result.Error)
 		return false
 	}
-	result = Database.Model(&serviceReview).
-		Update("mark", serviceReview.Mark)
-	if result.Error != nil {
-		fmt.Println("Error in updateServiceReview", result.Error)
-		return false
+
+	if updatedServiceReview.ServiceID != "string" {
+		existingServiceReview.ServiceID = updatedServiceReview.ServiceID
 	}
-	if serviceReview.Comment != "string" {
-		result := Database.Model(&serviceReview).
-			Update("comment", serviceReview.Comment)
-		if result.Error != nil {
-			fmt.Println("Error in updateServiceReview", result.Error)
-			return false
-		}
+	existingServiceReview.Mark = updatedServiceReview.Mark
+	if updatedServiceReview.Comment != "string" {
+		existingServiceReview.Comment = updatedServiceReview.Comment
 	}
-	result = Database.Model(&serviceReview).
-		Update("user_id", serviceReview.UserID)
-	if result.Error != nil {
-		fmt.Println("Error in updateServiceReview", result.Error)
-		return false
+	if updatedServiceReview.UserID != "string" {
+		existingServiceReview.UserID = updatedServiceReview.UserID
 	}
-	result = Database.Model(&serviceReview).
-		Update("update_date", serviceReview.UpdateDate)
+	existingServiceReview.UpdateDate = updatedServiceReview.UpdateDate
+
+	result = Database.Save(&existingServiceReview)
 	if result.Error != nil {
-		fmt.Println("Error in updateServiceReview", result.Error)
+		fmt.Println("Error updating the service:", result.Error)
 		return false
 	}
 

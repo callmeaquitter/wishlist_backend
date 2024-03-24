@@ -409,7 +409,7 @@ func calculateAverageMarkByGiftIDHandler(c *fiber.Ctx) error {
 // @Accept json
 // @Produce json
 // @Param Service body db.Service true "Create Service"
-// @Param Authorization header string true "Bearer токен"
+// @Param seller_Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.Service}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /services [post]
@@ -468,7 +468,7 @@ func getManyServicesHandler(c *fiber.Ctx) error {
 // @Param id path string true "Seller ID"
 // @Success 200 {object} ResponseHTTP{data=db.Service}
 // @Failure 400 {object} ResponseHTTP{}
-// @Router /services/seller/{id} [get]
+// @Router /services/seller/{seller_id} [get]
 func getSingleServiceHandler(c *fiber.Ctx) error {
 	sellerId := c.Params("seller_id")
 	result, ok := db.FindSingleService(sellerId)
@@ -483,12 +483,12 @@ func getSingleServiceHandler(c *fiber.Ctx) error {
 // @Tags Services
 // @Accept json
 // @Produce json
-// @Param id path string true "Service ID"
+// @Param service_id path string true "Service ID"
 // @Success 200 {object} ResponseHTTP{data=db.Service}
 // @Failure 400 {object} ResponseHTTP{}
-// @Router /services/{id} [get]
+// @Router /services/{service_id} [get]
 func getOneServiceHandler(c *fiber.Ctx) error {
-	serviceId := c.Params("id")
+	serviceId := c.Params("service_id")
 	result, ok := db.FindOneService(serviceId)
 	if !ok {
 		return c.SendString("Error in findOneService operation")
@@ -501,34 +501,33 @@ func getOneServiceHandler(c *fiber.Ctx) error {
 // @Tags Services
 // @Accept json
 // @Produce json
+// @Param id path string true "Service ID"
 // @Param Service body db.Service true "Update Service"
-// @Param Authorization header string true "Bearer токен"
+// @Param seller_Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.Service}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /services/{id} [patch]
 func updateServiceHandler(c *fiber.Ctx) error {
-	var service db.Service
-	if err := c.BodyParser(&service); err != nil {
-		return c.SendString(err.Error())
+	serviceId := c.Params("id")
+
+	var updatedService db.Service
+	if err := c.BodyParser(&updatedService); err != nil {
+		return c.Status(fiber.StatusBadRequest).SendString("Error parsing request body")
 	}
 
-	err := validate.Struct(service)
-	if err != nil {
-		return c.Status(fiber.StatusUnprocessableEntity).SendString(err.Error())
-	}
-	if !service.Price.IsPositive() {
+	if !updatedService.Price.IsPositive() {
 		return c.Status(fiber.StatusUnprocessableEntity).
 			SendString("Only positive deicmals are allowed!")
 	}
 
-	ok := db.UpdateService(service)
+	ok := db.UpdateService(serviceId, updatedService)
 	if !ok {
 		return c.SendString("Error in updateService operation")
 	}
 	return c.JSON(ResponseHTTP{
 		Success: true,
 		Message: "Successfully updated the Service.",
-		Data:    &service,
+		Data:    &updatedService,
 	})
 }
 
@@ -537,13 +536,13 @@ func updateServiceHandler(c *fiber.Ctx) error {
 // @Tags Services
 // @Accept json
 // @Produce json
-// @Param id path string true "Delete Service"
-// @Param Authorization header string true "Bearer токен"
+// @Param service_id path string true "Delete Service"
+// @Param seller_Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.Service}
 // @Failure 400 {object} ResponseHTTP{}
-// @Router /services/{id} [delete]
+// @Router /services/{service_id} [delete]
 func deleteServiceHandler(c *fiber.Ctx) error {
-	id := c.Params("id")
+	id := c.Params("service_id")
 
 	ok := db.DeleteService(id)
 	if !ok {
@@ -735,37 +734,35 @@ func getSingleServiceReviewHandler(c *fiber.Ctx) error {
 // @Tags ServiceReviews
 // @Accept json
 // @Produce json
+// @Param id path string true "ServiceReview ID"
 // @Param ServiceReview body db.ServiceReview true "Update ServiceReview"
 // @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.ServiceReview}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /serviceReviews/{id} [patch]
 func updateServiceReviewHandler(c *fiber.Ctx) error {
-	var serviceReview db.ServiceReview
-	if err := c.BodyParser(&serviceReview); err != nil {
-		return c.SendString(err.Error())
+	serviceReviewId := c.Params("id")
+
+	var updatedServiceReview db.ServiceReview
+	if err := c.BodyParser(&updatedServiceReview); err != nil {
+		return c.Status(fiber.StatusBadRequest).SendString("Error parsing request body")
 	}
 
-	err := validate.Struct(serviceReview)
-	if err != nil {
-		return c.Status(fiber.StatusUnprocessableEntity).SendString(err.Error())
-	}
-	if serviceReview.Mark.IsNegative() ||
-		serviceReview.Mark.GreaterThan(decimal.NewFromInt(5)) {
+	if updatedServiceReview.Mark.IsNegative() ||
+		updatedServiceReview.Mark.GreaterThan(decimal.NewFromInt(5)) {
 		return c.Status(fiber.StatusUnprocessableEntity).
 			SendString("Only positive marks less or equal to 5 are allowed!")
 	}
+	updatedServiceReview.UpdateDate = time.Now()
 
-	serviceReview.UpdateDate = time.Now()
-
-	ok := db.UpdateServiceReview(serviceReview)
+	ok := db.UpdateServiceReview(serviceReviewId, updatedServiceReview)
 	if !ok {
 		return c.SendString("Error in updateServiceReview operation")
 	}
 	return c.JSON(ResponseHTTP{
 		Success: true,
 		Message: "Successfully updated the ServiceReview",
-		Data:    &serviceReview,
+		Data:    &updatedServiceReview,
 	})
 }
 
