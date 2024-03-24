@@ -969,11 +969,11 @@ func AddWishHandler(c *fiber.Ctx) error {
 		return c.SendString(err.Error())
 	}
 
-	err := validate.Struct(wish)
-	if err != nil {
-		return c.Status(fiber.StatusUnprocessableEntity).
-			SendString(err.Error())
-	}
+	// err := validate.Struct(wish)
+	// if err != nil {
+	// 	return c.Status(fiber.StatusUnprocessableEntity).
+	// 		SendString(err.Error())
+	// }
 
 	ok := db.AddWish(wishlist_id, gift_id)
 	if !ok {
@@ -1019,14 +1019,16 @@ func CreateWishlistHandler(c *fiber.Ctx) error {
 	if err := c.BodyParser(&wishlist); err != nil {
 		return c.SendString(err.Error())
 	}
+	wishlist.ID = "wishlist_" + xid.New().String()
+	wishlist.UserID = c.Locals("user").(string)
+
 	err := validate.Struct(wishlist)
 	if err != nil {
 		return c.Status(fiber.StatusUnprocessableEntity).
 			SendString(err.Error())
 	}
 
-	wishlist.ID = "wishlist_" + xid.New().String()
-	wishlist.UserID = c.Locals("user").(string)
+
 
 	ok := db.CreateWishlist(wishlist)
 	if !ok {

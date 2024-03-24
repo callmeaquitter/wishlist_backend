@@ -3602,7 +3602,12 @@
         "/upload": {
             "post": {
                 "consumes": [
+<<<<<<< HEAD
+                    "image/jpeg",
+                    "image/png"
+=======
                     "application/json"
+>>>>>>> 92d7160b27dc2f7b808bca803a0c5cac23d5af31
                 ],
                 "produces": [
                     "application/json"
@@ -3613,6 +3618,13 @@
                 "summary": "Upload a beautiful picture",
                 "parameters": [
                     {
+<<<<<<< HEAD
+                        "type": "file",
+                        "description": "Upload your beautiful picture",
+                        "name": "photo",
+                        "in": "formData",
+                        "required": true
+=======
                         "description": "Upload your beautiful picture",
                         "name": "Photo",
                         "in": "body",
@@ -3620,6 +3632,7 @@
                         "schema": {
                             "$ref": "#/definitions/db.Photo"
                         }
+>>>>>>> 92d7160b27dc2f7b808bca803a0c5cac23d5af31
                     }
                 ],
                 "responses": {
@@ -4245,6 +4258,8 @@
                 }
             }
         },
+<<<<<<< HEAD
+=======
         "db.Photo": {
             "type": "object",
             "properties": {
@@ -4253,6 +4268,7 @@
                 }
             }
         },
+>>>>>>> 92d7160b27dc2f7b808bca803a0c5cac23d5af31
         "db.Quest": {
             "type": "object",
             "required": [

@@ -207,7 +207,7 @@ func AddWish(wishlistID, giftID string) bool {
 
 func GetManyWishesInWishlist(wishlistID string) ([]Wishes, bool) {
 	var wishes []Wishes
-	result := Database.Where(&wishes, wishlistID).Find(&wishes)
+	result := Database.Where(Wishes{WishlistID: wishlistID}).Find(&wishes)
 	if result.Error != nil {
 		fmt.Println("Error in GetManyWishes", result.Error)
 		return wishes, false
