@@ -33,13 +33,13 @@ func FindManyGift(searchParams Gift) ([]Gift, bool) {
 }
 
 func FindOneGift(id string) (*Gift, bool) {
-    var gift Gift
-    result := Database.First(&gift, "id = ?", id) 
-    if result.Error != nil {
-        fmt.Println("Error in findOneGift:", result.Error)
-        return nil, false
-    }
-    return &gift, true
+	var gift Gift
+	result := Database.First(&gift, "id = ?", id)
+	if result.Error != nil {
+		fmt.Println("Error in findOneGift:", result.Error)
+		return nil, false
+	}
+	return &gift, true
 }
 
 func UpdateGift(id string, updatedGift Gift) bool {
@@ -127,7 +127,6 @@ func DeleteGiftCategory(id string) bool {
 	return true
 }
 
-
 func FindManyGiftCategory(searchParams GiftCategory) ([]GiftCategory, bool) {
 	var giftCategories []GiftCategory
 	result := Database.Find(&giftCategories, &searchParams)
@@ -208,7 +207,7 @@ func AddWish(wishlistID, giftID string) bool {
 
 func GetManyWishesInWishlist(wishlistID string) ([]Wishes, bool) {
 	var wishes []Wishes
-	result := Database.Where(&wishes, wishlistID).Find(&wishes)
+	result := Database.Where(Wishes{WishlistID: wishlistID}).Find(&wishes)
 	if result.Error != nil {
 		fmt.Println("Error in GetManyWishes", result.Error)
 		return wishes, false
