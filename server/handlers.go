@@ -3,6 +3,9 @@ package server
 import (
 	"fmt"
 	"time"
+	"os"
+	"encoding/base64"
+
 	"wishlist/db"
 	_ "wishlist/docs"
 
@@ -350,9 +353,10 @@ func deleteGiftReviewHandler(c *fiber.Ctx) error {
 // @Tags GiftReview
 // @Accept json
 // @Produce json
+// @Param id path string true "GiftReview ID"
 // @Success 200 {object} ResponseHTTP{data=[]db.GiftReview}
 // @Failure 503 {object} ResponseHTTP{}
-// @Router /gift_review/{id} [get]
+// @Router /gift_review/review/{id} [get]
 func getGiftReviewByIDHandler(c *fiber.Ctx) error {
 	reviewID := c.Params("id")
 	giftReview, ok := db.GetGiftReviewByID(reviewID)
@@ -368,9 +372,10 @@ func getGiftReviewByIDHandler(c *fiber.Ctx) error {
 // @Tags GiftReview
 // @Accept json
 // @Produce json
+// @Param gift_id path string true "Gift ID"
 // @Success 200 {object} ResponseHTTP{data=[]db.GiftReview}
 // @Failure 503 {object} ResponseHTTP{}
-// @Router /gift_review/{gift_id} [get]
+// @Router /gift_review/gift/{gift_id} [get]
 func getGiftReviewsByGiftIDHandler(c *fiber.Ctx) error {
 	giftID := c.Params("gift_id")
 	giftReviews, ok := db.GetGiftReviewsByGiftID(giftID)
@@ -391,7 +396,7 @@ func getGiftReviewsByGiftIDHandler(c *fiber.Ctx) error {
 // @Failure 400 {string} string "Bad Request"
 // @Failure 404 {string} string "Not Found"
 // @Failure 500 {string} string "Internal Server Error"
-// @Router /gift_review/{gift_id} [get]
+// @Router /gift_review/mark/{gift_id} [get]
 func calculateAverageMarkByGiftIDHandler(c *fiber.Ctx) error {
 	giftID := c.Params("gift_id")
 	averageMark, ok := db.CalculateAverageMarkByGiftID(giftID)
@@ -407,7 +412,7 @@ func calculateAverageMarkByGiftIDHandler(c *fiber.Ctx) error {
 // @Accept json
 // @Produce json
 // @Param Service body db.Service true "Create Service"
-// @Param Authorization header string true "Bearer токен"
+// @Param seller_Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.Service}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /services [post]
@@ -466,7 +471,7 @@ func getManyServicesHandler(c *fiber.Ctx) error {
 // @Param id path string true "Seller ID"
 // @Success 200 {object} ResponseHTTP{data=db.Service}
 // @Failure 400 {object} ResponseHTTP{}
-// @Router /services/seller/{id} [get]
+// @Router /services/seller/{seller_id} [get]
 func getSingleServiceHandler(c *fiber.Ctx) error {
 	sellerId := c.Params("seller_id")
 	result, ok := db.FindSingleService(sellerId)
@@ -481,12 +486,12 @@ func getSingleServiceHandler(c *fiber.Ctx) error {
 // @Tags Services
 // @Accept json
 // @Produce json
-// @Param id path string true "Service ID"
+// @Param service_id path string true "Service ID"
 // @Success 200 {object} ResponseHTTP{data=db.Service}
 // @Failure 400 {object} ResponseHTTP{}
-// @Router /services/{id} [get]
+// @Router /services/{service_id} [get]
 func getOneServiceHandler(c *fiber.Ctx) error {
-	serviceId := c.Params("id")
+	serviceId := c.Params("service_id")
 	result, ok := db.FindOneService(serviceId)
 	if !ok {
 		return c.SendString("Error in findOneService operation")
@@ -499,34 +504,33 @@ func getOneServiceHandler(c *fiber.Ctx) error {
 // @Tags Services
 // @Accept json
 // @Produce json
+// @Param id path string true "Service ID"
 // @Param Service body db.Service true "Update Service"
-// @Param Authorization header string true "Bearer токен"
+// @Param seller_Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.Service}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /services/{id} [patch]
 func updateServiceHandler(c *fiber.Ctx) error {
-	var service db.Service
-	if err := c.BodyParser(&service); err != nil {
-		return c.SendString(err.Error())
+	serviceId := c.Params("id")
+
+	var updatedService db.Service
+	if err := c.BodyParser(&updatedService); err != nil {
+		return c.Status(fiber.StatusBadRequest).SendString("Error parsing request body")
 	}
 
-	err := validate.Struct(service)
-	if err != nil {
-		return c.Status(fiber.StatusUnprocessableEntity).SendString(err.Error())
-	}
-	if !service.Price.IsPositive() {
+	if !updatedService.Price.IsPositive() {
 		return c.Status(fiber.StatusUnprocessableEntity).
 			SendString("Only positive deicmals are allowed!")
 	}
 
-	ok := db.UpdateService(service)
+	ok := db.UpdateService(serviceId, updatedService)
 	if !ok {
 		return c.SendString("Error in updateService operation")
 	}
 	return c.JSON(ResponseHTTP{
 		Success: true,
 		Message: "Successfully updated the Service.",
-		Data:    &service,
+		Data:    &updatedService,
 	})
 }
 
@@ -535,13 +539,13 @@ func updateServiceHandler(c *fiber.Ctx) error {
 // @Tags Services
 // @Accept json
 // @Produce json
-// @Param id path string true "Delete Service"
-// @Param Authorization header string true "Bearer токен"
+// @Param service_id path string true "Delete Service"
+// @Param seller_Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.Service}
 // @Failure 400 {object} ResponseHTTP{}
-// @Router /services/{id} [delete]
+// @Router /services/{service_id} [delete]
 func deleteServiceHandler(c *fiber.Ctx) error {
-	id := c.Params("id")
+	id := c.Params("service_id")
 
 	ok := db.DeleteService(id)
 	if !ok {
@@ -555,7 +559,7 @@ func deleteServiceHandler(c *fiber.Ctx) error {
 // @Tags SellerToService
 // @Accept json
 // @Produce json
-// @Param SellerToService body db.SellerToService true "Create Selllers-Services"
+// @Param SellerToService body db.SellerToService true "Create Sellers-Services"
 // @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.SellerToService}
 // @Failure 400 {object} ResponseHTTP{}
@@ -733,37 +737,35 @@ func getSingleServiceReviewHandler(c *fiber.Ctx) error {
 // @Tags ServiceReviews
 // @Accept json
 // @Produce json
+// @Param id path string true "ServiceReview ID"
 // @Param ServiceReview body db.ServiceReview true "Update ServiceReview"
 // @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.ServiceReview}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /serviceReviews/{id} [patch]
 func updateServiceReviewHandler(c *fiber.Ctx) error {
-	var serviceReview db.ServiceReview
-	if err := c.BodyParser(&serviceReview); err != nil {
-		return c.SendString(err.Error())
+	serviceReviewId := c.Params("id")
+
+	var updatedServiceReview db.ServiceReview
+	if err := c.BodyParser(&updatedServiceReview); err != nil {
+		return c.Status(fiber.StatusBadRequest).SendString("Error parsing request body")
 	}
 
-	err := validate.Struct(serviceReview)
-	if err != nil {
-		return c.Status(fiber.StatusUnprocessableEntity).SendString(err.Error())
-	}
-	if serviceReview.Mark.IsNegative() ||
-		serviceReview.Mark.GreaterThan(decimal.NewFromInt(5)) {
+	if updatedServiceReview.Mark.IsNegative() ||
+		updatedServiceReview.Mark.GreaterThan(decimal.NewFromInt(5)) {
 		return c.Status(fiber.StatusUnprocessableEntity).
 			SendString("Only positive marks less or equal to 5 are allowed!")
 	}
+	updatedServiceReview.UpdateDate = time.Now()
 
-	serviceReview.UpdateDate = time.Now()
-
-	ok := db.UpdateServiceReview(serviceReview)
+	ok := db.UpdateServiceReview(serviceReviewId, updatedServiceReview)
 	if !ok {
 		return c.SendString("Error in updateServiceReview operation")
 	}
 	return c.JSON(ResponseHTTP{
 		Success: true,
 		Message: "Successfully updated the ServiceReview",
-		Data:    &serviceReview,
+		Data:    &updatedServiceReview,
 	})
 }
 
@@ -820,7 +822,16 @@ func registerHandler(c *fiber.Ctx) error {
 		return c.SendString("Error in CreateUser operation")
 	}
 
-	return c.SendString("Register")
+	session := db.Session{
+		ID:     "session_" + xid.New().String(),
+		UserID: user.ID,
+	}
+	ok = db.CreateSession(session)
+	if !ok {
+		return c.SendString("Cannot create session")
+	}
+
+	return c.JSON(session)
 
 }
 
@@ -1558,7 +1569,7 @@ func deleteOfflineShopsHandler(c *fiber.Ctx) error {
 // @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.Selection}
 // @Failure 400 {object} ResponseHTTP{}
-// @Router /selection/create [post]
+// @Router /selection [post]
 func createSelectionHandler(c *fiber.Ctx) error {
 	var selection db.Selection
 	if err := c.BodyParser(&selection); err != nil {
@@ -1577,7 +1588,7 @@ func createSelectionHandler(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusInternalServerError).SendString("Error generating ID")
 	}
 
-	selection.UserID = "111" //c.Locals("user")
+	selection.UserID = c.Locals("user").(string)
 
 	ok := db.CreateSelection(selection)
 	if !ok {
@@ -1597,7 +1608,7 @@ func createSelectionHandler(c *fiber.Ctx) error {
 // @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.Selection}
 // @Failure 400 {object} ResponseHTTP{}
-// @Router /selection/{id} [put]
+// @Router /selection/{id} [patch]
 func updateSelectionHandler(c *fiber.Ctx) error {
 	var selection db.Selection
 	if err := c.BodyParser(&selection); err != nil {
@@ -2047,32 +2058,45 @@ func deleteCommentToSelectionHandler(c *fiber.Ctx) error {
 // Upload godoc
 // @Summary Upload a beautiful picture
 // @Tags Upload
-// @Accept  jpeg,png
+// @Accept  json
 // @Produce json
-// @Param photo formData file true "Upload your beautiful picture"
+// @Param Photo body db.Photo true "Upload your beautiful picture"
 // @Success 200 {object} ResponseHTTP{}
 // @Failure 400 {object} ResponseHTTP{}
 // @Failure 500 {object} ResponseHTTP{}
 // @Router /upload [post]
-func uploadGiftsHandler(c *fiber.Ctx) error {
-	// Получаем файл из тела запроса
-	file, err := c.FormFile("photo")
+func uploadHandler(c *fiber.Ctx) error {
+	// Получаем base64 из тела запроса
+	var photo db.Photo
+	if err := c.BodyParser(&photo); err != nil {
+		return c.Status(fiber.StatusBadRequest).SendString("Error parsing request body")
+	}
+	err := validate.Struct(photo)
 	if err != nil {
-		return c.Status(fiber.StatusBadRequest).SendString(err.Error())
+		return c.Status(fiber.StatusUnprocessableEntity).
+			SendString(err.Error())
 	}
 
-	// Создаем новый файл в директории uploads с уникальным именем
+	// Декодируем
+	decodedPhoto, err := base64.StdEncoding.DecodeString(photo.Photo)
+	if err != nil {
+		fmt.Println("Failed to decode the photo!")
+		return c.Status(fiber.StatusBadRequest).
+			SendString(err.Error())
+	}
+
+	// Даём уникальное красивое имя
 	newFileName := generateUniqueFileName()
 
+	// Сохраняем
 	destination := fmt.Sprintf("./public/gifts/%s", newFileName)
-	if err := c.SaveFile(file, destination); err != nil {
-		return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
+	if err := os.WriteFile(destination, decodedPhoto, 0666); err != nil {
+		return c.Status(fiber.StatusInternalServerError).
+			SendString(err.Error())
 	}
 	return c.SendString(fmt.Sprintf("File uploaded successfully: %s", newFileName))
 }
 
 func generateUniqueFileName() string {
-	name := xid.New()
-	return "unique_" + name.String() + ".png"
+	return "IMG_" + time.Now().Format("20060102_150405_") + xid.New().String()
 }
-
