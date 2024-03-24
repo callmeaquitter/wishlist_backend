@@ -105,6 +105,14 @@ definitions:
     - location
     - name
     type: object
+<<<<<<< HEAD
+=======
+  db.Photo:
+    properties:
+      photo:
+        type: string
+    type: object
+>>>>>>> 92d7160b27dc2f7b808bca803a0c5cac23d5af31
   db.Quest:
     properties:
       id:
@@ -2586,6 +2594,7 @@ paths:
   /upload:
     post:
       consumes:
+<<<<<<< HEAD
       - image/jpeg
       - image/png
       parameters:
@@ -2594,6 +2603,16 @@ paths:
         name: photo
         required: true
         type: file
+=======
+      - application/json
+      parameters:
+      - description: Upload your beautiful picture
+        in: body
+        name: Photo
+        required: true
+        schema:
+          $ref: '#/definitions/db.Photo'
+>>>>>>> 92d7160b27dc2f7b808bca803a0c5cac23d5af31
       produces:
       - application/json
       responses:

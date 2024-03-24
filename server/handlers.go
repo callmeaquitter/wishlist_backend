@@ -3,6 +3,9 @@ package server
 import (
 	"fmt"
 	"time"
+	"os"
+	"encoding/base64"
+
 	"wishlist/db"
 	_ "wishlist/docs"
 
@@ -1164,7 +1167,7 @@ func DeleteWishlistHandler(c *fiber.Ctx) error {
 
 //Quest
 
-// createQuestHandler обрабатывает HTTP POST запросы на /quest/create.
+// createQuestHandler обрабатывает HTTP POST запросы на /quest
 // @Summary Создает новый Quest
 // @Description Принимает JSON тело запроса с полями Quest и создает новый Quest
 // @Tags Quest
@@ -1174,7 +1177,7 @@ func DeleteWishlistHandler(c *fiber.Ctx) error {
 // @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.Quest}
 // @Failure 400 {object} ResponseHTTP{}
-// @Router /quest/create [post]
+// @Router /quest [post]
 func createQuestHandler(c *fiber.Ctx) error {
 	var quest db.Quest
 	if err := c.BodyParser(&quest); err != nil {
@@ -1197,52 +1200,13 @@ func createQuestHandler(c *fiber.Ctx) error {
 	return c.JSON(quest)
 }
 
-// updateQuestHandler обрабатывает HTTP PUT запросы на /quest/update.
-// @Summary Обновляет существующий Quest
-// @Description Принимает JSON тело запроса с обновленными полями Quest и обновляет существующий Quest
-// @Tags Quest
-// @Accept json
-// @Produce json
-// @Param Quest body db.Quest true "Update Quest"
-// @Param Authorization header string true "Bearer токен"
-// @Success 200 {object} ResponseHTTP{data=db.Quest}
-// @Failure 400 {object} ResponseHTTP{}
-// @Router /quest/update [put]
-func updateQuestHandler(c *fiber.Ctx) error {
-	var quest db.Quest
-	ok := db.UpdateQuest(quest)
-	//TODO: А где здесь парсер?
-	if !ok {
-		return c.SendString("Error in updateQuest operation")
-	}
-	return c.SendString("Quest updated Succesfully")
-}
-
-// getOneQuestHandler обрабатывает HTTP GET запросы на /quest/getone/{id}.
-// @Summary Получает один квест Quest по ID
-// @Description Возвращает информацию о конкретном квесте Quest по его ID
-// @Tags Quest
-// @Param id path int true "Quest ID"
-// @Produce json
-// @Success 200 {object} ResponseHTTP{data=db.Quest}
-// @Failure 404 {string} string "Quest not found"
-// @Router /quest/getone/{id} [get]
-func getOneQuestHandler(c *fiber.Ctx) error {
-	var quest db.Quest
-	ok := db.FindOneQuest(quest)
-	if !ok {
-		return c.SendString("Error in findOneQuest operation")
-	}
-	return c.SendString("Quest Found Succesfully")
-}
-
-// getManyQuestHandler обрабатывает HTTP GET запросы на /quest/getmany.
+// getManyQuestHandler обрабатывает HTTP GET запросы на /quest
 // @Summary Получает список квестов Quest
 // @Description Возвращает список всех квестов Quest
 // @Tags Quest
 // @Produce json
 // @Success 200 {object} ResponseHTTP{data=db.Quest}
-// @Router /quest/getmany [get]
+// @Router /quest [get]
 func getManyQuestHandler(c *fiber.Ctx) error {
 	var quest db.Quest
 	ok := db.FindManyQuest(quest)
@@ -1252,7 +1216,7 @@ func getManyQuestHandler(c *fiber.Ctx) error {
 	return c.SendString("Quest Found Succesfully")
 }
 
-// deleteQuestHandler обрабатывает HTTP DELETE запросы на /quest/delete/{id}.
+// deleteQuestHandler обрабатывает HTTP DELETE запросы на /quest/{id}
 // @Summary Удаляет существующий Quest по ID
 // @Description Принимает ID квеста в URL и удаляет соответствующий квест
 // @Tags Quest
@@ -1260,7 +1224,7 @@ func getManyQuestHandler(c *fiber.Ctx) error {
 // @Param Authorization header string true "Bearer токен"
 // @Success 200 {string} string "Quest deleted successfully"
 // @Failure 404 {string} string "Quest not found"
-// @Router /quest/delete/{id} [delete]
+// @Router /quest/{id} [delete]
 func deleteQuestHandler(c *fiber.Ctx) error {
 	id := c.Params("id")
 
@@ -1273,7 +1237,7 @@ func deleteQuestHandler(c *fiber.Ctx) error {
 
 //Subquest
 
-// createSubquestHandler обрабатывает HTTP POST запросы на /subquest/create.
+// createSubquestHandler обрабатывает HTTP POST запросы на /subquest
 // @Summary Создает новый Subquest
 // @Description Принимает JSON тело запроса с полями Subquest и создает новый Subquest
 // @Tags Subquest
@@ -1283,7 +1247,7 @@ func deleteQuestHandler(c *fiber.Ctx) error {
 // @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.Subquest}
 // @Failure 400 {object} ResponseHTTP{}
-// @Router /subquest/create [post]
+// @Router /subquest [post]
 func createSubquestHandler(c *fiber.Ctx) error {
 	var subquest db.Subquest
 	if err := c.BodyParser(&subquest); err != nil {
@@ -1306,13 +1270,13 @@ func createSubquestHandler(c *fiber.Ctx) error {
 	return c.JSON(subquest)
 }
 
-// getManySubquestHandler обрабатывает HTTP GET запросы на /subquest/getmany.
+// getManySubquestHandler обрабатывает HTTP GET запросы на /subquest
 // @Summary Получает список Subquest
 // @Description Возвращает список всех подзаданий (Subquest)
 // @Tags Subquest
 // @Produce json
 // @Success 200 {object} ResponseHTTP{data=db.Subquest}
-// @Router /subquest/getmany [get]
+// @Router /subquest [get]
 func getManySubquestHandler(c *fiber.Ctx) error {
 	var subquest db.Subquest
 	ok := db.FindManySubquest(subquest)
@@ -1322,7 +1286,7 @@ func getManySubquestHandler(c *fiber.Ctx) error {
 	return c.SendString("Subquest Found Succesfully")
 }
 
-// getOneSubquestHandler обрабатывает HTTP GET запросы на /subquest/getone/{id}.
+// getOneSubquestHandler обрабатывает HTTP GET запросы на /subquest/{id}
 // @Summary Получает одно Subquest по ID
 // @Description Возвращает информацию о конкретном подзадании (Subquest) по его ID
 // @Tags Subquest
@@ -1330,7 +1294,7 @@ func getManySubquestHandler(c *fiber.Ctx) error {
 // @Produce json
 // @Success 200 {object} ResponseHTTP{data=db.Subquest}
 // @Failure 404 {string} string "Subquest not found"
-// @Router /subquest/getone/{id} [get]
+// @Router /subquest/{id} [get]
 func getOneSubquestHandler(c *fiber.Ctx) error {
 	var subquest db.Subquest
 	ok := db.FindOneSubquest(subquest)
@@ -1340,7 +1304,7 @@ func getOneSubquestHandler(c *fiber.Ctx) error {
 	return c.SendString("Subquest Found Succesfully")
 }
 
-// deleteSubquestHandler обрабатывает HTTP DELETE запросы на /subquest/delete/{id}.
+// deleteSubquestHandler обрабатывает HTTP DELETE запросы на /subquest/{id}
 // @Summary Удаляет существующий Subquest по ID
 // @Description Принимает ID подзадания в URL и удаляет соответствующее подзадание
 // @Tags Subquest
@@ -1348,7 +1312,7 @@ func getOneSubquestHandler(c *fiber.Ctx) error {
 // @Param Authorization header string true "Bearer токен"
 // @Success 200 {string} string "Subquest deleted successfully"
 // @Failure 404 {string} string "Subquest not found"
-// @Router /subquest/delete/{id} [delete]
+// @Router /subquest/{id} [delete]
 func deleteSubquestHandler(c *fiber.Ctx) error {
 	id := c.Params("id")
 
@@ -1359,9 +1323,30 @@ func deleteSubquestHandler(c *fiber.Ctx) error {
 	return c.SendString("Subquest deleted successfully")
 }
 
+// updateSubquestHandler обрабатывает HTTP PUT запросы на /subquest/{id}
+// @Summary Обновляет существующий Subquest
+// @Description Принимает JSON тело запроса с обновленными полями Subquest и обновляет существующий Subquest
+// @Tags Subquest
+// @Accept json
+// @Produce json
+// @Param Subquest body db.Subquest true "Update Subquest"
+// @Param Authorization header string true "Bearer токен"
+// @Success 200 {object} ResponseHTTP{data=db.Subquest}
+// @Failure 400 {object} ResponseHTTP{}
+// @Router /quest/{id} [put]
+func updateSubquestHandler(c *fiber.Ctx) error {
+	var subquest db.Subquest
+	ok := db.UpdateSubquest(subquest)
+	//TODO: А где здесь парсер?
+	if !ok {
+		return c.SendString("Error in updateSubquest operation")
+	}
+	return c.SendString("Subquest updated Succesfully")
+}
+
 //Tasks
 
-// createTasksHandler обрабатывает HTTP POST запросы на /tasks/create.
+// createTasksHandler обрабатывает HTTP POST запросы на /tasks
 // @Summary Создает новое задание Tasks
 // @Description Принимает JSON тело запроса с полями Tasks и создает новое задание
 // @Tags Tasks
@@ -1371,7 +1356,7 @@ func deleteSubquestHandler(c *fiber.Ctx) error {
 // @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.Tasks}
 // @Failure 400 {object} ResponseHTTP{}
-// @Router /tasks/create [post]
+// @Router /tasks [post]
 func createTasksHandler(c *fiber.Ctx) error {
 	var tasks db.Tasks
 	if err := c.BodyParser(&tasks); err != nil {
@@ -1394,7 +1379,7 @@ func createTasksHandler(c *fiber.Ctx) error {
 	return c.JSON(tasks)
 }
 
-// updateTasksHandler обрабатывает HTTP PUT запросы на /tasks/update.
+// updateTasksHandler обрабатывает HTTP PUT запросы на /tasks/{id}
 // @Summary Обновляет существующее задание Tasks
 // @Description Принимает JSON тело запроса с обновленными полями Tasks и обновляет существующее задание
 // @Tags Tasks
@@ -1404,7 +1389,7 @@ func createTasksHandler(c *fiber.Ctx) error {
 // @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.Tasks}
 // @Failure 400 {object} ResponseHTTP{}
-// @Router /tasks/update [put]
+// @Router /tasks/{id} [put]
 func updateTasksHandler(c *fiber.Ctx) error {
 	var tasks db.Tasks
 	ok := db.UpdateTasks(tasks)
@@ -1414,7 +1399,7 @@ func updateTasksHandler(c *fiber.Ctx) error {
 	return c.SendString("Tasks updated Succesfully")
 }
 
-// getOneTasksHandler обрабатывает HTTP GET запросы на /tasks/getone/{id}.
+// getOneTasksHandler обрабатывает HTTP GET запросы на /tasks/{id}
 // @Summary Получает одно задание Tasks по ID
 // @Description Возвращает информацию о конкретном задании Tasks по его ID
 // @Tags Tasks
@@ -1422,7 +1407,7 @@ func updateTasksHandler(c *fiber.Ctx) error {
 // @Produce json
 // @Success 200 {object} ResponseHTTP{data=db.Tasks}
 // @Failure 404 {string} string "Tasks not found"
-// @Router /tasks/getone/{id} [get]
+// @Router /tasks/{id} [get]
 func getOneTasksHandler(c *fiber.Ctx) error {
 	var tasks db.Tasks
 	ok := db.FindOneTasks(tasks)
@@ -1432,13 +1417,13 @@ func getOneTasksHandler(c *fiber.Ctx) error {
 	return c.SendString("Tasks Found Succesfully")
 }
 
-// getManyTasksHandler обрабатывает HTTP GET запросы на /tasks/getmany.
+// getManyTasksHandler обрабатывает HTTP GET запросы на /tasks
 // @Summary Получает список заданий Tasks
 // @Description Возвращает список всех заданий Tasks
 // @Tags Tasks
 // @Produce json
 // @Success 200 {object} ResponseHTTP{data=db.Tasks}
-// @Router /tasks/getmany [get]
+// @Router /tasks [get]
 func getManyTasksHandler(c *fiber.Ctx) error {
 	var tasks db.Tasks
 	ok := db.FindManyTasks(tasks)
@@ -1448,7 +1433,7 @@ func getManyTasksHandler(c *fiber.Ctx) error {
 	return c.SendString("Tasks Found Succesfully")
 }
 
-// deleteTasksHandler обрабатывает HTTP DELETE запросы на /tasks/delete/{id}.
+// deleteTasksHandler обрабатывает HTTP DELETE запросы на /tasks/{id}
 // @Summary Удаляет существующее задание Tasks по ID
 // @Description Принимает ID задания в URL и удаляет соответствующее задание
 // @Tags Tasks
@@ -1456,7 +1441,7 @@ func getManyTasksHandler(c *fiber.Ctx) error {
 // @Param Authorization header string true "Bearer токен"
 // @Success 200 {string} string "Tasks deleted successfully"
 // @Failure 404 {string} string "Tasks not found"
-// @Router /tasks/delete/{id} [delete]
+// @Router /tasks/{id} [delete]
 func deleteTasksHandler(c *fiber.Ctx) error {
 	id := c.Params("id")
 
@@ -1469,7 +1454,7 @@ func deleteTasksHandler(c *fiber.Ctx) error {
 
 //OfflineShops
 
-// createOfflineShopHandler обрабатывает HTTP POST запросы на /offlineshop/create.
+// createOfflineShopHandler обрабатывает HTTP POST запросы на /offlineshop
 // @Summary Создает новый Offline Shop
 // @Description Принимает JSON тело запроса с полями Offline Shop и создает новый Offline Shop
 // @Tags OfflineShops
@@ -1479,7 +1464,7 @@ func deleteTasksHandler(c *fiber.Ctx) error {
 // @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.OfflineShops}
 // @Failure 400 {object} ResponseHTTP{}
-// @Router /offlineshop/create [post]
+// @Router /offlineshop [post]
 func createOfflineShopsHandler(c *fiber.Ctx) error {
 	var offlineshops db.OfflineShops
 	if err := c.BodyParser(&offlineshops); err != nil {
@@ -1502,7 +1487,7 @@ func createOfflineShopsHandler(c *fiber.Ctx) error {
 	return c.JSON(offlineshops)
 }
 
-// updateOfflineShopHandler обрабатывает HTTP PUT запросы на /offlineshop/update/{id}.
+// updateOfflineShopHandler обрабатывает HTTP PUT запросы на /offlineshop/{id}
 // @Summary Обновляет существующий Offline Shop по ID
 // @Description Принимает JSON тело запроса с обновленными полями Offline Shop и обновляет существующий Offline Shop по его ID
 // @Tags OfflineShops
@@ -1513,7 +1498,7 @@ func createOfflineShopsHandler(c *fiber.Ctx) error {
 // @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=db.OfflineShops}
 // @Failure 400 {object} ResponseHTTP{}
-// @Router /offlineshop/update/{id} [put]
+// @Router /offlineshop/{id} [put]
 func updateOfflineShopsHandler(c *fiber.Ctx) error {
 	var offlineshops db.OfflineShops
 	ok := db.UpdateOfflineShops(offlineshops)
@@ -1523,7 +1508,7 @@ func updateOfflineShopsHandler(c *fiber.Ctx) error {
 	return c.SendString("OfflineShops updated Succesfully")
 }
 
-// getOneOfflineShopsHandler обрабатывает HTTP GET запросы на /offlineshops/getone/{id}.
+// getOneOfflineShopsHandler обрабатывает HTTP GET запросы на /offlineshops/{id}
 // @Summary Получает один офлайн магазин OfflineShops по ID
 // @Description Возвращает информацию о конкретном офлайн магазине OfflineShops по его ID
 // @Tags OfflineShops
@@ -1531,7 +1516,7 @@ func updateOfflineShopsHandler(c *fiber.Ctx) error {
 // @Produce json
 // @Success 200 {object} ResponseHTTP{data=db.OfflineShops}
 // @Failure 404 {string} string "OfflineShops not found"
-// @Router /offlineshops/getone/{id} [get]
+// @Router /offlineshops/{id} [get]
 func getOneOfflineShopsHandler(c *fiber.Ctx) error {
 	var offlineshops db.OfflineShops
 	ok := db.FindOneOfflineShops(offlineshops)
@@ -1541,13 +1526,13 @@ func getOneOfflineShopsHandler(c *fiber.Ctx) error {
 	return c.SendString("OfflineShops Found Succesfully")
 }
 
-// getManyOfflineShopsHandler обрабатывает HTTP GET запросы на /offlineshops/getmany.
+// getManyOfflineShopsHandler обрабатывает HTTP GET запросы на /offlineshops
 // @Summary Получает список офлайн магазинов OfflineShops
 // @Description Возвращает список всех офлайн магазинов OfflineShops
 // @Tags OfflineShops
 // @Produce json
 // @Success 200 {object} ResponseHTTP{data=db.OfflineShops}
-// @Router /offlineshops/getmany [get]
+// @Router /offlineshops [get]
 func getManyOfflineShopsHandler(c *fiber.Ctx) error {
 	var offlineshops db.OfflineShops
 	ok := db.FindManyOfflineShops(offlineshops)
@@ -1557,7 +1542,7 @@ func getManyOfflineShopsHandler(c *fiber.Ctx) error {
 	return c.SendString("OfflineShops Found Succesfully")
 }
 
-// deleteOfflineShopHandler обрабатывает HTTP DELETE запросы на /offlineshop/delete/{id}.
+// deleteOfflineShopHandler обрабатывает HTTP DELETE запросы на /offlineshop/{id}
 // @Summary Удаляет существующий Offline Shop по ID
 // @Description Принимает ID офлайн магазина в URL и удаляет соответствующий офлайн магазин
 // @Tags OfflineShops
@@ -1565,7 +1550,7 @@ func getManyOfflineShopsHandler(c *fiber.Ctx) error {
 // @Param Authorization header string true "Bearer токен"
 // @Success 200 {string} string "Offline Shop deleted successfully"
 // @Failure 404 {string} string "Offline Shop not found"
-// @Router /offlineshop/delete/{id} [delete]
+// @Router /offlineshop/{id} [delete]
 func deleteOfflineShopsHandler(c *fiber.Ctx) error {
 	id := c.Params("id")
 
@@ -2075,31 +2060,45 @@ func deleteCommentToSelectionHandler(c *fiber.Ctx) error {
 // Upload godoc
 // @Summary Upload a beautiful picture
 // @Tags Upload
-// @Accept  jpeg,png
+// @Accept  json
 // @Produce json
-// @Param photo formData file true "Upload your beautiful picture"
+// @Param Photo body db.Photo true "Upload your beautiful picture"
 // @Success 200 {object} ResponseHTTP{}
 // @Failure 400 {object} ResponseHTTP{}
 // @Failure 500 {object} ResponseHTTP{}
 // @Router /upload [post]
-func uploadGiftsHandler(c *fiber.Ctx) error {
-	// Получаем файл из тела запроса
-	file, err := c.FormFile("photo")
+func uploadHandler(c *fiber.Ctx) error {
+	// Получаем base64 из тела запроса
+	var photo db.Photo
+	if err := c.BodyParser(&photo); err != nil {
+		return c.Status(fiber.StatusBadRequest).SendString("Error parsing request body")
+	}
+	err := validate.Struct(photo)
 	if err != nil {
-		return c.Status(fiber.StatusBadRequest).SendString(err.Error())
+		return c.Status(fiber.StatusUnprocessableEntity).
+			SendString(err.Error())
 	}
 
-	// Создаем новый файл в директории uploads с уникальным именем
+	// Декодируем
+	decodedPhoto, err := base64.StdEncoding.DecodeString(photo.Photo)
+	if err != nil {
+		fmt.Println("Failed to decode the photo!")
+		return c.Status(fiber.StatusBadRequest).
+			SendString(err.Error())
+	}
+
+	// Даём уникальное красивое имя
 	newFileName := generateUniqueFileName()
 
+	// Сохраняем
 	destination := fmt.Sprintf("./public/gifts/%s", newFileName)
-	if err := c.SaveFile(file, destination); err != nil {
-		return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
+	if err := os.WriteFile(destination, decodedPhoto, 0666); err != nil {
+		return c.Status(fiber.StatusInternalServerError).
+			SendString(err.Error())
 	}
 	return c.SendString(fmt.Sprintf("File uploaded successfully: %s", newFileName))
 }
 
 func generateUniqueFileName() string {
-	name := xid.New()
-	return "unique_" + name.String() + ".png"
+	return "IMG_" + time.Now().Format("20060102_150405_") + xid.New().String()
 }
