@@ -205,14 +205,18 @@ func AddWish(wishlistID, giftID string) bool {
 	return true
 }
 
-func GetManyWishesInWishlist(wishlistID string) ([]Wishes, bool) {
-	var wishes []Wishes
-	result := Database.Where(Wishes{WishlistID: wishlistID}).Find(&wishes)
+func GetManyWishesInWishlist(wishlistID string) ([]Gift, bool) {
+	var gifts []Gift
+	result := Database.
+		Table("gifts").
+		Joins("INNER JOIN wishes ON gifts.id = wishes.gift_id").
+		Where(Wishes{WishlistID: wishlistID}).
+		Find(&gifts)
 	if result.Error != nil {
 		fmt.Println("Error in GetManyWishes", result.Error)
-		return wishes, false
+		return gifts, false
 	}
-	return wishes, true
+	return gifts, true
 }
 
 // func GetOneWish(wish Wishes) bool {
@@ -671,14 +675,21 @@ func UpdateGiftToSelection(giftToSelection GiftToSelection) bool {
 	return true
 }
 
-func FindGiftToSelection(selectionID string) ([]GiftToSelection, bool) {
-	var giftToSelection []GiftToSelection
-	result := Database.Where(GiftToSelection{SelectionID: selectionID}).Find(&giftToSelection)
+func FindGiftToSelection(selectionID string) ([]Gift, bool) {
+
+	var gifts []Gift
+
+	result := Database.
+		Table("gifts").
+		Joins("INNER JOIN gift_to_selections ON gifts.id = gift_to_selections.gift_id").
+		Where("gift_to_selections.selection_id = ?", selectionID).
+		Find(&gifts)
+
 	if result.Error != nil {
-		fmt.Println("Error in findGiftToSelection", result.Error)
-		return giftToSelection, false
+		fmt.Println("Error in FindGiftToSelection", result.Error)
+		return gifts, false
 	}
-	return giftToSelection, true
+	return gifts, true
 }
 
 func DeleteGiftToSelection(SelectionID, GiftID string) bool {
