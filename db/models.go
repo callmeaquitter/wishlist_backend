@@ -141,21 +141,21 @@ type ServiceReview struct {
 }
 
 type Quest struct {
-	ID         string `json:"id"`
+	ID         string `json:"id" swaggerignore:"true"`
 	SubquestID string `json:"subquest_id" validate:"required,subquest_"`
-	UserID     string `json:"user_id" validate:"required,user_"`
+	UserID     string `json:"user_id" validate:"required,user_" swaggerignore:"true"`
 	IsDone     bool   `json:"is_done" validate:"required"`
 }
 
 type Subquest struct {
-	ID     string `json:"id"`
+	ID     string `json:"id" swaggerignore:"true"`
 	TaskID string `json:"task_id" validate:"required,task_"`
 	Reward int    `json:"reward" validate:"required"`
 	IsDone bool   `json:"is_done"`
 }
 
 type Tasks struct {
-	ID          string `json:"id"`
+	ID          string `json:"id" swaggerignore:"true"`
 	Name        string `json:"name" validate:"required"`
 	Description string `json:"description" validate:"required"`
 }
