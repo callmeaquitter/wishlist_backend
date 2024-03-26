@@ -41,3 +41,8 @@ func test(wishlists []db.UserWishlist) []string {
 	return WishlistID
 }
 
+// func findGiftToSelectionInGifts(wishes in wishlist) []db.Gift {
+// 	var GiftID []string
+
+// }
+
