@@ -1,7 +1,6 @@
 package server
 
 import (
-	"os"
 	"regexp"
 
 	swagger "github.com/arsmn/fiber-swagger/v2"
@@ -266,5 +265,5 @@ func Setup() {
 }
 
 func Start() {
-	app.Listen(":" + os.Getenv("PORT"))
+	app.Listen(":80")
 }
