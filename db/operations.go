@@ -816,13 +816,14 @@ func DeleteCommentToSelection(id string) bool {
 //Quest
 
 func CreateQuest(quest Quest) bool {
-	result := Database.Model(&quest)
+	result := Database.Create(&quest)
 	if result.Error != nil {
 		fmt.Println("Error in createQuest", result.Error)
 		return false
 	}
 	return true
 }
+
 
 func FindManyQuest(quest Quest) bool {
 	result := Database.Find(&quest)
@@ -845,7 +846,7 @@ func DeleteQuest(id string) bool {
 //Subquest
 
 func CreateSubquest(subquest Subquest) bool {
-	result := Database.Model(&subquest)
+	result := Database.Create(&subquest)
 	if result.Error != nil {
 		fmt.Println("Error in createSubquest", result.Error)
 		return false
@@ -881,7 +882,7 @@ func DeleteSubquest(id string) bool {
 }
 
 func UpdateSubquest(subquest Subquest) bool {
-	result := Database.Create(&subquest).Updates(Subquest{TaskID: subquest.TaskID, Reward: subquest.Reward, IsDone: subquest.IsDone})
+	result := Database.Model(&subquest).Updates(Subquest{TaskID: subquest.TaskID, Reward: subquest.Reward, IsDone: subquest.IsDone})
 	if result.Error != nil {
 		fmt.Println("Error in updateSubquest", result.Error)
 		return false
@@ -892,7 +893,7 @@ func UpdateSubquest(subquest Subquest) bool {
 //Tasks
 
 func CreateTasks(tasks Tasks) bool {
-	result := Database.Model(&tasks)
+	result := Database.Create(&tasks)
 	if result.Error != nil {
 		fmt.Println("Error in createTasks", result.Error)
 		return false
@@ -910,7 +911,7 @@ func DeleteTasks(id string) bool {
 }
 
 func UpdateTasks(tasks Tasks) bool {
-	result := Database.Create(&tasks).Updates(Tasks{Name: tasks.Name, Description: tasks.Description})
+	result := Database.Model(&tasks).Updates(Tasks{Name: tasks.Name, Description: tasks.Description})
 	if result.Error != nil {
 		fmt.Println("Error in updateTasks", result.Error)
 		return false
@@ -939,7 +940,7 @@ func FindOneTasks(tasks Tasks) bool {
 //OfflineShops
 
 func CreateOfflineShops(offlineshops OfflineShops) bool {
-	result := Database.Model(&offlineshops)
+	result := Database.Create(&offlineshops)
 	if result.Error != nil {
 		fmt.Println("Error in createOfflineShops", result.Error)
 		return false
@@ -948,7 +949,7 @@ func CreateOfflineShops(offlineshops OfflineShops) bool {
 }
 
 func UpdateOfflineShops(offlineshops OfflineShops) bool {
-	result := Database.Create(&offlineshops).Updates(OfflineShops{Name: offlineshops.Name, Location: offlineshops.Location})
+	result := Database.Model(&offlineshops).Updates(OfflineShops{Name: offlineshops.Name, Location: offlineshops.Location})
 	if result.Error != nil {
 		fmt.Println("Error in updateOfflineShops", result.Error)
 		return false
