@@ -266,5 +266,5 @@ func Setup() {
 }
 
 func Start() {
-	app.Listen(":" + os.Getenv("PORT"))
+	app.Listen(":" + os.Getenv(PORT))
 }
