@@ -229,5 +229,5 @@ func Setup() {
 }
 
 func Start() {
-	app.Listen(":7777")
+	app.Listen(":80")
 }

@@ -3666,7 +3666,6 @@ const docTemplate = `{
         "db.GiftReview": {
             "type": "object",
             "required": [
-                "comment",
                 "gift_id",
                 "mark"
             ],
@@ -3690,10 +3689,6 @@ const docTemplate = `{
         },
         "db.GiftToSelection": {
             "type": "object",
-            "required": [
-                "gift_id",
-                "selection_id"
-            ],
             "properties": {
                 "gift_id": {
                     "type": "string"

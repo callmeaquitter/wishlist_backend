@@ -73,7 +73,6 @@ definitions:
       mark:
         type: number
     required:
-    - comment
     - gift_id
     - mark
     type: object
@@ -83,9 +82,6 @@ definitions:
         type: string
       selection_id:
         type: string
-    required:
-    - gift_id
-    - selection_id
     type: object
   db.LikeToSelection:
     properties:
