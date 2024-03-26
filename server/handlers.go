@@ -1043,7 +1043,6 @@ func CreateWishlistHandler(c *fiber.Ctx) error {
 // @Tags Wishlist
 // @Accept  json
 // @Produce json
-// @Param id path string true "Find FindManyWishlists"
 // @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{data=[]db.UserWishlist}
 // @Failure 400 {object} ResponseHTTP{}

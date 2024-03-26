@@ -3837,13 +3837,6 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Find FindManyWishlists",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
                         "description": "Bearer токен",
                         "name": "Authorization",
                         "in": "header",
