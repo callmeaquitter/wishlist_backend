@@ -524,7 +524,14 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "description": "GiftToSelection ID",
-                        "name": "id",
+                        "name": "gift_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "GiftToSelection ID",
+                        "name": "selection_id",
                         "in": "path",
                         "required": true
                     },

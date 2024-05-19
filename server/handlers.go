@@ -2028,7 +2028,8 @@ func findGiftToSelectionHandler(c *fiber.Ctx) error {
 // @Tags GiftToSelection
 // @Accept json
 // @Produce json
-// @Param id path string true "GiftToSelection ID"
+// @Param gift_id path string true "GiftToSelection ID"
+// @Param selection_id path string true "GiftToSelection ID"
 // @Param Authorization header string true "Bearer токен"
 // @Success 200 {object} ResponseHTTP{}
 // @Failure 400 {object} ResponseHTTP{}
