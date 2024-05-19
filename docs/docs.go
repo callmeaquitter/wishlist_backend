@@ -4410,9 +4410,6 @@ const docTemplate = `{
                 "task_id"
             ],
             "properties": {
-                "id": {
-                    "type": "string"
-                },
                 "is_done": {
                     "type": "boolean"
                 },
@@ -4432,9 +4429,6 @@ const docTemplate = `{
             ],
             "properties": {
                 "description": {
-                    "type": "string"
-                },
-                "id": {
                     "type": "string"
                 },
                 "name": {

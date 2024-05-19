@@ -211,8 +211,6 @@ definitions:
     type: object
   db.Subquest:
     properties:
-      id:
-        type: string
       is_done:
         type: boolean
       reward:
@@ -226,8 +224,6 @@ definitions:
   db.Tasks:
     properties:
       description:
-        type: string
-      id:
         type: string
       name:
         type: string
