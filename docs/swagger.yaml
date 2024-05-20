@@ -286,7 +286,7 @@ definitions:
       success:
         type: boolean
     type: object
-host: localhost:7777
+host: 80.249.145.126:80
 info:
   contact:
     email: fiber@swagger.io
@@ -2687,11 +2687,6 @@ paths:
       consumes:
       - application/json
       parameters:
-      - description: Find FindManyWishlists
-        in: path
-        name: id
-        required: true
-        type: string
       - description: Bearer токен
         in: header
         name: Authorization

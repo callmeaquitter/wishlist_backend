@@ -3837,13 +3837,6 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Find FindManyWishlists",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
                         "description": "Bearer токен",
                         "name": "Authorization",
                         "in": "header",
@@ -4530,7 +4523,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "localhost:7777",
+	Host:             "80.249.145.126:80",
 	BasePath:         "/",
 	Schemes:          []string{},
 	Title:            "Wishlist",

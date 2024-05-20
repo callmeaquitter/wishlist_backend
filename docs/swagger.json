@@ -14,7 +14,7 @@
         },
         "version": "1.0"
     },
-    "host": "localhost:7777",
+    "host": "80.249.145.126:80",
     "basePath": "/",
     "paths": {
         "/booked_gifts": {
@@ -3829,13 +3829,6 @@
                 ],
                 "summary": "Finds you all of your wishlists.",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Find FindManyWishlists",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
                     {
                         "type": "string",
                         "description": "Bearer токен",

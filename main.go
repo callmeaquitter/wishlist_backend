@@ -36,7 +36,7 @@ func getDsn() string {
 // @contact.email fiber@swagger.io
 // @license.name Apache 2.0
 // @license.url http://www.apache.org/licenses/LICENSE-2.0.html
-// @host localhost:7777
+// @host 80.249.145.126:80
 // @BasePath /
 
 func main() {
