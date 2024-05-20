@@ -4263,20 +4263,13 @@ const docTemplate = `{
             "type": "object",
             "required": [
                 "is_done",
-                "subquest_id",
-                "user_id"
+                "subquest_id"
             ],
             "properties": {
-                "id": {
-                    "type": "string"
-                },
                 "is_done": {
                     "type": "boolean"
                 },
                 "subquest_id": {
-                    "type": "string"
-                },
-                "user_id": {
                     "type": "string"
                 }
             }
@@ -4417,9 +4410,6 @@ const docTemplate = `{
                 "task_id"
             ],
             "properties": {
-                "id": {
-                    "type": "string"
-                },
                 "is_done": {
                     "type": "boolean"
                 },
@@ -4439,9 +4429,6 @@ const docTemplate = `{
             ],
             "properties": {
                 "description": {
-                    "type": "string"
-                },
-                "id": {
                     "type": "string"
                 },
                 "name": {

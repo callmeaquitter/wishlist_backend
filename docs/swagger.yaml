@@ -112,18 +112,13 @@ definitions:
     type: object
   db.Quest:
     properties:
-      id:
-        type: string
       is_done:
         type: boolean
       subquest_id:
         type: string
-      user_id:
-        type: string
     required:
     - is_done
     - subquest_id
-    - user_id
     type: object
   db.Selection:
     properties:
@@ -216,8 +211,6 @@ definitions:
     type: object
   db.Subquest:
     properties:
-      id:
-        type: string
       is_done:
         type: boolean
       reward:
@@ -231,8 +224,6 @@ definitions:
   db.Tasks:
     properties:
       description:
-        type: string
-      id:
         type: string
       name:
         type: string
