@@ -809,6 +809,16 @@ func FindManyQuest() ([]Quest, bool) {
 	return quests, true
 }
 
+func FindOneQuest(questId string) (Quest, bool) {
+	var quest Quest
+	result := Database.Where(Quest{ID:questId}).Take(&quest)
+	if result.Error != nil {
+		fmt.Println("Error in findManyQuest", result.Error)
+		return quest, false
+	}
+	return quest, true
+}
+
 func DeleteQuest(id string) bool {
 	result := Database.Delete(Quest{ID: id})
 	if result.Error != nil {
@@ -817,6 +827,16 @@ func DeleteQuest(id string) bool {
 	}
 	return true
 }
+
+func UpdateQuest(quest Quest) bool {
+	result := Database.Model(&quest).Updates(Quest{SubquestID: quest.SubquestID, IsDone: quest.IsDone, UserID: quest.UserID})
+	if result.Error != nil {
+		fmt.Println("Error in updateSubquest", result.Error)
+		return false
+	}
+	return true
+}
+
 
 //Subquest
 

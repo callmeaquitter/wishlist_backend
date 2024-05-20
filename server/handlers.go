@@ -853,7 +853,7 @@ func loginSellerHandler(c *fiber.Ctx) error {
 		return c.SendString("Invalid creditials")
 	}
 	sellerSession := db.SellerSession{
-		ID:     "session_" + xid.New().String(),
+		ID:       "session_" + xid.New().String(),
 		SellerID: seller.SellerID,
 	}
 	ok = db.CreateSellerSession(sellerSession)
@@ -863,7 +863,6 @@ func loginSellerHandler(c *fiber.Ctx) error {
 
 	return c.JSON(sellerSession)
 }
-
 
 // AddWishHandler godoc
 // @Summary Creates a new gift.
@@ -1011,7 +1010,6 @@ func createSelectionHandler(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusUnprocessableEntity).
 			SendString(err.Error())
 	}
-
 
 	selection.ID = "selection_" + xid.New().String()
 	if selection.ID == "" {
@@ -1607,12 +1605,19 @@ func createQuestHandler(c *fiber.Ctx) error {
 // @Router /quest/update [put]
 func updateQuestHandler(c *fiber.Ctx) error {
 	var quest db.Quest
+	if err := c.BodyParser(&quest); err != nil {
+		return c.SendString(err.Error())
+	}
 	ok := db.UpdateQuest(quest)
-	//TODO: А где здесь парсер? 
+	//TODO: А где здесь парсер?
 	if !ok {
 		return c.SendString("Error in updateQuest operation")
 	}
-	return c.SendString("Quest updated Succesfully")
+	return c.JSON(ResponseHTTP{
+		Success: true,
+		Message: "Quest updated Succesfully",
+		Data:    &quest,
+	})
 }
 
 // getOneQuestHandler обрабатывает HTTP GET запросы на /quest/getone/{id}.
@@ -1625,12 +1630,12 @@ func updateQuestHandler(c *fiber.Ctx) error {
 // @Failure 404 {string} string "Quest not found"
 // @Router /quest/getone/{id} [get]
 func getOneQuestHandler(c *fiber.Ctx) error {
-	var quest db.Quest
-	ok := db.FindOneQuest(quest)
+	questId := c.Params("id")
+	reuslt, ok := db.FindOneQuest(questId)
 	if !ok {
 		return c.SendString("Error in findOneQuest operation")
 	}
-	return c.SendString("Quest Found Succesfully")
+	return c.JSON(reuslt)
 }
 
 // getManyQuestHandler обрабатывает HTTP GET запросы на /quest/getmany.
@@ -1767,12 +1772,18 @@ func deleteSubquestHandler(c *fiber.Ctx) error {
 // @Router /quest/{id} [put]
 func updateSubquestHandler(c *fiber.Ctx) error {
 	var subquest db.Subquest
+	if err := c.BodyParser(&subquest); err != nil {
+		return c.SendString(err.Error())
+	}
 	ok := db.UpdateSubquest(subquest)
-	//TODO: А где здесь парсер?
 	if !ok {
 		return c.SendString("Error in updateSubquest operation")
 	}
-	return c.SendString("Subquest updated Succesfully")
+	return c.JSON(ResponseHTTP{
+		Success: true,
+		Message: "Subquest updated Succesfully",
+		Data:    &subquest,
+	})
 }
 
 //Tasks
@@ -1823,11 +1834,19 @@ func createTasksHandler(c *fiber.Ctx) error {
 // @Router /tasks/{id} [put]
 func updateTasksHandler(c *fiber.Ctx) error {
 	var tasks db.Tasks
+	if err := c.BodyParser(&tasks); err != nil {
+		return c.SendString(err.Error())
+	}
 	ok := db.UpdateTasks(tasks)
 	if !ok {
 		return c.SendString("Error in updateTasks operation")
 	}
-	return c.SendString("Tasks updated Succesfully")
+	return c.JSON(ResponseHTTP{
+		Success: true,
+		Message: "Tasks updated Succesfully",
+		Data:    &tasks,
+	})
+
 }
 
 // getOneTasksHandler обрабатывает HTTP GET запросы на /tasks/{id}
@@ -1931,6 +1950,9 @@ func createOfflineShopsHandler(c *fiber.Ctx) error {
 // @Router /offlineshop/{id} [put]
 func updateOfflineShopsHandler(c *fiber.Ctx) error {
 	var offlineshops db.OfflineShops
+	if err := c.BodyParser(&offlineshops); err != nil {
+		return c.SendString(err.Error())
+	}
 	ok := db.UpdateOfflineShops(offlineshops)
 	if !ok {
 		return c.SendString("Error in updateOfflineShops operation")
