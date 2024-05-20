@@ -54,7 +54,7 @@ func UpdateGift(gift Gift) bool {
 //Quest
 
 func CreateQuest(quest Quest) bool {
-	result := Database.Model(&quest)
+	result := Database.Create(&quest)
 	if result.Error != nil {
 		fmt.Println("Error in createQuest", result.Error)
 		return false
@@ -62,22 +62,14 @@ func CreateQuest(quest Quest) bool {
 	return true
 }
 
-func FindManyQuest(quest Quest) bool {
-	result := Database.Find(&quest)
+func FindManyQuest() ([]Quest, bool) {
+	var quests []Quest
+	result := Database.Find(&quests)
 	if result.Error != nil {
 		fmt.Println("Error in findManyQuest", result.Error)
-		return false
+		return nil, false
 	}
-	return true
-}
-
-func FindOneQuest(quest Quest) bool {
-	result := Database.Take(&quest)
-	if result.Error != nil {
-		fmt.Println("Error in findOneQuest", result.Error)
-		return false
-	}
-	return true
+	return quests, true
 }
 
 func DeleteQuest(id string) bool {
@@ -89,19 +81,10 @@ func DeleteQuest(id string) bool {
 	return true
 }
 
-func UpdateQuest(quest Quest) bool {
-	result := Database.Model(&quest).Updates(map[string]interface{}{"subquest_id": quest.SubquestID, "user_id": quest.UserID, "is_done": quest.IsDone})
-	if result.Error != nil {
-		fmt.Println("Error in updateQuest", result.Error)
-		return false
-	}
-	return true
-}
-
 //Subquest
 
 func CreateSubquest(subquest Subquest) bool {
-	result := Database.Model(&subquest)
+	result := Database.Create(&subquest)
 	if result.Error != nil {
 		fmt.Println("Error in createSubquest", result.Error)
 		return false
@@ -109,22 +92,24 @@ func CreateSubquest(subquest Subquest) bool {
 	return true
 }
 
-func FindManySubquest(subquest Subquest) bool {
-	result := Database.Find(&subquest)
+func FindManySubquest() ([]Subquest, bool) {
+	var subquests []Subquest
+	result := Database.Find(&subquests)
 	if result.Error != nil {
 		fmt.Println("Error in findManySubquest", result.Error)
-		return false
+		return nil, false
 	}
-	return true
+	return subquests, true
 }
 
-func FindOneSubquest(subquest Subquest) bool {
-	result := Database.Take(&subquest)
+func FindOneSubquest(subquestId string) (Subquest, bool) {
+	var subquest Subquest
+	result := Database.Where(&Subquest{ID: subquestId}).Take(&subquest)
 	if result.Error != nil {
 		fmt.Println("Error in findOneSubquest", result.Error)
-		return false
+		return subquest, false
 	}
-	return true
+	return subquest, true
 }
 
 func DeleteSubquest(id string) bool {
@@ -136,10 +121,19 @@ func DeleteSubquest(id string) bool {
 	return true
 }
 
+func UpdateSubquest(subquest Subquest) bool {
+	result := Database.Model(&subquest).Updates(Subquest{TaskID: subquest.TaskID, Reward: subquest.Reward, IsDone: subquest.IsDone})
+	if result.Error != nil {
+		fmt.Println("Error in updateSubquest", result.Error)
+		return false
+	}
+	return true
+}
+
 //Tasks
 
 func CreateTasks(tasks Tasks) bool {
-	result := Database.Model(&tasks)
+	result := Database.Create(&tasks)
 	if result.Error != nil {
 		fmt.Println("Error in createTasks", result.Error)
 		return false
@@ -157,7 +151,7 @@ func DeleteTasks(id string) bool {
 }
 
 func UpdateTasks(tasks Tasks) bool {
-	result := Database.Model(&tasks).Updates(map[string]interface{}{"name": tasks.Name, "description": tasks.Description})
+	result := Database.Model(&tasks).Updates(Tasks{Name: tasks.Name, Description: tasks.Description})
 	if result.Error != nil {
 		fmt.Println("Error in updateTasks", result.Error)
 		return false
@@ -165,28 +159,30 @@ func UpdateTasks(tasks Tasks) bool {
 	return true
 }
 
-func FindManyTasks(tasks Tasks) bool {
+func FindManyTasks() ([]Tasks, bool) {
+	var tasks []Tasks
 	result := Database.Find(&tasks)
 	if result.Error != nil {
 		fmt.Println("Error in findManyTasks", result.Error)
-		return false
+		return nil, false
 	}
-	return true
+	return tasks, true
 }
 
-func FindOneTasks(tasks Tasks) bool {
-	result := Database.Take(&tasks)
+func FindOneTasks(taskId string) (Tasks, bool) {
+	var task Tasks
+	result := Database.Where(&Tasks{ID: taskId}).Take(&task)
 	if result.Error != nil {
 		fmt.Println("Error in findOneTasks", result.Error)
-		return false
+		return task, false
 	}
-	return true
+	return task, true
 }
 
 //OfflineShops
 
 func CreateOfflineShops(offlineshops OfflineShops) bool {
-	result := Database.Model(&offlineshops)
+	result := Database.Create(&offlineshops)
 	if result.Error != nil {
 		fmt.Println("Error in createOfflineShops", result.Error)
 		return false
@@ -195,7 +191,7 @@ func CreateOfflineShops(offlineshops OfflineShops) bool {
 }
 
 func UpdateOfflineShops(offlineshops OfflineShops) bool {
-	result := Database.Model(&offlineshops).Updates(map[string]interface{}{"name": offlineshops.Name, "location": offlineshops.Location})
+	result := Database.Model(&offlineshops).Updates(OfflineShops{Name: offlineshops.Name, Location: offlineshops.Location})
 	if result.Error != nil {
 		fmt.Println("Error in updateOfflineShops", result.Error)
 		return false
@@ -229,3 +225,4 @@ func DeleteOfflineShops(id string) bool {
 	}
 	return true
 }
+

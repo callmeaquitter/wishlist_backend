@@ -44,11 +44,9 @@ func Setup() {
 
 	quest.Get("", getManyQuestHandler)
 
-	quest.Get("/:id", getOneQuestHandler)
 
 	quest.Delete("/:id", deleteQuestHandler)
 
-	quest.Patch("/:id", updateQuestHandler)
 
 	//Route: POST /subquest
 	subquest := app.Group("/subquest")
