@@ -167,5 +167,5 @@ type OfflineShops struct {
 }
 
 type Photo struct {
-	Photo	string	`json:"photo" validate:"base64"`
+	Photo string `json:"photo" validate:"base64"`
 }
