@@ -2170,5 +2170,5 @@ func uploadHandler(c *fiber.Ctx) error {
 func generateUniqueFileName(category string) string {
 	return fmt.Sprintf("%s_", category) + 
 		time.Now().Format("20060102_150405_") + 
-		xid.New().String()
+		xid.New().String() + ".png"
 }
