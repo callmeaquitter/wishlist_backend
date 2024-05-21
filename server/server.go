@@ -40,13 +40,15 @@ func ValidatePasswordFormat(fl validator.FieldLevel) bool {
 // Custom photo type validation
 func ValidatePhotoCategory(fl validator.FieldLevel) bool {
 	switch category := strings.ToLower(fl.Field().String()); category {
-	case "user":
+	case "profile_photo":
 		return true
 	case "seller":
 		return true
-	case "gift":
+	case "gifts":
 		return true
-	case "service":
+	case "services":
+		return true
+	case "selection":
 		return true
 	default:
 		return false
