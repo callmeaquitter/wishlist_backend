@@ -939,7 +939,7 @@ func loginSellerHandler(c *fiber.Ctx) error {
 		return c.SendString("Invalid creditials")
 	}
 	sellerSession := db.SellerSession{
-		ID:     "session_" + xid.New().String(),
+		ID:       "session_" + xid.New().String(),
 		SellerID: seller.SellerID,
 	}
 	ok = db.CreateSellerSession(sellerSession)
@@ -1224,7 +1224,7 @@ func updateQuestHandler(c *fiber.Ctx) error {
 	return c.JSON(ResponseHTTP{
 		Success: true,
 		Message: "Quest updated Succesfully",
-		Data: &quest,
+		Data:    &quest,
 	})
 }
 
@@ -1391,7 +1391,7 @@ func updateSubquestHandler(c *fiber.Ctx) error {
 	return c.JSON(ResponseHTTP{
 		Success: true,
 		Message: "Subquest updated Succesfully",
-		Data: &subquest,
+		Data:    &subquest,
 	})
 }
 
@@ -1622,6 +1622,7 @@ func deleteOfflineShopsHandler(c *fiber.Ctx) error {
 	}
 	return c.SendString("OfflineShops deleted successfully")
 }
+
 // createSelectionHandler обрабатывает HTTP POST запросы на /selection/create.
 // @Summary Создает новый Selection
 // @Description Принимает JSON тело запроса с полями Selection и создает новый Selection

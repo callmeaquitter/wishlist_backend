@@ -1,6 +1,6 @@
 package server
 
-import "wishlist/db"
+// import "wishlist/db"
 
 // var sessions = map[string]string{
 // 	"loveyou":         "Axtem",
@@ -33,13 +33,13 @@ import "wishlist/db"
 // - Register: add user to db, return session/jwt token
 // - Login: check user in db, return session/jwt token
 
-func test(wishlists []db.UserWishlist) []string {
-	var WishlistID []string
-	for _, wishlist := range wishlists {
-		WishlistID = append(WishlistID, wishlist.ID)
-	}
-	return WishlistID
-}
+// func test(wishlists []db.UserWishlist) []string {
+// 	var WishlistID []string
+// 	for _, wishlist := range wishlists {
+// 		WishlistID = append(WishlistID, wishlist.ID)
+// 	}
+// 	return WishlistID
+// }
 
 // func findGiftToSelectionInGifts(wishes in wishlist) []db.Gift {
 // 	var GiftID []string
