@@ -4,6 +4,7 @@ import (
 	"encoding/base64"
 	"fmt"
 	"os"
+	"strings"
 	"time"
 
 	"wishlist/db"
@@ -2151,11 +2152,14 @@ func uploadHandler(c *fiber.Ctx) error {
 			SendString(err.Error())
 	}
 
+	// Получаем категорию файла
+	category := strings.ToLower(photo.Category)
+
 	// Даём уникальное красивое имя
-	newFileName := generateUniqueFileName()
+	newFileName := generateUniqueFileName(category)
 
 	// Сохраняем
-	destination := fmt.Sprintf("./public/gifts/%s", newFileName)
+	destination := fmt.Sprintf("./public/%s/%s", category, newFileName)
 	if err := os.WriteFile(destination, decodedPhoto, 0666); err != nil {
 		return c.Status(fiber.StatusInternalServerError).
 			SendString(err.Error())
@@ -2163,6 +2167,8 @@ func uploadHandler(c *fiber.Ctx) error {
 	return c.SendString(fmt.Sprintf("File uploaded successfully: %s", newFileName))
 }
 
-func generateUniqueFileName() string {
-	return "IMG_" + time.Now().Format("20060102_150405_") + xid.New().String()
+func generateUniqueFileName(category string) string {
+	return fmt.Sprintf("%s_", category) + 
+		time.Now().Format("20060102_150405_") + 
+		xid.New().String()
 }
