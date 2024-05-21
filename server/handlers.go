@@ -1604,19 +1604,19 @@ func createQuestHandler(c *fiber.Ctx) error {
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /quest/update [put]
 func updateQuestHandler(c *fiber.Ctx) error {
+	questId := c.Params("id")
 	var quest db.Quest
 	if err := c.BodyParser(&quest); err != nil {
 		return c.SendString(err.Error())
 	}
-	ok := db.UpdateQuest(quest)
-	//TODO: А где здесь парсер?
+	ok := db.UpdateQuest(questId, quest)
 	if !ok {
 		return c.SendString("Error in updateQuest operation")
 	}
 	return c.JSON(ResponseHTTP{
 		Success: true,
 		Message: "Quest updated Succesfully",
-		Data:    &quest,
+		Data: &quest,
 	})
 }
 
@@ -1771,18 +1771,19 @@ func deleteSubquestHandler(c *fiber.Ctx) error {
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /quest/{id} [put]
 func updateSubquestHandler(c *fiber.Ctx) error {
+	subquestId := c.Params("id")
 	var subquest db.Subquest
 	if err := c.BodyParser(&subquest); err != nil {
 		return c.SendString(err.Error())
 	}
-	ok := db.UpdateSubquest(subquest)
+	ok := db.UpdateSubquest(subquestId, subquest)
 	if !ok {
 		return c.SendString("Error in updateSubquest operation")
 	}
 	return c.JSON(ResponseHTTP{
 		Success: true,
 		Message: "Subquest updated Succesfully",
-		Data:    &subquest,
+		Data: &subquest,
 	})
 }
 
@@ -1833,11 +1834,12 @@ func createTasksHandler(c *fiber.Ctx) error {
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /tasks/{id} [put]
 func updateTasksHandler(c *fiber.Ctx) error {
+	tasksId := c.Params("id")
 	var tasks db.Tasks
 	if err := c.BodyParser(&tasks); err != nil {
 		return c.SendString(err.Error())
 	}
-	ok := db.UpdateTasks(tasks)
+	ok := db.UpdateTasks(tasksId, tasks)
 	if !ok {
 		return c.SendString("Error in updateTasks operation")
 	}
@@ -1949,11 +1951,12 @@ func createOfflineShopsHandler(c *fiber.Ctx) error {
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /offlineshop/{id} [put]
 func updateOfflineShopsHandler(c *fiber.Ctx) error {
+	offlineshopsId := c.Params("id")
 	var offlineshops db.OfflineShops
 	if err := c.BodyParser(&offlineshops); err != nil {
 		return c.SendString(err.Error())
 	}
-	ok := db.UpdateOfflineShops(offlineshops)
+	ok := db.UpdateOfflineShops(offlineshopsId, offlineshops)
 	if !ok {
 		return c.SendString("Error in updateOfflineShops operation")
 	}
@@ -1970,12 +1973,12 @@ func updateOfflineShopsHandler(c *fiber.Ctx) error {
 // @Failure 404 {string} string "OfflineShops not found"
 // @Router /offlineshops/{id} [get]
 func getOneOfflineShopsHandler(c *fiber.Ctx) error {
-	var offlineshops db.OfflineShops
-	ok := db.FindOneOfflineShops(offlineshops)
+	offlineshopsId := c.Params("id")
+	result, ok := db.FindOneOfflineShops(offlineshopsId)
 	if !ok {
 		return c.SendString("Error in findOneOfflineShops operation")
 	}
-	return c.SendString("OfflineShops Found Succesfully")
+	return c.JSON(result)
 }
 
 // getManyOfflineShopsHandler обрабатывает HTTP GET запросы на /offlineshops
@@ -1986,12 +1989,11 @@ func getOneOfflineShopsHandler(c *fiber.Ctx) error {
 // @Success 200 {object} ResponseHTTP{data=db.OfflineShops}
 // @Router /offlineshops [get]
 func getManyOfflineShopsHandler(c *fiber.Ctx) error {
-	var offlineshops db.OfflineShops
-	ok := db.FindManyOfflineShops(offlineshops)
+	result, ok := db.FindManyOfflineShops()
 	if !ok {
 		return c.SendString("Error in findManyOfflineShops operation")
 	}
-	return c.SendString("OfflineShops Found Succesfully")
+	return c.JSON(result)
 }
 
 // deleteOfflineShopHandler обрабатывает HTTP DELETE запросы на /offlineshop/{id}
