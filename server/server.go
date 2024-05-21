@@ -2,6 +2,7 @@ package server
 
 import (
 	"regexp"
+	"strings"
 
 	swagger "github.com/arsmn/fiber-swagger/v2"
 	"github.com/go-playground/validator/v10"
@@ -36,6 +37,22 @@ func ValidatePasswordFormat(fl validator.FieldLevel) bool {
 	return regexp.MustCompile(`[A-Z]`).MatchString(password)
 }
 
+// Custom photo type validation
+func ValidatePhotoCategory(fl validator.FieldLevel) bool {
+	switch category := strings.ToLower(fl.Field().String()); category {
+	case "user":
+		return true
+	case "seller":
+		return true
+	case "gift":
+		return true
+	case "service":
+		return true
+	default:
+		return false
+	}
+}
+
 func Setup() {
 	app = fiber.New(fiber.Config{
 		BodyLimit: 5 * 1024 * 1024, // Limit file size to 5MB
@@ -49,6 +66,7 @@ func Setup() {
 	validate.RegisterValidation("service_", ValidateIDFormat("service_"))
 	validate.RegisterValidation("user_", ValidateIDFormat("user_"))
 	validate.RegisterValidation("password", ValidatePasswordFormat)
+	validate.RegisterValidation("category", ValidatePhotoCategory)
 
 	app.Use(cors.New(cors.Config{
 		AllowOrigins: "*",
