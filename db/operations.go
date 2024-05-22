@@ -210,7 +210,7 @@ func GetManyWishesInWishlist(wishlistID string) ([]Gift, bool) {
 	result := Database.
 		Table("gifts").
 		Joins("INNER JOIN wishes ON gifts.id = wishes.gift_id").
-		Where(Wishes{WishlistID: wishlistID}).
+		Where("wishes.wishlist_id = ?", wishlistID).
 		Find(&gifts)
 	if result.Error != nil {
 		fmt.Println("Error in GetManyWishes", result.Error)
