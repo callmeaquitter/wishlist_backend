@@ -2,16 +2,7 @@ package db
 
 import (
 	"fmt"
-	_ "wishlist/docs"
 )
-
-type IError struct {
-	Field string
-	Tag   string
-	Value string
-}
-
-// var Validator = validator.New()
 
 func CreateGift(gift Gift) bool {
 	result := Database.Create(&gift)
@@ -31,28 +22,126 @@ func DeleteGift(id string) bool {
 	return true
 }
 
-func FindManyGift(gift Gift) bool {
-	result := Database.Find(&gift)
+func FindManyGift(searchParams Gift) ([]Gift, bool) {
+	var gifts []Gift
+	result := Database.Find(&gifts, &searchParams)
 	if result.Error != nil {
-		fmt.Println("Error in findManyGift", result.Error)
+		fmt.Println("Error in findManyGift:", result.Error)
+		return nil, false
+	}
+	return gifts, true
+}
+
+func FindOneGift(id string) (*Gift, bool) {
+	var gift Gift
+	result := Database.First(&gift, "id = ?", id)
+	if result.Error != nil {
+		fmt.Println("Error in findOneGift:", result.Error)
+		return nil, false
+	}
+	return &gift, true
+}
+
+func UpdateGift(id string, updatedGift Gift) bool {
+
+	existingGift := Gift{}
+	result := Database.First(&existingGift, "id = ?", id)
+	if result.Error != nil {
+		fmt.Println("Error in finding gift:", result.Error)
+		return false
+	}
+
+	if updatedGift.Name != "" {
+		existingGift.Name = updatedGift.Name
+	}
+	if updatedGift.Price != 0 {
+		existingGift.Price = updatedGift.Price
+	}
+	if updatedGift.Photo != "" {
+		existingGift.Photo = updatedGift.Photo
+	}
+	if updatedGift.Description != "" {
+		existingGift.Description = updatedGift.Description
+	}
+	if updatedGift.Link != "" {
+		existingGift.Link = updatedGift.Link
+	}
+
+	if updatedGift.Category != "" {
+		existingGift.Category = updatedGift.Category
+	}
+	result = Database.Save(&existingGift)
+	if result.Error != nil {
+		fmt.Println("Error updating the gift:", result.Error)
+		return false
+	}
+
+	return true
+}
+
+func CreateBookedGift(BookedGiftInWishlist BookedGiftInWishlist) bool {
+	result := Database.Create(&BookedGiftInWishlist)
+	if result.Error != nil {
+		fmt.Println("Error in createBookedGiftInWishlist", result.Error)
 		return false
 	}
 	return true
 }
 
-func FindOneGift(gift Gift) bool {
-	result := Database.Take(&gift)
+func DeleteBookedGift(giftID string) bool {
+	var bookedGiftInWishlist BookedGiftInWishlist
+	result := Database.Where(&BookedGiftInWishlist{GiftID: giftID}).Delete(&bookedGiftInWishlist)
 	if result.Error != nil {
-		fmt.Println("Error in findOneGift", result.Error)
+		fmt.Println("Error in deleteBookedGift", result.Error)
 		return false
 	}
 	return true
 }
 
-func UpdateGift(gift Gift) bool {
-	result := Database.Model(&gift).Update("name", "hello")
+func FindManyUsersGift(UserID string) ([]BookedGiftInWishlist, bool) {
+	var bookedGiftInWishlist []BookedGiftInWishlist
+	result := Database.Find(&bookedGiftInWishlist, "user_id = ?", UserID)
 	if result.Error != nil {
-		fmt.Println("Error in updateGift", result.Error)
+		fmt.Println("Error in findManyUsersGift", result.Error)
+		return bookedGiftInWishlist, false
+	}
+	return bookedGiftInWishlist, true
+}
+
+// gift categore
+func CreateGiftCategory(GiftCategory GiftCategory) bool {
+	result := Database.Create(&GiftCategory)
+	if result.Error != nil {
+		fmt.Println("Error in CreateGiftCategory", result.Error)
+		return false
+	}
+	return true
+}
+
+func DeleteGiftCategory(id string) bool {
+	result := Database.Delete(GiftCategory{ID: id})
+	if result.Error != nil {
+		fmt.Println("Error in deleteGiftCategory", result.Error)
+		return false
+	}
+	return true
+}
+
+func FindManyGiftCategory(searchParams GiftCategory) ([]GiftCategory, bool) {
+	var giftCategories []GiftCategory
+	result := Database.Find(&giftCategories, &searchParams)
+	if result.Error != nil {
+		fmt.Println("Error in findManyGiftCategory:", result.Error)
+		return nil, false
+	}
+	return giftCategories, true
+}
+
+// gift rewiev
+func CreateGiftReview(GiftReview GiftReview) bool {
+	result := Database.Create(&GiftReview)
+	if result.Error != nil {
+		fmt.Println("Error in createGiftReview", result.Error)
 		return false
 	}
 	return true
@@ -67,24 +156,24 @@ func CreateWishlist(wishlist UserWishlist) bool {
 	return true
 }
 
-func FindManyWishlists(userID string) bool {
+func FindManyWishlists(userID string) (UserWishlist, bool) {
 	var wishlist UserWishlist
 	result := Database.Where(&UserWishlist{UserID: userID}).Find(&wishlist)
 	if result.Error != nil {
 		fmt.Println("Error in FindManyWishlists", result.Error)
-		return false
+		return wishlist, false
 	}
-	return true
+	return wishlist, true
 }
 
-func FindWishlistByName(name string) bool {
+func FindWishlistByName(name string) (UserWishlist, bool) {
 	var wishlist UserWishlist
-	result := Database.Where(&UserWishlist{Name: name}).Take(&wishlist)
+	result := Database.Where(&UserWishlist{Name: name}).First(&wishlist)
 	if result.Error != nil {
 		fmt.Println("Error in FindWishlistByName", result.Error)
-		return false
+		return wishlist, false
 	}
-	return true
+	return wishlist, true
 }
 
 func UpdateWishlist(wishlistID, wishlistName string) bool {
@@ -116,14 +205,18 @@ func AddWish(wishlistID, giftID string) bool {
 	return true
 }
 
-func GetManyWishesInWishlist(wishlistID string) bool {
-	var wishes []Wishes
-	result := Database.Where(&wishes, wishlistID).Find(&wishes)
+func GetManyWishesInWishlist(wishlistID string) ([]Gift, bool) {
+	var gifts []Gift
+	result := Database.
+		Table("gifts").
+		Joins("INNER JOIN wishes ON gifts.id = wishes.gift_id").
+		Where("wishes.wishlist_id = ?", wishlistID). // Adjusted the condition to match wishlistID
+		Find(&gifts)
 	if result.Error != nil {
 		fmt.Println("Error in GetManyWishes", result.Error)
-		return false
+		return gifts, false
 	}
-	return true
+	return gifts, true
 }
 
 // func GetOneWish(wish Wishes) bool {
@@ -202,6 +295,7 @@ func DeleteWishlist(wishlistID, giftID, userID string) bool {
 }
 
 func CreateUser(user User) bool {
+
 	result := Database.Create(&user)
 	if result.Error != nil {
 		fmt.Println("Error in CreateUser", result.Error)
@@ -237,4 +331,655 @@ func FindSession(sessionID string) (Session, bool) {
 		return session, false
 	}
 	return session, true
+}
+
+func DeleteGiftReview(id string) bool {
+	result := Database.Delete(GiftReview{ID: id})
+	if result.Error != nil {
+		fmt.Println("Error in deleteGiftReview", result.Error)
+		return false
+	}
+	return true
+}
+
+func CreateSeller(seller Seller) bool {
+	result := Database.Create(&seller)
+	if result.Error != nil {
+		fmt.Println("Error in createSeller", result.Error)
+		return false
+	}
+	return true
+}
+
+func FindSeller(login, password string) (Seller, bool) {
+	var seller Seller
+	result := Database.Where(&Seller{Login: login, Password: password}).First(&seller)
+	if result.Error != nil {
+		fmt.Println("Error in findOneSeller", result.Error)
+		return seller, false
+	}
+	return seller, true
+}
+
+func CreateSellerSession(sellerSession SellerSession) bool {
+	result := Database.Create(&sellerSession)
+	if result.Error != nil {
+		fmt.Println("Error in CreateSellerSession", result.Error)
+		return false
+	}
+	return true
+}
+
+func FindSellerSession(sellerSessionID string) (SellerSession, bool) {
+	var sellerSession SellerSession
+	result := Database.Where(&SellerSession{ID: sellerSessionID}).First(&sellerSession)
+	if result.Error != nil {
+		fmt.Println("Error in FindSellerSession", result.Error)
+		return sellerSession, false
+	}
+	return sellerSession, true
+}
+
+func CreateService(service Service) bool {
+	result := Database.Create(&service)
+	if result.Error != nil {
+		fmt.Println("Error in createService")
+		return false
+	}
+	return true
+}
+
+func FindManyService() ([]Service, bool) {
+	var service []Service
+	result := Database.Find(&service)
+	if result.Error != nil {
+		fmt.Println("Error in findManyService", result.Error)
+		return service, false
+	}
+	return service, true
+}
+
+func FindSingleService(sellerId string) ([]Service, bool) {
+	var service []Service
+	result := Database.
+		Table("services").
+		Select("*").
+		Where("seller_id = ?", sellerId).
+		Joins("left join seller_to_services on services.service_id = seller_to_services.service_id").
+		Find(&service)
+	if result.Error != nil {
+		fmt.Println("Error in findSingleService", result.Error)
+		return service, false
+	}
+	return service, true
+}
+
+func FindOneService(serviceId string) (Service, bool) {
+	var service Service
+	result := Database.Take(&service, "service_id = ?", serviceId)
+	if result.Error != nil {
+		fmt.Println("Error in findOneService", result.Error)
+		return service, false
+	}
+	return service, true
+}
+
+func UpdateService(serviceId string, updatedService Service) bool {
+	existingService := Service{}
+	result := Database.First(&existingService, "service_id = ?", serviceId)
+	if result.Error != nil {
+		fmt.Println("Error in finding service:", result.Error)
+		return false
+	}
+
+	if updatedService.Name != "string" {
+		existingService.Name = updatedService.Name
+	}
+	existingService.Price = updatedService.Price
+	if updatedService.Photos != "string" {
+		existingService.Photos = updatedService.Photos
+	}
+	if updatedService.Location != "string" {
+		existingService.Location = updatedService.Location
+	}
+
+	result = Database.Save(&existingService)
+	if result.Error != nil {
+		fmt.Println("Error updating the service:", result.Error)
+		return false
+	}
+
+	return true
+}
+
+func DeleteService(id string) bool {
+	result := Database.Delete(Service{ServiceID: id})
+	if result.Error != nil {
+		fmt.Println("Error in deleteService", result.Error)
+		return false
+	}
+	return true
+}
+
+func CreateSellerToService(sellerToService SellerToService) bool {
+	result := Database.Create(&sellerToService)
+	if result.Error != nil {
+		fmt.Println("Error in CreateSellerToService")
+		return false
+	}
+	return true
+}
+
+func FindManySellerToService() ([]SellerToService, bool) {
+	var sellerToService []SellerToService
+	result := Database.Find(&sellerToService)
+	if result.Error != nil {
+		fmt.Println("Error in findOneSellerToService", result.Error)
+		return sellerToService, false
+	}
+	return sellerToService, true
+}
+
+func FindOneSellerToService(sellerId string) ([]SellerToService, bool) {
+	var sellerToService []SellerToService
+	result := Database.Find(&sellerToService, "seller_id = ?", sellerId)
+	if result.Error != nil {
+		fmt.Println("Error in findManySellerToService", result.Error)
+		return sellerToService, false
+	}
+	return sellerToService, true
+}
+
+func DeleteSellerToService(serviceId string) bool { // Связь удаляется по услуге, т.к. оная удаляется чаще
+	result := Database.Delete(SellerToService{}, "service_id = ?", serviceId)
+	if result.Error != nil {
+		fmt.Println("Error in deleteSellerToService", result.Error)
+		return false
+	}
+	return true
+}
+
+func CreateServiceReview(serviceReview ServiceReview) bool {
+	result := Database.Create(&serviceReview)
+	if result.Error != nil {
+		fmt.Println("Error in createServiceReview", result.Error)
+		return false
+	}
+	return true
+}
+
+func FindManyServiceReview() ([]ServiceReview, bool) {
+	var serviceReview []ServiceReview
+	result := Database.Find(&serviceReview)
+	if result.Error != nil {
+		fmt.Println("Error in findManyServiceReview", result.Error)
+		return serviceReview, false
+	}
+	return serviceReview, true
+}
+
+func FindOneServiceReview(serviceReviewId string) (ServiceReview, bool) {
+	var serviceReview ServiceReview
+	result := Database.Take(&serviceReview, "id = ?", serviceReviewId)
+	if result.Error != nil {
+		fmt.Println("Error in findOneServiceReview", result.Error)
+		return serviceReview, false
+	}
+	return serviceReview, true
+}
+
+func FindSingleServiceReview(serviceId string) ([]ServiceReview, bool) {
+	var serviceReview []ServiceReview
+	result := Database.Find(&serviceReview, "service_id = ?", serviceId)
+	if result.Error != nil {
+		fmt.Println("Error in findSingleServiceReview", result.Error)
+		return serviceReview, false
+	}
+	return serviceReview, true
+}
+
+func UpdateServiceReview(serviceReviewId string, updatedServiceReview ServiceReview) bool {
+	existingServiceReview := ServiceReview{}
+	result := Database.First(&existingServiceReview, "id = ?", serviceReviewId)
+	if result.Error != nil {
+		fmt.Println("Error in finding Service Review:", result.Error)
+		return false
+	}
+
+	if updatedServiceReview.ServiceID != "string" {
+		existingServiceReview.ServiceID = updatedServiceReview.ServiceID
+	}
+	existingServiceReview.Mark = updatedServiceReview.Mark
+	if updatedServiceReview.Comment != "string" {
+		existingServiceReview.Comment = updatedServiceReview.Comment
+	}
+	if updatedServiceReview.UserID != "string" {
+		existingServiceReview.UserID = updatedServiceReview.UserID
+	}
+	existingServiceReview.UpdateDate = updatedServiceReview.UpdateDate
+
+	result = Database.Save(&existingServiceReview)
+	if result.Error != nil {
+		fmt.Println("Error updating the service:", result.Error)
+		return false
+	}
+
+	return true
+}
+
+func DeleteServiceReview(id string) bool {
+	result := Database.Delete(&ServiceReview{}, "id = ?", id)
+	if result.Error != nil {
+		fmt.Println("Error in deleteServiceReview", result.Error)
+		return false
+	}
+	return true
+}
+
+// получение review по его id
+func GetGiftReviewByID(id string) (GiftReview, bool) {
+	var giftReview GiftReview
+	result := Database.First(&giftReview, "id = ?", id)
+	if result.Error != nil {
+		fmt.Println("Error in deleteBookedGift", result.Error)
+		return GiftReview{}, false
+	}
+	return giftReview, true
+}
+
+func GetGiftReviewsByGiftID(giftID string) ([]GiftReview, bool) {
+	var giftReviews []GiftReview
+	result := Database.Where("gift_id = ?", giftID).Find(&giftReviews)
+	if result.Error != nil {
+		fmt.Println("Error in getGiftReviewsGiftID", result.Error)
+		return nil, false
+	}
+	return giftReviews, true
+}
+
+func CalculateAverageMarkByGiftID(giftID string) (float32, bool) {
+	giftReviews, found := GetGiftReviewsByGiftID(giftID)
+	if !found || len(giftReviews) == 0 {
+		return 0.0, false
+	}
+	totalMarks := float32(0)
+	for _, review := range giftReviews {
+		totalMarks += review.Mark
+	}
+	averageMark := totalMarks / float32(len(giftReviews))
+	return averageMark, true
+}
+
+func CreateSelection(selection Selection) bool {
+	result := Database.Create(&selection)
+	if result.Error != nil {
+		fmt.Println("Error in CreateSelection", result.Error)
+		return false
+	}
+	return true
+}
+
+func UpdateSelection(selection Selection) bool {
+	result := Database.Model(&selection).Updates(Selection{Name: selection.Name, Description: selection.Description})
+	if result.Error != nil {
+		fmt.Println("Error in UpdateSelection", result.Error)
+		return false
+	}
+	return true
+}
+
+func FindManySelection() (bool, []Selection) {
+	var selections []Selection
+	result := Database.Find(&selections)
+	if result.Error != nil {
+		fmt.Println("Error in FindManySelection", result.Error)
+		return false, selections
+	}
+	return true, selections
+}
+
+func FindOneSelection(selectionID, userID string) (Selection, bool) {
+	var selection Selection
+	result := Database.Where(&Selection{ID: selectionID, UserID: userID}).Take(&selection)
+	if result.Error != nil {
+		fmt.Println("Error in FindOneSelection", result.Error)
+		return selection, false
+	}
+	return selection, true
+}
+
+func DeleteSelection(selectionID string) bool {
+	result := Database.Where("id = ?", selectionID).Delete(&Selection{})
+	if result.Error != nil {
+		fmt.Println("Error in DeleteSelection", result.Error)
+		return false
+	}
+	return true
+}
+
+func CreateGiftToSelection(giftToSelection GiftToSelection) bool {
+	result := Database.Create(&giftToSelection)
+	if result.Error != nil {
+		fmt.Println("Error in CreateGiftToSelection", result.Error)
+		return false
+	}
+	return true
+}
+
+func UpdateGiftToSelection(giftToSelection GiftToSelection) bool {
+	result := Database.Save(&giftToSelection)
+	if result.Error != nil {
+		fmt.Println("Error in updateGiftToSelection", result.Error)
+		return false
+	}
+	return true
+}
+
+func FindGiftToSelection(selectionID string) ([]Gift, bool) {
+
+	var gifts []Gift
+
+	result := Database.
+		Table("gifts").
+		Joins("INNER JOIN gift_to_selections ON gifts.id = gift_to_selections.gift_id").
+		Where("gift_to_selections.selection_id = ?", selectionID).
+		Find(&gifts)
+
+	if result.Error != nil {
+		fmt.Println("Error in FindGiftToSelection", result.Error)
+		return gifts, false
+	}
+	return gifts, true
+}
+
+func DeleteGiftToSelection(SelectionID, GiftID string) bool {
+	result := Database.Delete(GiftToSelection{SelectionID: SelectionID, GiftID: GiftID})
+	if result.Error != nil {
+		fmt.Println("Error in deleteGiftToSelection", result.Error)
+		return false
+	}
+	return true
+}
+
+func CreateSelectionCategory(selectionCategory SelectionCategory) bool {
+	result := Database.Create(&selectionCategory)
+	if result.Error != nil {
+		fmt.Println("Error in CreateSelectionCategory", result.Error)
+		return false
+	}
+	return true
+}
+
+func UpdatedSelectionCategory(selectionCategory SelectionCategory) bool {
+	result := Database.Save(&selectionCategory)
+	if result.Error != nil {
+		fmt.Println("Error in updateSelection", result.Error)
+		return false
+	}
+	return true
+}
+
+func FindManySelectionCategory() ([]SelectionCategory, bool) {
+	var selectionCategory []SelectionCategory
+	result := Database.Find(&selectionCategory)
+	if result.Error != nil {
+		fmt.Println("Error in findSelection", result.Error)
+		return selectionCategory, false
+	}
+	return selectionCategory, true
+}
+
+func FindOneSelectionCategory(selectionCategoryID string) (SelectionCategory, bool) {
+	var selectionCategory SelectionCategory
+	result := Database.Where("id = ?", selectionCategoryID).Take(&selectionCategory)
+	if result.Error != nil {
+		fmt.Println("Error in findSelection", result.Error)
+		return selectionCategory, false
+	}
+	return selectionCategory, true
+}
+
+func DeleteSelectionCategory(id string) bool {
+	result := Database.Delete(SelectionCategory{ID: id})
+	if result.Error != nil {
+		fmt.Println("Error in deleteSelection", result.Error)
+		return false
+	}
+	return true
+}
+
+func CreateLikeToSelection(likeToSelection LikeToSelection) bool {
+	result := Database.Create(&likeToSelection)
+	if result.Error != nil {
+		fmt.Println("Error in CreateLikeToSelection", result.Error)
+		return false
+	}
+	return true
+}
+
+func GetLikesCountToSelection(selectionID string) int {
+	var count int64
+	result := Database.Model(&LikeToSelection{}).Where("selection_id = ?", selectionID).Count(&count)
+	if result.Error != nil {
+		fmt.Println("Error in GetLikesCountToSelection", result.Error)
+		return -1
+	}
+	return int(count)
+}
+
+func DeleteLikeToSelection(UserID, SelectionID string) bool {
+	result := Database.Delete(LikeToSelection{UserID: UserID, SelectionID: SelectionID})
+	if result.Error != nil {
+		fmt.Println("Error in DeleteLikeToSelection", result.Error)
+		return false
+	}
+	return true
+}
+
+func CreateCommentToSelection(commentToSelection CommentToSelection) bool {
+	result := Database.Create(&commentToSelection)
+	if result.Error != nil {
+		fmt.Println("Error in CreateCommentToSelection", result.Error)
+		return false
+	}
+	return true
+}
+
+func GetCommentsToSelection(id string) ([]CommentToSelection, bool) {
+	var comments []CommentToSelection
+	result := Database.Where("selection_id = ?", id).Find(&comments)
+	if result.Error != nil {
+		fmt.Println("Error in GetCommentsToSelection", result.Error)
+		return nil, false
+	}
+	return comments, true
+}
+
+func UpdateCommentToSelection(commentToSelection CommentToSelection) bool {
+	result := Database.Save(&commentToSelection)
+	if result.Error != nil {
+		fmt.Println("Error in UpdateCommentToSelection", result.Error)
+		return false
+	}
+	return true
+}
+
+func DeleteCommentToSelection(id string) bool {
+	result := Database.Delete(CommentToSelection{ID: id})
+	if result.Error != nil {
+		fmt.Println("Error in DeleteCommentToSelection", result.Error)
+		return false
+	}
+	return true
+}
+
+//Quest
+
+func CreateQuest(quest Quest) bool {
+	result := Database.Create(&quest)
+	if result.Error != nil {
+		fmt.Println("Error in createQuest", result.Error)
+		return false
+	}
+	return true
+}
+
+
+func FindManyQuest(quest Quest) bool {
+	result := Database.Find(&quest)
+	if result.Error != nil {
+		fmt.Println("Error in findManyQuest", result.Error)
+		return false
+	}
+	return true
+}
+
+func DeleteQuest(id string) bool {
+	result := Database.Delete(Quest{ID: id})
+	if result.Error != nil {
+		fmt.Println("Error in deleteQuest", result.Error)
+		return false
+	}
+	return true
+}
+
+//Subquest
+
+func CreateSubquest(subquest Subquest) bool {
+	result := Database.Create(&subquest)
+	if result.Error != nil {
+		fmt.Println("Error in createSubquest", result.Error)
+		return false
+	}
+	return true
+}
+
+func FindManySubquest(subquest Subquest) bool {
+	result := Database.Find(&subquest)
+	if result.Error != nil {
+		fmt.Println("Error in findManySubquest", result.Error)
+		return false
+	}
+	return true
+}
+
+func FindOneSubquest(subquest Subquest) bool {
+	result := Database.Take(&subquest)
+	if result.Error != nil {
+		fmt.Println("Error in findOneSubquest", result.Error)
+		return false
+	}
+	return true
+}
+
+func DeleteSubquest(id string) bool {
+	result := Database.Delete(Subquest{ID: id})
+	if result.Error != nil {
+		fmt.Println("Error in deleteSubquest", result.Error)
+		return false
+	}
+	return true
+}
+
+func UpdateSubquest(subquest Subquest) bool {
+	result := Database.Model(&subquest).Updates(Subquest{TaskID: subquest.TaskID, Reward: subquest.Reward, IsDone: subquest.IsDone})
+	if result.Error != nil {
+		fmt.Println("Error in updateSubquest", result.Error)
+		return false
+	}
+	return true
+}
+
+//Tasks
+
+func CreateTasks(tasks Tasks) bool {
+	result := Database.Create(&tasks)
+	if result.Error != nil {
+		fmt.Println("Error in createTasks", result.Error)
+		return false
+	}
+	return true
+}
+
+func DeleteTasks(id string) bool {
+	result := Database.Delete(Tasks{ID: id})
+	if result.Error != nil {
+		fmt.Println("Error in deleteTasks", result.Error)
+		return false
+	}
+	return true
+}
+
+func UpdateTasks(tasks Tasks) bool {
+	result := Database.Model(&tasks).Updates(Tasks{Name: tasks.Name, Description: tasks.Description})
+	if result.Error != nil {
+		fmt.Println("Error in updateTasks", result.Error)
+		return false
+	}
+	return true
+}
+
+func FindManyTasks(tasks Tasks) bool {
+	result := Database.Find(&tasks)
+	if result.Error != nil {
+		fmt.Println("Error in findManyTasks", result.Error)
+		return false
+	}
+	return true
+}
+
+func FindOneTasks(tasks Tasks) bool {
+	result := Database.Take(&tasks)
+	if result.Error != nil {
+		fmt.Println("Error in findOneTasks", result.Error)
+		return false
+	}
+	return true
+}
+
+//OfflineShops
+
+func CreateOfflineShops(offlineshops OfflineShops) bool {
+	result := Database.Create(&offlineshops)
+	if result.Error != nil {
+		fmt.Println("Error in createOfflineShops", result.Error)
+		return false
+	}
+	return true
+}
+
+func UpdateOfflineShops(offlineshops OfflineShops) bool {
+	result := Database.Model(&offlineshops).Updates(OfflineShops{Name: offlineshops.Name, Location: offlineshops.Location})
+	if result.Error != nil {
+		fmt.Println("Error in updateOfflineShops", result.Error)
+		return false
+	}
+	return true
+}
+
+func FindManyOfflineShops(offlineshops OfflineShops) bool {
+	result := Database.Find(&offlineshops)
+	if result.Error != nil {
+		fmt.Println("Error in findManyOfflineShops", result.Error)
+		return false
+	}
+	return true
+}
+
+func FindOneOfflineShops(offlineshops OfflineShops) bool {
+	result := Database.Take(&offlineshops)
+	if result.Error != nil {
+		fmt.Println("Error in findOneOfflineShops", result.Error)
+		return false
+	}
+	return true
+}
+
+func DeleteOfflineShops(id string) bool {
+	result := Database.Delete(OfflineShops{ID: id})
+	if result.Error != nil {
+		fmt.Println("Error in deleteOfflineShops", result.Error)
+		return false
+	}
+	return true
 }
