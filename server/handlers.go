@@ -1241,23 +1241,23 @@ func createQuestHandler(c *fiber.Ctx) error {
 		// 	}
 		// 	return c.SendString("Quest Found Succesfully")
 		// }
-func getManyQuestHandler(c *fiber.Ctx) error {
-	var quests []db.Quest // Измените тип `quest` на `[]db.Quest`
-	ok := db.FindManyQuest(&quests) // Измените `quest` на `&quests`
+// func getManyQuestHandler(c *fiber.Ctx) error {
+// 	var quests []db.Quest // Измените тип `quest` на `[]db.Quest`
+// 	ok := db.FindManyQuest(&quests) // Измените `quest` на `&quests`
 	
-	if !ok {
-		return c.SendString("Error in findManyQuest operation")
-	}
+// 	if !ok {
+// 		return c.SendString("Error in findManyQuest operation")
+// 	}
 	
-	// Преобразуйте quests в JSON
-	jsonData, err := json.Marshal(quests)
-	if err != nil {
-		return err
-	}
+// 	// Преобразуйте quests в JSON
+// 	jsonData, err := json.Marshal(quests)
+// 	if err != nil {
+// 		return err
+// 	}
 	
-	// Отправьте JSON-ответ
-	return c.SendString(string(jsonData))
-}
+// 	// Отправьте JSON-ответ
+// 	return c.SendString(string(jsonData))
+// }
 
 
 // deleteQuestHandler обрабатывает HTTP DELETE запросы на /quest/{id}
@@ -1352,23 +1352,23 @@ func createSubquestHandler(c *fiber.Ctx) error {
 		// 	}
 		// 	return c.SendString("Subquest Found Succesfully")
 		// }
-func getManySubquestHandler(c *fiber.Ctx) error {
-	var subquests []db.Subquest // Changed type to slice
-	ok := db.FindManySubquest(&subquests) // Use address for slice
+// func getManySubquestHandler(c *fiber.Ctx) error {
+// 	var subquests []db.Subquest // Changed type to slice
+// 	ok := db.FindManySubquest(&subquests) // Use address for slice
 	
-	if !ok {
-		return c.SendString("Error in findManySubquest operation")
-	}
+// 	if !ok {
+// 		return c.SendString("Error in findManySubquest operation")
+// 	}
 	
-	// Convert subquests to JSON
-	jsonData, err := json.Marshal(subquests)
-	if err != nil {
-		return err
-	}
+// 	// Convert subquests to JSON
+// 	jsonData, err := json.Marshal(subquests)
+// 	if err != nil {
+// 		return err
+// 	}
 	
-	// Send JSON response
-	return c.SendString(string(jsonData))
-}
+// 	// Send JSON response
+// 	return c.SendString(string(jsonData))
+// }
 		  
 
 // getOneSubquestHandler обрабатывает HTTP GET запросы на /subquest/{id}
@@ -1600,23 +1600,23 @@ func getOneTasksHandler(c *fiber.Ctx) error {
 		// 	}
 		// 	return c.SendString("Tasks Found Succesfully")
 		// }
-func getManyTasksHandler(c *fiber.Ctx) error {
-	var tasks []db.Tasks // Changed type to slice
-	ok := db.FindManyTasks(&tasks) // Use address for slice
+// func getManyTasksHandler(c *fiber.Ctx) error {
+// 	var tasks []db.Tasks // Changed type to slice
+// 	ok := db.FindManyTasks(&tasks) // Use address for slice
 	
-	if !ok {
-		return c.SendString("Error in findManyTasks operation")
-	}
+// 	if !ok {
+// 		return c.SendString("Error in findManyTasks operation")
+// 	}
 	
-	// Convert tasks to JSON
-	jsonData, err := json.Marshal(tasks)
-	if err != nil {
-		return err
-	}
+// 	// Convert tasks to JSON
+// 	jsonData, err := json.Marshal(tasks)
+// 	if err != nil {
+// 		return err
+// 	}
 	
-	// Send JSON response
-	return c.SendString(string(jsonData))
-}
+// 	// Send JSON response
+// 	return c.SendString(string(jsonData))
+// }
 		  
 // deleteTasksHandler обрабатывает HTTP DELETE запросы на /tasks/{id}
 // @Summary Удаляет существующее задание Tasks по ID
@@ -1778,23 +1778,23 @@ func getOneOfflineShopsHandler(c *fiber.Ctx) error {
 		// 	}
 		// 	return c.SendString("OfflineShops Found Succesfully")
 		// }
-func getManyOfflineShopsHandler(c *fiber.Ctx) error {
-	var offlineshops []db.OfflineShops // Changed type to slice
-	ok := db.FindManyOfflineShops(&offlineshops) // Use address for slice
+// func getManyOfflineShopsHandler(c *fiber.Ctx) error {
+// 	var offlineshops []db.OfflineShops // Changed type to slice
+// 	ok := db.FindManyOfflineShops(&offlineshops) // Use address for slice
 	
-	if !ok {
-		return c.SendString("Error in findManyOfflineShops operation")
-	}
+// 	if !ok {
+// 		return c.SendString("Error in findManyOfflineShops operation")
+// 	}
 	
-	// Convert offlineshops to JSON
-	jsonData, err := json.Marshal(offlineshops)
-	if err != nil {
-		return err
-	}
+// 	// Convert offlineshops to JSON
+// 	jsonData, err := json.Marshal(offlineshops)
+// 	if err != nil {
+// 		return err
+// 	}
 	
-	// Send JSON response
-	return c.SendString(string(jsonData))
-}
+// 	// Send JSON response
+// 	return c.SendString(string(jsonData))
+// }
 		  
 // deleteOfflineShopHandler обрабатывает HTTP DELETE запросы на /offlineshop/{id}
 // @Summary Удаляет существующий Offline Shop по ID

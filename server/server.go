@@ -138,7 +138,7 @@ func Setup() {
 	quest := app.Group("/quest")
 	quest.Post("", adminMiddleware, createQuestHandler)
 
-	quest.Get("", getManyQuestHandler)
+	// quest.Get("", getManyQuestHandler)
 
 	quest.Delete("/:id", adminMiddleware, deleteQuestHandler)
 
@@ -148,7 +148,7 @@ func Setup() {
 
 	subquest.Delete("/:id", adminMiddleware, deleteSubquestHandler)
 
-	subquest.Get("", getManySubquestHandler)
+	// subquest.Get("", getManySubquestHandler)
 
 	subquest.Get("/:id", getOneSubquestHandler)
 
@@ -160,7 +160,7 @@ func Setup() {
 
 	tasks.Delete("/:id", adminMiddleware, deleteTasksHandler)
 
-	tasks.Get("", getManyTasksHandler)
+	// tasks.Get("", getManyTasksHandler)
 
 	tasks.Get("/:id", getOneTasksHandler)
 
@@ -171,7 +171,7 @@ func Setup() {
 
 	offlineshops.Post("", adminMiddleware, createOfflineShopsHandler)
 
-	offlineshops.Get("", getManyOfflineShopsHandler)
+	// offlineshops.Get("", getManyOfflineShopsHandler)
 
 	offlineshops.Get("/:id", getOneOfflineShopsHandler)
 
