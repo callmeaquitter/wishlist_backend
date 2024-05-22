@@ -1080,3 +1080,13 @@ func DeleteOfflineShops(id string) bool {
 	}
 	return true
 }
+
+func FindUserById(id string) (*User, bool) {
+	var user User
+	result := Database.First(&user, "id = ?", id)
+	if result.Error != nil {
+		fmt.Println("Error in FindUserById:", result.Error)
+		return nil, false
+	}
+	return &user, true
+}

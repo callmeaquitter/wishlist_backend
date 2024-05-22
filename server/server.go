@@ -89,7 +89,7 @@ func Setup() {
 
 	//Route: POST /gifts
 	gifts := app.Group("/gifts")
-	gifts.Post("", adminMiddleware, createGiftHandler)
+	gifts.Post("", authMiddleware, createGiftHandler)
 	//Route: DELETE /gifts/:id
 	//DELETE /gifts/gift_cneq8k9u9g5j3m6ft0v0
 	gifts.Delete("/:id", adminMiddleware, deleteGiftHandler)
@@ -286,8 +286,10 @@ func Setup() {
 
 	app.Post("/registerSeller", registerSellerHandler)
 	app.Post("/loginSeller", loginSellerHandler)
+
+	app.Get("/users", getUserHandler)
 }
 
 func Start() {
-	app.Listen(":7777")
+	app.Listen(":7070")
 }

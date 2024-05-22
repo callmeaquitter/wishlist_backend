@@ -2172,3 +2172,14 @@ func generateUniqueFileName(category string) string {
 		time.Now().Format("20060102_150405_") + 
 		xid.New().String() + ".png"
 }
+
+func getUserHandler(c *fiber.Ctx) error {
+	id := c.Params("id")
+
+	user, ok := db.FindUserById(id)
+	if !ok {
+		return c.SendString("Error in getUserById operation")
+	}
+	return c.JSON(user)
+}
+
