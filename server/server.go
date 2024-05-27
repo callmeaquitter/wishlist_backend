@@ -155,52 +155,52 @@ func Setup() {
 
 	//Route: POST /quest
 	quest := app.Group("/quest")
-	quest.Post("", adminMiddleware, createQuestHandler)
+	quest.Post("", authMiddleware, createQuestHandler)
 
 	quest.Get("", getManyQuestHandler)
 
 	quest.Get("/:id", getOneQuestHandler)
 
-	quest.Patch("/:id", adminMiddleware, updateQuestHandler)
+	quest.Patch("/:id", authMiddleware, updateQuestHandler)
 
-	quest.Delete("/:id", adminMiddleware, deleteQuestHandler)
+	quest.Delete("/:id", authMiddleware, deleteQuestHandler)
 
 	//Route: POST /subquest
 	subquest := app.Group("/subquest")
-	subquest.Post("", adminMiddleware, createSubquestHandler)
+	subquest.Post("", authMiddleware, createSubquestHandler)
 
-	subquest.Delete("/:id", adminMiddleware, deleteSubquestHandler)
+	subquest.Delete("/:id", authMiddleware, deleteSubquestHandler)
 
 	subquest.Get("", getManySubquestHandler)
 
 	subquest.Get("/:id", getOneSubquestHandler)
 
-	subquest.Patch("/:id", adminMiddleware, updateSubquestHandler)
+	subquest.Patch("/:id", authMiddleware, updateSubquestHandler)
 
 	//Route: POST /tasks
 	tasks := app.Group("/tasks")
-	tasks.Post("", adminMiddleware, createTasksHandler)
+	tasks.Post("", authMiddleware, createTasksHandler)
 
-	tasks.Delete("/:id", adminMiddleware, deleteTasksHandler)
+	tasks.Delete("/:id", authMiddleware, deleteTasksHandler)
 
 	tasks.Get("", getManyTasksHandler)
 
 	tasks.Get("/:id", getOneTasksHandler)
 
-	tasks.Patch("/:id", adminMiddleware, updateTasksHandler)
+	tasks.Patch("/:id", authMiddleware, updateTasksHandler)
 
 	//Route: POST /offlineshops
 	offlineshops := app.Group("/offlineshops")
 
-	offlineshops.Post("", adminMiddleware, createOfflineShopsHandler)
+	offlineshops.Post("", authMiddleware, createOfflineShopsHandler)
 
 	offlineshops.Get("", getManyOfflineShopsHandler)
 
 	offlineshops.Get("/:id", getOneOfflineShopsHandler)
 
-	offlineshops.Delete("/:/:photoid", adminMiddleware, deleteOfflineShopsHandler)
+	offlineshops.Delete("/:/:photoid", authMiddleware, deleteOfflineShopsHandler)
 
-	offlineshops.Patch("/:id", adminMiddleware, updateOfflineShopsHandler)
+	offlineshops.Patch("/:id", authMiddleware, updateOfflineShopsHandler)
 
 	//
 
