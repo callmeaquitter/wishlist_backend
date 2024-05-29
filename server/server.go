@@ -155,52 +155,52 @@ func Setup() {
 
 	//Route: POST /quest
 	quest := app.Group("/quest")
-	quest.Post("", adminMiddleware, createQuestHandler)
+	quest.Post("", createQuestHandler)
 
 	quest.Get("", getManyQuestHandler)
 
 	quest.Get("/:id", getOneQuestHandler)
 
-	quest.Patch("/:id", adminMiddleware, updateQuestHandler)
+	quest.Patch("/:id", updateQuestHandler)
 
-	quest.Delete("/:id", adminMiddleware, deleteQuestHandler)
+	quest.Delete("/:id", deleteQuestHandler)
 
 	//Route: POST /subquest
 	subquest := app.Group("/subquest")
-	subquest.Post("", adminMiddleware, createSubquestHandler)
+	subquest.Post("", createSubquestHandler)
 
-	subquest.Delete("/:id", adminMiddleware, deleteSubquestHandler)
+	subquest.Delete("/:id", deleteSubquestHandler)
 
 	subquest.Get("", getManySubquestHandler)
 
 	subquest.Get("/:id", getOneSubquestHandler)
 
-	subquest.Patch("/:id", adminMiddleware, updateSubquestHandler)
+	subquest.Patch("/:id", updateSubquestHandler)
 
 	//Route: POST /tasks
 	tasks := app.Group("/tasks")
-	tasks.Post("", adminMiddleware, createTasksHandler)
+	tasks.Post("", createTasksHandler)
 
-	tasks.Delete("/:id", adminMiddleware, deleteTasksHandler)
+	tasks.Delete("/:id", deleteTasksHandler)
 
 	tasks.Get("", getManyTasksHandler)
 
 	tasks.Get("/:id", getOneTasksHandler)
 
-	tasks.Patch("/:id", adminMiddleware, updateTasksHandler)
+	tasks.Patch("/:id", updateTasksHandler)
 
 	//Route: POST /offlineshops
 	offlineshops := app.Group("/offlineshops")
 
-	offlineshops.Post("", adminMiddleware, createOfflineShopsHandler)
+	offlineshops.Post("", createOfflineShopsHandler)
 
 	offlineshops.Get("", getManyOfflineShopsHandler)
 
 	offlineshops.Get("/:id", getOneOfflineShopsHandler)
 
-	offlineshops.Delete("/:/:photoid", adminMiddleware, deleteOfflineShopsHandler)
+	offlineshops.Delete("/:/:photoid", deleteOfflineShopsHandler)
 
-	offlineshops.Patch("/:id", adminMiddleware, updateOfflineShopsHandler)
+	offlineshops.Patch("/:id", updateOfflineShopsHandler)
 
 	//
 
