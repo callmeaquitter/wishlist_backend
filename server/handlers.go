@@ -1421,7 +1421,7 @@ func createTasksHandler(c *fiber.Ctx) error {
 			SendString(err.Error())
 	}
 
-	tasks.ID = "tasks_" + xid.New().String()
+	tasks.ID = "task_" + xid.New().String()
 
 	ok := db.CreateTasks(tasks)
 	if !ok {
