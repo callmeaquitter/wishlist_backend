@@ -67,6 +67,8 @@ func Setup() {
 	validate.RegisterValidation("seller_", ValidateIDFormat("seller_"))
 	validate.RegisterValidation("service_", ValidateIDFormat("service_"))
 	validate.RegisterValidation("user_", ValidateIDFormat("user_"))
+	validate.RegisterValidation("task_", ValidateIDFormat("task_"))
+	validate.RegisterValidation("subquest_", ValidateIDFormat("subquest_"))
 	validate.RegisterValidation("password", ValidatePasswordFormat)
 	validate.RegisterValidation("category", ValidatePhotoCategory)
 
