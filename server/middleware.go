@@ -36,7 +36,7 @@ func adminMiddleware(c *fiber.Ctx) error {
 	specialSession = strings.TrimPrefix(specialSession, "Bearer ")
 	session, ok := db.FindSession(specialSession)
 	if !ok {
-		return c.SendString("Unauthorized")
+		 c.SendString("Unauthorized")
 	}
 
 	if specialSession != "session_cnvdk9k69lbm5c1vej1g" {
