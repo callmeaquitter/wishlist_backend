@@ -200,7 +200,7 @@ func Setup() {
 
 	offlineshops.Get("/:id", getOneOfflineShopsHandler)
 
-	offlineshops.Delete("/:/:photoid", adminMiddleware, deleteOfflineShopsHandler)
+	offlineshops.Delete("/:id", adminMiddleware, deleteOfflineShopsHandler)
 
 	offlineshops.Patch("/:id", adminMiddleware, updateOfflineShopsHandler)
 
